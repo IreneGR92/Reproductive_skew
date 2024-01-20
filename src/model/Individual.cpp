@@ -118,9 +118,6 @@ void Individual::mutate(int generation) // mutate genome of offspring
     if (parameters->isEvolutionHelpAfterDispersal() && generation < 25000) {
         mutationAlpha = 0;
         mutationAlphaAge = 0;
-    } else if (parameters->isNoRelatedness() && parameters->isNoRelatednessRandomGroup()) {
-        mutationAlpha = 0;
-        mutationAlphaAge = 0;
     } else {
         mutationAlpha = parameters->getMutationAlpha();
         mutationAlphaAge = parameters->getMutationAlphaAge();
@@ -138,25 +135,25 @@ void Individual::mutate(int generation) // mutate genome of offspring
     // Beta
     if (parameters->uniform(rng) < parameters->getMutationBeta()) {
         beta += NormalB(rng);
-        if (!parameters->isReactionNormDispersal()) {
+
             if (beta < 0.5) { beta = 0.5; }
             else if (beta > 1) { beta = 1; }
-        }
+
     }
 
-    // Gamma
-    if (parameters->uniform(rng) < parameters->getMutationGamma()) {
-        gamma += NormalG(rng);
-        if (!parameters->isReactionNormTask()) {
-            if (gamma < 0) { gamma = 0; }
-            else if (gamma > 1) { gamma = 1; }
-        }
-    }
-    if (parameters->isReactionNormTask()) {
-        if (parameters->uniform(rng) < parameters->getMutationGammaAge()) {
-            gammaAge += NormalG(rng);
-        }
-    }
+//    // Gamma
+//    if (parameters->uniform(rng) < parameters->getMutationGamma()) {
+//        gamma += NormalG(rng);
+//        if (!parameters->isReactionNormTask()) {
+//            if (gamma < 0) { gamma = 0; }
+//            else if (gamma > 1) { gamma = 1; }
+//        }
+//    }
+//    if (parameters->isReactionNormTask()) {
+//        if (parameters->uniform(rng) < parameters->getMutationGammaAge()) {
+//            gammaAge += NormalG(rng);
+//        }
+//    }
 
     // Drift
     if (parameters->uniform(rng) < parameters->getMutationDrift()) {

@@ -68,7 +68,7 @@ void Population::disperse(int generation) {
         }
     }
     // Assign helpers to random group while maintaining the same group size
-    if (parameters->isNoRelatedness() && !allNoRelatedHelpers.empty() && !parameters->isNoRelatednessRandomGroup()) {
+    if (parameters->isNoRelatedness() && !allNoRelatedHelpers.empty()) {
 
         int selectGroupID;
         int timeout = 0;

@@ -131,9 +131,6 @@ void Group::mortalityGroup(int &deaths) {
     if (parameters->uniform(*parameters->getGenerator()) > mainBreeder.getSurvival()) {
         breederAlive = false;
         deaths++;
-        if (parameters->isDirectBroodCareOnly()) {
-            cumHelp = 0; //removes help for new mainBreeder
-        }
     }
     this->calculateGroupSize(); //update group size after mortality
 }

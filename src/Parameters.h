@@ -23,14 +23,9 @@ private:
     std::string name;
 ///#Run parameters
     bool REACTION_NORM_HELP;    //Apply reaction norm to age for dispersal?
-    bool REACTION_NORM_DISPERSAL; // Apply reaction norm to age for dispersal?
     bool EVOLUTION_HELP_AFTER_DISPERSAL; // help evolves only after the evolution of dispersal?
-    bool REACTION_NORM_TASK; // If true: help reduces the rank and likelihood to inherit breeding position, if false: help reduces survival
-    bool NEED_DIVISION_LABOUR; //If true, individuals in a group must split the type of help provided to have an optimum increase on fecundity, as there is need of both defence and feeding
-    bool DIRECT_BROOD_CARE_ONLY; // right after an individual becomes breeder, it does not receive help for the first breeding cycle
     bool NO_GROUP_AUGMENTATION;
     bool NO_RELATEDNESS;       //Apply implementation to remove the effect of relatedness?
-    bool NO_RELATEDNESS_RANDOM_GROUP; // When applying no relatedness, helpers shuffled to random group instead of maintaining group size
     bool AGE_NO_INFLUENCE_INHERITANCE; // Age no influence of who inherits territory, randomly sampled from candidate (helpers + sample floaters)
 
 
@@ -43,7 +38,6 @@ private:
     int INIT_NUM_HELPERS;     //initial number of helpers per group
     double BIAS_FLOAT_BREEDER; //mean of number of groups a floater can visit to try to become a breeder compared to 1 group for helpers
     int MIN_AGE_BECOME_BREEDER; //minimum age for individuals to be able to become breeders
-    int FIXED_IND_QUALITY;      // in the "age no influence on inheritance", rank of all individuals before effect of help
     double FIXED_GROUP_SIZE;       //in the implementation of no group augmentation, virtual group size for survival for breeder and helpers
 
 // Modifiers in survival.
@@ -52,12 +46,10 @@ private:
     double X0;     //base survival without the effect of help or group size
     double Xsh;    // cost of help in survival
     double Xsn;    // benefit of group size in survival
-    double Yh;     // cost of help on rank
 
 //Modifiers in fecundity
     double K0;    // min fecundity, fecundity when no help provided.
     double Kh;    // benefit of cumHelp in the fecundity
-    double Km;    // reduced the need for division of labour, the higher the value the less need for DOL
 
 //Genetic values
 
@@ -113,21 +105,11 @@ public:
 
     bool isReactionNormHelp() const;
 
-    bool isReactionNormDispersal() const;
-
     bool isEvolutionHelpAfterDispersal() const;
-
-    bool isReactionNormTask() const;
-
-    bool isNeedDivisionLabour() const;
-
-    bool isDirectBroodCareOnly() const;
 
     bool isNoGroupAugmentation() const;
 
     bool isNoRelatedness() const;
-
-    bool isNoRelatednessRandomGroup() const;
 
     bool isAgeNoInfluenceInheritance() const;
 
@@ -147,8 +129,6 @@ public:
 
     int getMinAgeBecomeBreeder() const;
 
-    int getFixedIndQuality() const;
-
     double getM() const;
 
     double getN() const;
@@ -159,13 +139,9 @@ public:
 
     double getXsn() const;
 
-    double getYh() const;
-
     double getK0() const;
 
     double getKh() const;
-
-    double getKm() const;
 
     double getInitAlpha() const;
 
