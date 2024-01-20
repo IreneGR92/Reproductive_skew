@@ -4,7 +4,7 @@
 
 
 #include <unordered_map>
-#include "IndRole.h"
+#include "FishType.h"
 #include "../Parameters.h"
 #include "Attribute.h"
 
@@ -23,23 +23,23 @@ class Individual {
     double help;
     double survival;
 
-    IndRole fishType;                                                // possible classes: breeder, helper, floater
+    FishType fishType;                                                // possible classes: breeder, helper, floater
     int age;
     int ageBecomeBreeder;
     bool inherit;                                                    //did the new breeder inherit the territory or did it disperse?
 
     void mutate(int generation);
 
-    void initializeIndividual(IndRole type);
+    void initializeIndividual(FishType type);
 
     int groupIndex;
 public:
     int getGroupIndex() const;
 
 public:
-    Individual(Individual &individual, IndRole fishType, int &generation);
+    Individual(Individual &individual, FishType fishType, int &generation);
 
-    explicit Individual(IndRole indRole);
+    explicit Individual(FishType fishType);
 
 
     //Functions inside Individual
@@ -70,9 +70,9 @@ public:
 
     double getSurvival() const;
 
-    IndRole getIndRole() const;
+    FishType getFishType() const;
 
-    void setIndRole(IndRole type);
+    void setFishType(FishType type);
 
     int getAge() const;
     void setAgeBecomeBreeder(int ageBecomeBreeder_);

@@ -3,10 +3,10 @@
 #include <cassert>
 
 #include "Individual.h"
-#include "IndRole.h"
+#include "FishType.h"
 
 //Constructor for reproduction of a Breeder
-Individual::Individual(Individual &individual, IndRole fishType, int &generation) {
+Individual::Individual(Individual &individual, FishType fishType, int &generation) {
 
     assert(individual.fishType == BREEDER);
 
@@ -27,7 +27,7 @@ Individual::Individual(Individual &individual, IndRole fishType, int &generation
 }
 
 //Constructor for initial creation
-Individual::Individual(IndRole indRole) {
+Individual::Individual(FishType fishType) {
 
     auto param = Parameters::instance();
 
@@ -37,10 +37,10 @@ Individual::Individual(IndRole indRole) {
     this->gamma = param->getInitGamma();
     this->gammaAge = param->getInitGammaAge();
     this->drift = param->driftUniform(*param->getGenerator());
-    this->initializeIndividual(indRole);
+    this->initializeIndividual(fishType);
 }
 
-void Individual::initializeIndividual(IndRole type) {
+void Individual::initializeIndividual(FishType type) {
     this->parameters = Parameters::instance();
     this->dispersal = Parameters::NO_VALUE;
     this->help = 0;
@@ -60,11 +60,11 @@ void Individual::setGroupIndex(int groupIndex) {
 /* BECOME FLOATER (STAY VS DISPERSE) */
 
 void Individual::calcDispersal() {
-    if (age == 1) {
-        this->dispersal = beta;
-    } else {
-        this->dispersal = 0;
-    }
+//    if (age == 1) {
+    this->dispersal = beta;
+//    } else {
+//        this->dispersal = 0;
+//    }
 }
 
 /*DISPLAY LEVEL OF HELP*/
@@ -135,8 +135,8 @@ void Individual::mutate(int generation) // mutate genome of offspring
     if (parameters->uniform(rng) < parameters->getMutationBeta()) {
         beta += NormalB(rng);
 
-            if (beta < 0.5) { beta = 0.5; }
-            else if (beta > 1) { beta = 1; }
+        if (beta < 0) { beta = 0; }
+        else if (beta > 1) { beta = 1; }
 
     }
 
@@ -219,11 +219,11 @@ double Individual::getSurvival() const {
     return survival;
 }
 
-IndRole Individual::getIndRole() const {
+FishType Individual::getFishType() const {
     return fishType;
 }
 
-void Individual::setIndRole(IndRole type) {
+void Individual::setFishType(FishType type) {
     Individual::fishType = type;
     if (type == BREEDER) {
         this->dispersal = Parameters::NO_VALUE;
