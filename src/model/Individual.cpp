@@ -13,7 +13,7 @@ Individual::Individual(Individual &individual, IndRole fishType, int &generation
     this->alpha = individual.alpha;
     this->alphaAge = individual.alphaAge;
     this->beta = individual.beta;
-    this->betaAge = individual.betaAge;
+
     this->gamma = individual.gamma;
     this->gammaAge = individual.gammaAge;
     this->drift = individual.getDrift();
@@ -34,7 +34,6 @@ Individual::Individual(IndRole indRole) {
     this->alpha = param->getInitAlpha();
     this->alphaAge = param->getInitAlphaAge();
     this->beta = param->getInitBeta();
-    this->betaAge = param->getInitBetaAge();
     this->gamma = param->getInitGamma();
     this->gammaAge = param->getInitGammaAge();
     this->drift = param->driftUniform(*param->getGenerator());
@@ -192,10 +191,6 @@ double Individual::getBeta() const {
     return beta;
 }
 
-double Individual::getBetaAge() const {
-    return betaAge;
-}
-
 double Individual::getGamma() const {
     return gamma;
 }
@@ -263,8 +258,6 @@ double Individual::get(Attribute type) const {
             return this->alphaAge;
         case BETA:
             return this->beta;
-        case BETA_AGE:
-            return this->betaAge;
         case GAMMA:
             return this->gamma;
         case GAMMA_AGE:

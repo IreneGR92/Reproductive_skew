@@ -64,10 +64,8 @@ private:
 
 //For dispersal
     double INIT_BETA;            // bigger values higher dispersal
-    double INIT_BETA_AGE;            // 0: age has no effect, positive: dispersal decreases with age
 
     double MUTATION_BETA;            // mutation rate for the propensity to disperse
-    double MUTATION_BETA_AGE;
     double STEP_BETA;            // mutation step size for the propensity to disperse
 
 //For task specialization
@@ -155,11 +153,7 @@ public:
 
     double getInitBeta() const;
 
-    double getInitBetaAge() const;
-
     double getMutationBeta() const;
-
-    double getMutationBetaAge() const;
 
     double getStepBeta() const;
 

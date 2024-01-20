@@ -25,7 +25,7 @@ class Statistics {
 
     StatisticalFormulas alpha, alphaAge;
 
-    StatisticalFormulas beta, betaAge;
+    StatisticalFormulas beta;
 
     StatisticalFormulas gamma, gammaAge;
 

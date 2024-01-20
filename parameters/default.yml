@@ -39,11 +39,9 @@ MUTATION_ALPHA_AGE: 0.05
 STEP_ALPHA: 0.04            # mutation step size in alpha for level of help
 
 #For dispersal
-INIT_BETA: 0.6              # bigger values higher dispersal
-INIT_BETA_AGE: 0.0          # if 0 age has no effect
+INIT_BETA: 1.0              # bigger values higher dispersal
 
-MUTATION_BETA: 1.0         # mutation rate for the propensity to disperse
-MUTATION_BETA_AGE: 0.05
+MUTATION_BETA: 0.05         # mutation rate for the propensity to disperse
 STEP_BETA: 0.04             # mutation step size for the propensity to disperse
 
 #For task specialization

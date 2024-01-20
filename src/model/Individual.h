@@ -15,7 +15,6 @@ class Individual {
     double alpha;
     double alphaAge;
     double beta;
-    double betaAge;
     double gamma;
     double gammaAge;
     double drift;
@@ -56,8 +55,6 @@ public:
     double getAlphaAge() const;
 
     double getBeta() const;
-
-    double getBetaAge() const;
 
     double getGamma() const;
 
