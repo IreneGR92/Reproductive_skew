@@ -10,8 +10,7 @@ Simulation code, written in C++, to support the paper:
 - The software was built and tested on Ubuntu Linux -> this guide only covers Ubuntu Linux x86_64 if you are using macOS
   or Windows you may need to adapt some steps.
 - Cmake, make and gcc installed
-- If you are not on Linux with x86_64 you'll need to compile yaml-cpp yourself and reference it correctly in CMake.txt
-  GitHub --> https://github.com/jbeder/yaml-cpp/tree/yaml-cpp-0.6.2
+- The project now uses the `FetchContent` CMake module to download and build the `yaml-cpp` library directly from its GitHub repository. This means you no longer need to manually compile and reference `yaml-cpp` in the `CMakeLists.txt` file.
 
 ### Compile the binary
 
@@ -30,4 +29,4 @@ The output of the application is then stored in file `main_parameters_example.tx
 and `last_generation_parameters_example.txt`
 
 You can modify the input parameters of the model by modifying the yml file. First lines allow you to choose between the
-different models (with/without age-dependent plasticity and with/without relatedness building up from model dynamics). 
+different models (with/without age-dependent plasticity and with/without relatedness building up from model dynamics).
