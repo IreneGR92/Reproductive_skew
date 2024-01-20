@@ -8,7 +8,7 @@
 using namespace std;
 
 
-Group::Group() : breeder(BREEDER) {
+Group::Group() : mainBreeder(BREEDER) {
     this->parameters = Parameters::instance();
 
     breederAlive = true;
@@ -105,8 +105,8 @@ void Group::survivalGroup() {
         helper.calculateSurvival(groupSize);
     }
 
-    //Calculate the survival of the breeder
-        this->breeder.calculateSurvival(groupSize);
+    //Calculate the survival of the mainBreeder
+        this->mainBreeder.calculateSurvival(groupSize);
 }
 
 void Group::mortalityGroup(int &deaths) {
@@ -127,12 +127,12 @@ void Group::mortalityGroup(int &deaths) {
             helperIt++, counting++; //go to next individual
     }
 
-    //Mortality breeder
-    if (parameters->uniform(*parameters->getGenerator()) > breeder.getSurvival()) {
+    //Mortality mainBreeder
+    if (parameters->uniform(*parameters->getGenerator()) > mainBreeder.getSurvival()) {
         breederAlive = false;
         deaths++;
         if (parameters->isDirectBroodCareOnly()) {
-            cumHelp = 0; //removes help for new breeder
+            cumHelp = 0; //removes help for new mainBreeder
         }
     }
     this->calculateGroupSize(); //update group size after mortality
@@ -198,8 +198,8 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederFloater, int
             candidateIt = candidates.erase(candidateIt);
         }
     }
-    //  Choose new breeder
-        //    Choose breeder with higher likelihood for the highest rank
+    //  Choose new mainBreeder
+        //    Choose mainBreeder with higher likelihood for the highest rank
         for (candidateIt = candidates.begin(); candidateIt < candidates.end(); ++candidateIt) {
             sumRank += (*candidateIt)->getAge(); //add all the ranks from the vector candidates
         }
@@ -215,9 +215,9 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederFloater, int
         while (counting < candidates.size()) {
             if (RandP < position[candidateIt - candidates.begin()]) //to access the same ind in the candidates vector
             {
-                breeder = **candidateIt; //substitute the previous dead breeder
+                mainBreeder = **candidateIt; //substitute the previous dead mainBreeder
                 breederAlive = true;
-                breeder.setAgeBecomeBreeder(breeder.getAge());
+                mainBreeder.setAgeBecomeBreeder(mainBreeder.getAge());
 
                 if ((*candidateIt)->getFishType() == FLOATER) //delete the ind from the vector floaters
                 {
@@ -233,7 +233,7 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederFloater, int
                     }
                 }
 
-                breeder.setFishType(BREEDER); //modify the class
+                mainBreeder.setFishType(BREEDER); //modify the class
                 counting = candidates.size();//end loop
             } else
                 ++candidateIt, ++counting;
@@ -248,7 +248,7 @@ void Group::increaseAge() {
         helper.increaseAge();
     }
     if (breederAlive) {
-        breeder.increaseAge(breederAlive);
+        mainBreeder.increaseAge(breederAlive);
     }
 }
 
@@ -266,7 +266,7 @@ void Group::reproduce(int generation) { // populate offspring generation
     //Reproduction
     if (breederAlive) {
         for (int i = 0; i < realFecundity; i++) { //number of offspring dependent on real fecundity
-            Individual offspring = Individual(breeder, HELPER, generation);
+            Individual offspring = Individual(mainBreeder, HELPER, generation);
 
             helpers.emplace_back(offspring); //create a new individual as helper in the group. Call construct to assign the mother genetic values to the offspring, construct calls Mutate function.
         }
@@ -274,7 +274,7 @@ void Group::reproduce(int generation) { // populate offspring generation
 }
 
 const Individual &Group::getBreeder() const {
-    return breeder;
+    return mainBreeder;
 }
 
 int Group::getGroupSize() const {
@@ -292,7 +292,7 @@ double Group::getCumHelp() const {
 std::vector<double> Group::get(Attribute attribute, bool includeBreeder) const {
     std::vector<double> result;
     if (includeBreeder && isBreederAlive()) {
-        result.push_back(breeder.get(attribute));
+        result.push_back(mainBreeder.get(attribute));
     }
     for (const Individual &helper: helpers) {
         result.push_back(helper.get(attribute));

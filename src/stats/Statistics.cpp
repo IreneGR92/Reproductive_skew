@@ -217,7 +217,7 @@ void Statistics::printHeadersToConsole() {
          << "float" << setw(9) << "group" << setw(9) << "maxGroup" << setw(9) << "age" << setw(9)
          << "alpha" << setw(9) << "alphaAge" << setw(9) << "beta" << setw(9) << "betaAge" << setw(9)
          << "gamma" << setw(9) << "gammaAge" << setw(9)
-         << "disper" << setw(9) << "help" << setw(9)  << "task" << setw(9) << "surv" << setw(9) << "relat" << endl;
+         << "disper" << setw(9) << "help" << setw(9) << "surv" << setw(9) << "relat" << endl;
 }
 
 

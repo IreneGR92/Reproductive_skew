@@ -13,14 +13,15 @@ class Group {
 private:
     Parameters *parameters;
     double cumHelp;
-    bool breederAlive;      // for the breeder: 1 alive, 0 dead
+    bool breederAlive;      // for the mainBreeder: 1 alive, 0 dead
     int groupSize;
     double fecundity;
     int realFecundity;
 
-    Individual breeder;
+    Individual mainBreeder;
 
     IndividualVector helpers;
+    IndividualVector breeders;
 
 public:
 
