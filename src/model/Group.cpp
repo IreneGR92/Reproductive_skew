@@ -28,9 +28,9 @@ Group::Group() : mainBreeder(BREEDER) {
 
 void Group::calculateGroupSize() {
     if (breederAlive) {
-        groupSize = helpers.size() + 1;
+        groupSize = helpers.size() + breeders.size() + 1;
     } else {
-        groupSize = helpers.size();
+        groupSize = helpers.size() + breeders.size();
     }
 }
 

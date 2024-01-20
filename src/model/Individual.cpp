@@ -61,10 +61,10 @@ void Individual::setGroupIndex(int groupIndex) {
 /* BECOME FLOATER (STAY VS DISPERSE) */
 
 void Individual::calcDispersal() {
-    if (!parameters->isReactionNormDispersal()) {
+    if (age == 1) {
         this->dispersal = beta;
     } else {
-        this->dispersal = 1 / (1 + exp(betaAge * age - beta));
+        this->dispersal = 0;
     }
 }
 
@@ -139,13 +139,8 @@ void Individual::mutate(int generation) // mutate genome of offspring
     if (parameters->uniform(rng) < parameters->getMutationBeta()) {
         beta += NormalB(rng);
         if (!parameters->isReactionNormDispersal()) {
-            if (beta < 0) { beta = 0; }
+            if (beta < 0.5) { beta = 0.5; }
             else if (beta > 1) { beta = 1; }
-        }
-    }
-    if (parameters->isReactionNormDispersal()) {
-        if (parameters->uniform(rng) < parameters->getMutationBetaAge()) {
-            betaAge += NormalB(rng);
         }
     }
 
@@ -184,7 +179,6 @@ void Individual::increaseAge(bool alive) {
 void Individual::increaseAge() {
     this->increaseAge(true);
 }
-
 
 
 /* GETTERS AND SETTERS */
