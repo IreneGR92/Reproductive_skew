@@ -3,10 +3,10 @@
 #include <cassert>
 
 #include "Individual.h"
-#include "FishType.h"
+#include "IndRole.h"
 
 //Constructor for reproduction of a Breeder
-Individual::Individual(Individual &individual, FishType fishType, int &generation) {
+Individual::Individual(Individual &individual, IndRole fishType, int &generation) {
 
     assert(individual.fishType == BREEDER);
 
@@ -27,7 +27,7 @@ Individual::Individual(Individual &individual, FishType fishType, int &generatio
 }
 
 //Constructor for initial creation
-Individual::Individual(FishType fishType) {
+Individual::Individual(IndRole indRole) {
 
     auto param = Parameters::instance();
 
@@ -38,10 +38,10 @@ Individual::Individual(FishType fishType) {
     this->gamma = param->getInitGamma();
     this->gammaAge = param->getInitGammaAge();
     this->drift = param->driftUniform(*param->getGenerator());
-    this->initializeIndividual(fishType);
+    this->initializeIndividual(indRole);
 }
 
-void Individual::initializeIndividual(FishType type) {
+void Individual::initializeIndividual(IndRole type) {
     this->parameters = Parameters::instance();
     this->dispersal = Parameters::NO_VALUE;
     this->help = 0;
@@ -224,11 +224,11 @@ double Individual::getSurvival() const {
     return survival;
 }
 
-FishType Individual::getFishType() const {
+IndRole Individual::getIndRole() const {
     return fishType;
 }
 
-void Individual::setFishType(FishType type) {
+void Individual::setIndRole(IndRole type) {
     Individual::fishType = type;
     if (type == BREEDER) {
         this->dispersal = Parameters::NO_VALUE;

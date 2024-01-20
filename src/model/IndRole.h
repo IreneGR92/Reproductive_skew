@@ -4,7 +4,7 @@
 #define GROUP_AUGMENTATION_FISHTYPE_H
 
 
-enum FishType {
+enum IndRole {
     BREEDER, HELPER, FLOATER
 };
 

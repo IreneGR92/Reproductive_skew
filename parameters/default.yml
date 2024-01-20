@@ -5,8 +5,8 @@ NO_GROUP_AUGMENTATION: true
 NO_RELATEDNESS: true     # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false # Age no influence of who inherits territory, randomly sampled from candidate (helpers + sample floaters)
 
-MAX_COLONIES: 3000     # max number of groups or colonies
-NUM_GENERATIONS: 150000
+MAX_COLONIES: 5000     # max number of groups or colonies
+NUM_GENERATIONS: 150
 MAX_NUM_REPLICATES: 1
 SKIP: 10   # interval between print-outs
 
@@ -20,7 +20,7 @@ FIXED_GROUP_SIZE: 3		# in implementation "no group augmentation", virtual group 
 m: 0.1    # mortality due to predation
 n: 1      # multiplier to m for lower mortality of floaters (only in the new logistic survival formula)
 X0: 1.5   # base survival without the effect of help or group size
-Xsh: 7    # cost of help in survival
+Xsh: 4    # cost of help in survival
 Xsn: 3    # benefit of group size in survival
 
 #Modifiers in fecundity
