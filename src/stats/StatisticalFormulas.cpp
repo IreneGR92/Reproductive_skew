@@ -35,18 +35,6 @@ double StatisticalFormulas::calculateSD() {
     return stdev;
 }
 
-///Alternative implementation for SD, not so efficient
-//double StatisticalFormulas::calculateStandardDeviation() {
-//
-//    double mean = calculateMean();
-//    double value = 0;
-//
-//    for (double attribute : individualValues) {
-//        value += pow(attribute - mean, 2);
-//    }
-//
-//    return sqrt(value / individualValues.size());;
-//}
 
 double StatisticalFormulas::correlation(StatisticalFormulas y) {
 
