@@ -267,7 +267,6 @@ void Statistics::printHeadersToFile() {
                                  << "SD_Help" << "\t" << "SD_CumHelp0" << "\t"
                                  << "SD_Survival" << "\t" << "SD_Survival_H" << "\t" << "SD_Survival_F"
                                  << "\t" << "SD_Survival_B" << "\t"
-                                 << "corr_Help_Disp" << "\t" << "corr_Help_Group" << "\t"
                                  << "newBreederFloater" << "\t" << "newBreederHelper" << "\t"
                                  << "inheritance" << endl;
 
@@ -325,8 +324,6 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << survivalHelpers.calculateSD()
                                  << "\t" << setprecision(4) << survivalFloaters.calculateSD()
                                  << "\t" << setprecision(4) << survivalBreeders.calculateSD()
-                                 << "\t" << setprecision(4) << help.correlation(dispersalHelpers)
-                                 << "\t" << setprecision(4) << corrHelpGroupSize
                                  << "\t" << newBreederFloater
                                  << "\t" << newBreederHelper
                                  << "\t" << inheritance
