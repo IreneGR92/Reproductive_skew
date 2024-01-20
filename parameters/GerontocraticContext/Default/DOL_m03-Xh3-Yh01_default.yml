@@ -1,0 +1,74 @@
+#Run parameters
+REACTION_NORM_HELP: false    # Apply reaction norm to age for level of help?
+REACTION_NORM_DISPERSAL: false     # Apply reaction norm to age for dispersal?
+EVOLUTION_HELP_AFTER_DISPERSAL: false     # Help evolves only after the evolution of dispersal?
+REACTION_NORM_TASK: true # Apply reaction norm to age for the level of task specialization
+NEED_DIVISION_LABOUR: true # If true, individuals in a group must split the type of help provided to have an optimum increase on fecundity, as there is need of both defence and feeding
+DIRECT_BROOD_CARE_ONLY: false      # Breeder does not receive help during the first breeding cycle after becoming new breeder
+NO_GROUP_AUGMENTATION: false
+NO_RELATEDNESS: false     # Apply implementation to remove the effect of relatedness?
+NO_RELATEDNESS_RANDOM_GROUP: false # In the non relatedness implementation, put non-related helpers to random groups without maintaining group size, removing kin selection from evolution of philopatry
+AGE_NO_INFLUENCE_INHERITANCE: false # Age no influence of who inherits territory, randomly sampled from candidate (helpers + sample floaters)
+
+
+MAX_COLONIES: 5000     # max number of groups or colonies
+NUM_GENERATIONS: 200000
+MAX_NUM_REPLICATES: 20
+SKIP: 1000   # interval between print-outs
+
+#Fix values
+INIT_NUM_HELPERS: 3     # initial number of helpers per group
+BIAS_FLOAT_BREEDER: 2  # mean of number of groups a floater can visit to try to become a breeder compared to 1 group for helpers
+MIN_AGE_BECOME_BREEDER: 1 # minimum age for individuals to be able to become breeders, 1 is no restriction
+FIXED_IND_QUALITY: 4    # in the "age no influence on inheritance", rank of all individuals before effect of help
+FIXED_GROUP_SIZE: 3		# in implementation "no group augmentation", virtual group size used on survival formula
+
+# Modifiers in survival
+m: 0.3    # mortality due to predation
+n: 1      # multiplier to m for lower mortality of floaters (only in the new logistic survival formula)
+X0: 1.5   # base survival without the effect of help or group size
+Xsh: 3    # cost of help in survival
+Xsn: 3    # benefit of group size in survival
+
+# Costs of help
+Yh: 0.1   # cost of help on rank
+
+#Modifiers in fecundity
+K0: 1    # min fecundity, fecundity when no help provided.
+Kh: 1    # benefit of cumHelp in the fecundity
+Km: 0.1  # reduced the need for division of labour, the higher the value the less need for DOL
+
+
+#Genetic values
+
+#For help
+INIT_ALPHA: 0.0            #bigger values higher level of help
+INIT_ALPHA_AGE: 0.0            #linear term for age
+
+MUTATION_ALPHA: 0.05            # mutation rate in alpha for level of help
+MUTATION_ALPHA_AGE: 0.05
+STEP_ALPHA: 0.04            # mutation step size in alpha for level of help
+
+
+#For dispersal
+INIT_BETA: 1.0            # bigger values higher dispersal
+INIT_BETA_AGE: 0.0            # if 0 age has no effect
+
+MUTATION_BETA: 0.05            # mutation rate for the propensity to disperse
+MUTATION_BETA_AGE: 0.05
+STEP_BETA: 0.04            # mutation step size for the propensity to disperse
+
+
+#For task specialization
+INIT_GAMMA: 0.0              # if 0 no task specialization, negative values lower rank, positive values lower survival
+INIT_GAMMA_AGE: 0.0          # if 0 age has no effect, negative values more cost in survival with age, positive values more cost in rank with age
+
+MUTATION_GAMMA: 0.05
+MUTATION_GAMMA_AGE: 0.05
+STEP_GAMMA: 0.04
+
+
+#For relatedness
+MUTATION_DRIFT: 0.05            # mutation rate in the neutral selected value to track level of relatedness
+STEP_DRIFT: 0.04            # mutation step size in the neutral genetic value to track level of relatedness
+
