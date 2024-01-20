@@ -100,7 +100,6 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 
     //Correlations in different levels
     relatedness = calculateRelatedness(populationObj.getGroups());
-    corrHelpGroupSize = correlationHelpGroupSize(populationObj.getGroups());
 
 }
 
@@ -154,57 +153,6 @@ Statistics::calculateRelatedness(const std::vector<Group> &groups) {
     //assert (abs(correlation) <= 1);
     return correlation;
 
-}
-
-double
-Statistics::correlationHelpGroupSize(const std::vector<Group> &groups) {
-
-    double correlation;
-    int counter = 0;
-    double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
-    double sumProductXY = 0, sumProductXX = 0, sumProductYY = 0;
-
-    for (const Group &group: groups) {
-        for (const Individual &helper: group.getHelpers()) {
-
-            if (group.hasHelpers()) {
-                sumX += helper.getHelp();
-                sumY += group.getGroupSize();
-                counter++;
-            }
-        }
-    }
-
-    if (counter != 0) {
-        meanX = sumX / counter;
-        meanY = sumY / counter;
-    }
-
-    for (const Group &group: groups) {
-        for (const Individual &helper: group.getHelpers()) {
-            if (!std::isnan(helper.getDispersal()) || !std::isnan(helper.getHelp())) {
-                double X = (helper.getHelp() - meanX);
-                double Y = (group.getGroupSize() - meanY);
-
-                sumProductXY += X * Y;
-                sumProductXX += X * X;
-                sumProductYY += Y * Y;
-            }
-        }
-    }
-    if (counter != 0) {
-        stdevX = sqrt(sumProductXX / counter);
-        stdevY = sqrt(sumProductYY / counter);
-    }
-
-    if (stdevX * stdevY * counter == 0) {
-        correlation = 0;
-    } else {
-        correlation = sumProductXY / (stdevX * stdevY * counter);
-    }
-
-    assert (abs(correlation) >= 0);
-    return correlation;
 }
 
 

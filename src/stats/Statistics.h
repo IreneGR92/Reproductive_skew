@@ -17,7 +17,7 @@ class Statistics {
 
     int population, totalFloaters, totalHelpers, totalBreeders; //Counters
 
-    double relatedness, corrHelpGroupSize;
+    double relatedness;
 
     StatisticalFormulas groupSize;
 
@@ -47,8 +47,6 @@ public:
     void calculateStatistics(const Population &populationObj);
 
     double calculateRelatedness(const std::vector<Group> &groups);
-
-    double correlationHelpGroupSize(const std::vector<Group> &groups);
 
     void printHeadersToConsole();
 
