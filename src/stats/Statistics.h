@@ -29,7 +29,7 @@ class Statistics {
 
     StatisticalFormulas gamma, gammaAge;
 
-    StatisticalFormulas help, cumulativeHelpType0, cumulativeHelpType1;
+    StatisticalFormulas help, cumulativeHelp;
 
     StatisticalFormulas dispersal, dispersalHelpers;
 

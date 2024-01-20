@@ -20,8 +20,6 @@ Individual::Individual(Individual &individual, FishType fishType, int &generatio
 
     this->dispersal = Parameters::NO_VALUE;
     this->help = Parameters::NO_VALUE;
-    this->helpType = 0;
-    this->task = Parameters::NO_VALUE;
 
     this->initializeIndividual(fishType);
 
@@ -47,15 +45,18 @@ void Individual::initializeIndividual(FishType type) {
     this->parameters = Parameters::instance();
     this->dispersal = Parameters::NO_VALUE;
     this->help = 0;
-    this->helpType = 0;
-    this->task = Parameters::NO_VALUE;
     this->survival = Parameters::NO_VALUE;
     this->fishType = type;
     this->inherit = true;
     this->age = 1;
     this->ageBecomeBreeder = Parameters::NO_VALUE;
-    this->rank = Parameters::NO_VALUE;
+
 }
+
+void Individual::setGroupIndex(int groupIndex) {
+    Individual::groupIndex = groupIndex;
+}
+
 
 /* BECOME FLOATER (STAY VS DISPERSE) */
 
@@ -65,10 +66,6 @@ void Individual::calcDispersal() {
     } else {
         this->dispersal = 1 / (1 + exp(betaAge * age - beta));
     }
-}
-
-void Individual::setGroupIndex(int groupIndex) {
-    Individual::groupIndex = groupIndex;
 }
 
 /*DISPLAY LEVEL OF HELP*/
@@ -89,62 +86,19 @@ void Individual::calcHelp() {
     }
 }
 
-/*CALCULATE TASK SPECIALIZATION*/
-
-void Individual::calcTaskSpecialization() {
-    if (fishType == HELPER) {
-        if (!parameters->isReactionNormTask()) {
-            task = gamma;
-            if (task < 0) { task = 0;
-            } else if (task > 1) {task = 1;}
-        } else {
-            task = 1 / (1 + exp(gammaAge * age - gamma));
-        }
-
-        if (parameters->uniform(*parameters->getGenerator()) > task){
-            helpType = 0; // cost in rank
-        } else {
-            helpType = 1; // cost in survival
-        }
-
-    } else {
-        task = Parameters::NO_VALUE;
-        std::cout << "Error: floaters get a task value" << std::endl;
-    }
-}
-
 
 /*SURVIVAL*/
 
 void Individual::calculateSurvival(const int &groupSize) {
 
-    if (parameters->isNoGroupAugmentation()) {
-        if (fishType == FLOATER) {
-            this->survival = (1 - parameters->getM() * parameters->getN()) / (1 + exp(-parameters->getX0()));
-        } else {
-            if (fishType == HELPER && helpType == 1) {
-                this->survival = (1 - parameters->getM()) /
-                                 (1 + exp(-parameters->getX0() - parameters->getXsn() * parameters->getFixedGroupSize() +
-                                          parameters->getXsh() * this->help));
-            } else {
-                this->survival = (1 - parameters->getM()) /
-                                 (1 + exp(-parameters->getX0() - parameters->getXsn() * parameters->getFixedGroupSize()));
-            }
-        }
-
+    if (fishType == FLOATER) {
+        this->survival = (1 - parameters->getM() * parameters->getN()) / (1 + exp(-parameters->getX0()));
+    } else if (fishType == HELPER) {
+        this->survival = (1 - parameters->getM()) /
+                         (1 + exp(-parameters->getX0() - parameters->getXsn() * groupSize +
+                                  parameters->getXsh() * this->help));
     } else {
-        if (fishType == FLOATER) {
-            this->survival = (1 - parameters->getM() * parameters->getN()) / (1 + exp(-parameters->getX0()));
-        } else {
-            if (fishType == HELPER && helpType == 1) {
-                this->survival = (1 - parameters->getM()) /
-                                 (1 + exp(-parameters->getX0() - parameters->getXsn() * groupSize +
-                                          parameters->getXsh() * this->help));
-            } else {
-                this->survival = (1 - parameters->getM()) /
-                                 (1 + exp(-parameters->getX0() - parameters->getXsn() * groupSize));
-            }
-        }
+        this->survival = Parameters::NO_VALUE;
     }
 }
 
@@ -231,28 +185,6 @@ void Individual::increaseAge() {
     this->increaseAge(true);
 }
 
-/* CALCULATE RANK */
-void Individual::calculateRank() {
-    if (!parameters->isAgeNoInfluenceInheritance()){
-        if (fishType == HELPER && helpType == 0) {
-            rank = age - parameters->getYh() * help;
-            if (rank < 0.001) {
-                rank = 0.001;
-            }
-        } else {
-            rank = age;
-        }
-    } else {
-        if (fishType == HELPER && helpType == 0) {
-            rank = parameters->getFixedIndQuality() - parameters->getYh() * help;
-            if (rank < 0.001) {
-                rank = 0.001;
-            }
-        } else {
-            rank = parameters->getFixedIndQuality();
-        }
-    }
-}
 
 
 /* GETTERS AND SETTERS */
@@ -293,14 +225,6 @@ double Individual::getHelp() const {
     return help;
 }
 
-bool Individual::getHelpType() const {
-    return helpType;
-}
-
-double Individual::getTask() const {
-    return task;
-}
-
 void Individual::setHelp(double help_) {
     Individual::help = help_;
 }
@@ -318,11 +242,9 @@ void Individual::setFishType(FishType type) {
     if (type == BREEDER) {
         this->dispersal = Parameters::NO_VALUE;
         this->help = 0;
-        this->task = Parameters::NO_VALUE;
     }
     if (type == FLOATER) {
         this->help = 0;
-        this->task = Parameters::NO_VALUE;
     }
 }
 
@@ -332,10 +254,6 @@ int Individual::getAge() const {
 
 void Individual::setAgeBecomeBreeder(int ageBecomeBreeder_) {
     Individual::ageBecomeBreeder = ageBecomeBreeder_;
-}
-
-double Individual::getRank() const {
-    return rank;
 }
 
 bool Individual::isInherit() const {
@@ -362,12 +280,8 @@ double Individual::get(Attribute type) const {
             return this->gammaAge;
         case HELP:
             return this->help;
-        case HELP_TYPE:
-            return this->helpType;
         case DISPERSAL:
             return this->dispersal;
-        case TASK:
-            return this->task;
         case SURVIVAL:
             return this->survival;
         case DRIFT:
@@ -376,8 +290,7 @@ double Individual::get(Attribute type) const {
             return this->age;
         case AGE_BECOME_BREEDER:
             return this->ageBecomeBreeder;
-        case RANK:
-            return this->rank;
+
     }
 
     assert(false);

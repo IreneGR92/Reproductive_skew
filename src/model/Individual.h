@@ -22,14 +22,11 @@ class Individual {
 
     double dispersal;
     double help;
-    bool helpType;
-    double task;
     double survival;
 
     FishType fishType;                                                // possible classes: breeder, helper, floater
     int age;
     int ageBecomeBreeder;
-    double rank;
     bool inherit;                                                    //did the new breeder inherit the territory or did it disperse?
 
     void mutate(int generation);
@@ -50,8 +47,6 @@ public:
     void calcDispersal();
 
     void calcHelp();
-
-    void calcTaskSpecialization();
 
     void calculateSurvival(const int &groupSize);
 
@@ -74,10 +69,6 @@ public:
 
     double getHelp() const;
 
-    bool getHelpType() const;
-
-    double getTask() const;
-
     void setHelp(double help_);
 
     double getSurvival() const;
@@ -88,12 +79,9 @@ public:
 
     int getAge() const;
     void setAgeBecomeBreeder(int ageBecomeBreeder_);
-    double getRank() const;
 
     void increaseAge(bool alive); //for the breeder
     void increaseAge(); // For helpers and floaters
-
-    void calculateRank();
 
     bool isInherit() const;
 

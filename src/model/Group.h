@@ -12,8 +12,7 @@ class Group {
 
 private:
     Parameters *parameters;
-    double cumHelpType0;
-    double cumHelpType1;
+    double cumHelp;
     bool breederAlive;      // for the breeder: 1 alive, 0 dead
     int groupSize;
     double fecundity;
@@ -51,9 +50,7 @@ public:
 
     bool isBreederAlive() const;
 
-    double getCumHelpType0() const;
-
-    double getCumHelpType1() const;
+    double getCumHelp() const;
 
     bool hasHelpers() const;
 

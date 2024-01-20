@@ -12,8 +12,7 @@ Group::Group() : breeder(BREEDER) {
     this->parameters = Parameters::instance();
 
     breederAlive = true;
-    cumHelpType0 = Parameters::NO_VALUE;
-    cumHelpType1 = Parameters::NO_VALUE;
+    cumHelp = Parameters::NO_VALUE;
     fecundity = Parameters::NO_VALUE;
     realFecundity = Parameters::NO_VALUE;
 
@@ -86,20 +85,14 @@ std::vector<Individual> Group::reassignNoRelatedness(int index) {
 
 void Group::calculateCumulativeHelp() //Calculate accumulative help of all individuals inside of each group.
 {
-    cumHelpType0 = 0;
-    cumHelpType1 = 0;
+    cumHelp = 0;
 
     //Level of help for helpers
     for (Individual &helper: helpers) {
         assert(helper.getFishType() == HELPER);
         helper.calcHelp();
-        helper.calcTaskSpecialization();
+        cumHelp += helper.getHelp();
 
-        if (helper.getHelpType() == 0){
-            cumHelpType0 += helper.getHelp();
-        } else {
-            cumHelpType1 += helper.getHelp();
-        }
     }
 }
 
@@ -139,8 +132,7 @@ void Group::mortalityGroup(int &deaths) {
         breederAlive = false;
         deaths++;
         if (parameters->isDirectBroodCareOnly()) {
-            cumHelpType0 = 0; //removes help for new breeder
-            cumHelpType1 = 0;
+            cumHelp = 0; //removes help for new breeder
         }
     }
     this->calculateGroupSize(); //update group size after mortality
@@ -209,12 +201,11 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederFloater, int
     //  Choose new breeder
         //    Choose breeder with higher likelihood for the highest rank
         for (candidateIt = candidates.begin(); candidateIt < candidates.end(); ++candidateIt) {
-            (*candidateIt)->calculateRank();
-            sumRank += (*candidateIt)->getRank(); //add all the ranks from the vector candidates
+            sumRank += (*candidateIt)->getAge(); //add all the ranks from the vector candidates
         }
 
         for (candidateIt = candidates.begin(); candidateIt < candidates.end(); ++candidateIt) {
-            position.push_back(static_cast<double>((*candidateIt)->getRank()) / static_cast<double>(sumRank) +
+            position.push_back(static_cast<double>((*candidateIt)->getAge()) / static_cast<double>(sumRank) +
                                currentPosition); //creates a vector with proportional segments to the rank of each individual
             currentPosition = position[position.size() - 1];
         }
@@ -267,24 +258,7 @@ void Group::increaseAge() {
 void Group::reproduce(int generation) { // populate offspring generation
     //Calculate fecundity
 
-    double maxCumHelp = (cumHelpType0 + cumHelpType1) / 2 + parameters->getKm();
-    double allowedCumHelp0 = cumHelpType0;
-    double allowedCumHelp1 = cumHelpType1;
-
-    if (parameters->isNeedDivisionLabour()){
-        if (cumHelpType0 > maxCumHelp) {
-            allowedCumHelp0 = maxCumHelp;
-        }
-
-        if (cumHelpType1 > maxCumHelp) {
-            allowedCumHelp1 = maxCumHelp;
-        }
-    }
-
-    double totalCumHelp = allowedCumHelp0 + allowedCumHelp1;
-
-
-    fecundity = parameters->getK0() + parameters->getKh() * totalCumHelp / (1 + totalCumHelp);
+    fecundity = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
 
     poisson_distribution<int> PoissonFecundity(fecundity);
     realFecundity = PoissonFecundity(*parameters->getGenerator()); //integer number
@@ -311,12 +285,8 @@ bool Group::isBreederAlive() const {
     return breederAlive;
 }
 
-double Group::getCumHelpType0() const {
-    return cumHelpType0;
-}
-
-double Group::getCumHelpType1() const {
-    return cumHelpType1;
+double Group::getCumHelp() const {
+    return cumHelp;
 }
 
 std::vector<double> Group::get(Attribute attribute, bool includeBreeder) const {
