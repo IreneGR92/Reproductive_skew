@@ -60,11 +60,11 @@ void Individual::setGroupIndex(int groupIndex) {
 /* BECOME FLOATER (STAY VS DISPERSE) */
 
 void Individual::calcDispersal() {
-//    if (age == 1) {
-    this->dispersal = beta;
-//    } else {
-//        this->dispersal = 0;
-//    }
+    if (age == 1) {
+        this->dispersal = beta;
+    } else {
+        this->dispersal = 0;
+    }
 }
 
 /*DISPLAY LEVEL OF HELP*/
@@ -90,16 +90,26 @@ void Individual::calcHelp() {
 
 void Individual::calculateSurvival(const int &groupSize) {
 
+    int thisGroupSize;
+    if (parameters->isNoGroupAugmentation()) {
+        thisGroupSize = parameters->getFixedGroupSize();
+    } else {
+        thisGroupSize = groupSize;
+    }
+
+
     if (fishType == FLOATER) {
         this->survival = (1 - parameters->getM() * parameters->getN()) / (1 + exp(-parameters->getX0()));
     } else if (fishType == HELPER) {
         this->survival = (1 - parameters->getM()) /
-                         (1 + exp(-parameters->getX0() - parameters->getXsn() * groupSize +
+                         (1 + exp(-parameters->getX0() - parameters->getXsn() * thisGroupSize +
                                   parameters->getXsh() * this->help));
-    } else {
-        this->survival = Parameters::NO_VALUE;
+    } else if (fishType == BREEDER) {
+        this->survival = (1 - parameters->getM()) /
+                         (1 + exp(-parameters->getX0() - parameters->getXsn() * thisGroupSize)); // TODO: add a breeding cost?
     }
 }
+
 
 
 void Individual::mutate(int generation) // mutate genome of offspring
@@ -135,7 +145,7 @@ void Individual::mutate(int generation) // mutate genome of offspring
     if (parameters->uniform(rng) < parameters->getMutationBeta()) {
         beta += NormalB(rng);
 
-        if (beta < 0) { beta = 0; }
+        if (beta < 0.5) { beta = 0.5; }
         else if (beta > 1) { beta = 1; }
 
     }
