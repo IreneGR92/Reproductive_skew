@@ -59,6 +59,8 @@ public:
 
     void reset();
 
+    void imigrate();
+
 
 
 public:

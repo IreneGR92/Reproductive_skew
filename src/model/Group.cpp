@@ -88,7 +88,7 @@ double Group::calcAcceptanceRate() {
     double expulssionEffort = 0;
     double delta;
 
-    for (auto & helper : helpers) {
+    for (auto &helper: helpers) {
         if (helper.getDelta() < 0) {
             delta = 0;
         } else {

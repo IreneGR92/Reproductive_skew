@@ -1,6 +1,7 @@
 #include "Population.h"
 #include <vector>
 #include <iostream>
+#include <chrono>
 
 const std::vector<Group> &Population::getGroups() const {
     return groups;
@@ -116,14 +117,14 @@ void Population::disperse(int generation) {
 
 
 void Population::help() {
-    for (Group &group:groups) {
+    for (Group &group: groups) {
         //Calculate help & cumulative help for group
         group.calculateCumulativeHelp();
     }
 }
 
 void Population::survival() {
-    for (Group &group:groups) {
+    for (Group &group: groups) {
         group.survivalGroup();
     }
     this->survivalFloaters();
@@ -131,13 +132,13 @@ void Population::survival() {
 
 
 void Population::survivalFloaters() {
-    for (Individual &floater:floaters) {
+    for (Individual &floater: floaters) {
         floater.calcSurvival(0); // TODO:Change to 1?
     }
 }
 
 void Population::mortality() {
-    for (Group &group:groups) {
+    for (Group &group: groups) {
         group.mortalityGroup(deaths);
     }
     this->mortalityFloaters();
@@ -163,7 +164,7 @@ void Population::mortalityFloaters() {
 }
 
 void Population::newBreeder() {
-    for (Group &group:groups) {
+    for (Group &group: groups) {
         if (!group.isBreederAlive()) {
             group.newBreeder(floaters, newBreederFloater, newBreederHelper, inheritance);
         }
@@ -171,20 +172,20 @@ void Population::newBreeder() {
 }
 
 void Population::increaseAge() {
-    for (Group &group:groups) {
+    for (Group &group: groups) {
         group.increaseAge();
     }
     this->increaseAgeFloaters();
 }
 
 void Population::increaseAgeFloaters() {
-    for (Individual &floater:floaters) {
+    for (Individual &floater: floaters) {
         floater.increaseAge();
     }
 }
 
 void Population::reproduce(int generation) {
-    for (Group &group:groups) {
+    for (Group &group: groups) {
         group.reproduce(generation);
     }
 }
@@ -199,6 +200,29 @@ int Population::getNewBreederHelper() const {
 
 int Population::getInheritance() const {
     return inheritance;
+}
+
+void Population::imigrate() {
+
+    // Create a vector of indices
+    std::vector<int> indices(groups.size());
+    std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers
+
+// Shuffle the indices
+    std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
+
+// Now loop through the groups in a random order
+    for (int i: indices) {
+        Group &group = groups[i];
+        // Do something with group
+    }
+
+
+    int proportionFloaters = round(floaters.size() * parameters->getBiasFloatBreeder() / parameters->getMaxColonies());
+
+
+
+
 }
 
 
