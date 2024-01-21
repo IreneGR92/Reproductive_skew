@@ -202,35 +202,34 @@ int Population::getInheritance() const {
     return inheritance;
 }
 
-void Population::imigrate() {
+void Population::immigrate() {
 
-    // Create a vector of indices
+// Shuffle the group indices
     std::vector<int> indices(groups.size());
     std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers
-
-// Shuffle the indices
     std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
 
-// Now loop through the groups in a random order
-    for (int i: indices) {
-        Group &group = groups[i];
-        // Do something with group
-        auto newHelpers = this->getAcceptedFloaters(group);
-        group.addHelpers(newHelpers);
+// Loop through the groups in a random order
+    while (!floaters.empty()) {
+        for (int i: indices) {
+            Group &group = groups[i];
+            // Add new helpers to the group
+            auto newHelpers = this->getAcceptedFloaters(group);
+            group.addHelpers(newHelpers);
 
-
+        }
     }
 }
 
 
-std::vector<Individual> &Population::getAcceptedFloaters(Group &group) {
+std::vector<Individual> Population::getAcceptedFloaters(Group &group) {
     int proportionFloaters = round(
             floaters.size() * parameters->getBiasFloatBreeder() / parameters->getMaxColonies());
 
 // Shuffle the floaters vector
     std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
 
-// Take the first proportionFloaters elements from the shuffled vector
+// Take proportionFloaters elements from the shuffled vector
     std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + proportionFloaters);
 
     int acceptedFloatersSize = round(sampleFloaters.size() * group.calcAcceptanceRate());

@@ -32,6 +32,7 @@ void Simulation::run() {
 
         population.reassignFloaters();
         population.disperse(generation);
+        population.immigrate();
         population.help();
         population.survival();
 
