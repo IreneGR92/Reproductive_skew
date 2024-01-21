@@ -46,9 +46,9 @@ Parameters::Parameters(const string &url) {
     this->MUTATION_BETA = config["MUTATION_BETA"].as<double>();
     this->STEP_BETA = config["STEP_BETA"].as<double>();
     this->INIT_GAMMA = config["INIT_GAMMA"].as<double>();
-    this->INIT_GAMMA_AGE = config["INIT_GAMMA_AGE"].as<double>();
+    this->INIT_DELTA = config["INIT_DELTA"].as<double>();
     this->MUTATION_GAMMA = config["MUTATION_GAMMA"].as<double>();
-    this->MUTATION_GAMMA_AGE = config["MUTATION_GAMMA_AGE"].as<double>();
+    this->MUTATION_DELTA = config["MUTATION_DELTA"].as<double>();
     this->STEP_GAMMA = config["STEP_GAMMA"].as<double>();
     this->MUTATION_DRIFT = config["MUTATION_DRIFT"].as<double>();
     this->STEP_DRIFT = config["STEP_DRIFT"].as<double>();
@@ -96,17 +96,17 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "Xh(Cost_help_survival):" << "\t" << this->getXsh() << endl
                  << "Xn(Benefit_group_size_survival):" << "\t" << this->getXsn() << endl
                  << "K0(Base_fecundity):" << "\t" << this->getK0() << endl
-                 << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
-                 << "initAlpha:" << "\t" << this->getInitAlpha() << endl
-                 << "initAlphaAge:" << "\t" << this->getInitAlphaAge() << endl
-                 << "initBeta:" << "\t" << this->getInitBeta() << endl
-                 << "initGamma:" << "\t" << this->getInitGamma() << endl
-                 << "initGammaAge:" << "\t" << this->getInitGammaAge() << endl
-                 << "mutAlpha:" << "\t" << this->getMutationAlpha() << endl
-                 << "mutAlphaAge:" << "\t" << this->getMutationAlphaAge() << endl
-                 << "mutBeta:" << "\t" << this->getMutationBeta() << endl
-                 << "mutGamma:" << "\t" << this->getMutationGamma() << endl
-                 << "mutGammaAge:" << "\t" << this->getMutationGammaAge() << endl
+            << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
+            << "initAlpha:" << "\t" << this->getInitAlpha() << endl
+            << "initAlphaAge:" << "\t" << this->getInitAlphaAge() << endl
+            << "initBeta:" << "\t" << this->getInitBeta() << endl
+            << "initGamma:" << "\t" << this->getInitGamma() << endl
+            << "initDelta:" << "\t" << this->getInitDelta() << endl
+            << "mutAlpha:" << "\t" << this->getMutationAlpha() << endl
+            << "mutAlphaAge:" << "\t" << this->getMutationAlphaAge() << endl
+            << "mutBeta:" << "\t" << this->getMutationBeta() << endl
+            << "mutGamma:" << "\t" << this->getMutationGamma() << endl
+            << "mutDelta:" << "\t" << this->getMutationDelta() << endl
                  << "mutDrift:" << "\t" << this->getMutationDrift() << endl
                  << "stepAlpha:" << "\t" << this->getStepAlpha() << endl
                  << "stepBeta:" << "\t" << this->getStepBeta() << endl
@@ -235,20 +235,20 @@ double Parameters::getInitGamma() const {
     return INIT_GAMMA;
 }
 
-double Parameters::getInitGammaAge() const {
-    return INIT_GAMMA_AGE;
-}
-
 double Parameters::getMutationGamma() const {
     return MUTATION_GAMMA;
 }
 
-double Parameters::getMutationGammaAge() const {
-    return MUTATION_GAMMA_AGE;
-}
-
 double Parameters::getStepGamma() const {
     return STEP_GAMMA;
+}
+
+double Parameters::getInitDelta() const {
+    return INIT_DELTA;
+}
+
+double Parameters::getMutationDelta() const {
+    return MUTATION_DELTA;
 }
 
 double Parameters::getMutationDrift() const {

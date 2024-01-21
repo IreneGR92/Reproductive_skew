@@ -27,7 +27,7 @@ class Statistics {
 
     StatisticalFormulas beta;
 
-    StatisticalFormulas gamma, gammaAge;
+    StatisticalFormulas gamma, delta;
 
     StatisticalFormulas help, cumulativeHelp;
 

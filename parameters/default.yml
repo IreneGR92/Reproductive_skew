@@ -33,24 +33,23 @@ Kh: 1    # benefit of cumHelp in the fecundity
 #For help
 INIT_ALPHA: 0.0             #bigger values higher level of help
 INIT_ALPHA_AGE: 0.0         #linear term for age, if 0 age has no effect
-
 MUTATION_ALPHA: 0.05        # mutation rate in alpha for level of help
 MUTATION_ALPHA_AGE: 0.05
 STEP_ALPHA: 0.04            # mutation step size in alpha for level of help
 
 #For dispersal
 INIT_BETA: 0.0              # bigger values higher dispersal
-
 MUTATION_BETA: 0.05         # mutation rate for the propensity to disperse
 STEP_BETA: 0.1             # mutation step size for the propensity to disperse
 
-#For task specialization
-INIT_GAMMA: 0.0              # if 0 no task specialization, negative values lower rank, positive values lower survival
-INIT_GAMMA_AGE: 0.0          # if 0 age has no effect, negative values more cost in survival with age, positive values more cost in rank with age
+#For expulsion of immigrants
+INIT_GAMMA: 0.0              #
+MUTATION_GAMMA: 0.05         #
+STEP_GAMMA: 0.04             #
 
-MUTATION_GAMMA: 0.05
-MUTATION_GAMMA_AGE: 0.05
-STEP_GAMMA: 0.04
+#For reproductive concessions
+INIT_DELTA: 0.0             #
+MUTATION_DELTA: 0.05         # mutation rate in delta for level of help
 
 #For relatedness
 MUTATION_DRIFT: 0.05        # mutation rate in the neutral selected value to track level of relatedness

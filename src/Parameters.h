@@ -68,14 +68,14 @@ private:
     double MUTATION_BETA;            // mutation rate for the propensity to disperse
     double STEP_BETA;            // mutation step size for the propensity to disperse
 
-//For task specialization
-    double INIT_GAMMA;             // if 0 no task specialization, negative values lower rank, positive values lower survival
-    double INIT_GAMMA_AGE;         // if 0 age has no effect, negative values more cost in survival with age, positive values more cost in rank with age
-
+//For expulsion of immigrants
+    double INIT_GAMMA;
     double MUTATION_GAMMA;
-    double MUTATION_GAMMA_AGE;
     double STEP_GAMMA;
 
+//For reproductive concessions
+    double INIT_DELTA;
+    double MUTATION_DELTA;
 
 //For relatedness
     double MUTATION_DRIFT;            // mutation rate in the neutral selected value to track level of relatedness
@@ -159,13 +159,13 @@ public:
 
     double getInitGamma() const;
 
-    double getInitGammaAge() const;
-
     double getMutationGamma() const;
 
-    double getMutationGammaAge() const;
-
     double getStepGamma() const;
+
+    double getInitDelta() const;
+
+    double getMutationDelta() const;
 
     double getMutationDrift() const;
 

@@ -71,7 +71,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     alphaAge.addValues(individualsAll.get(ALPHA_AGE));
     beta.addValues(individualsAll.get(BETA));
     gamma.addValues(individualsAll.get(GAMMA));
-    gammaAge.addValues(individualsAll.get(GAMMA_AGE));
+    delta.addValues(individualsAll.get(DELTA));
 
     //Phenotypes
     age.addValues(individualsAll.get(AGE));
@@ -163,7 +163,7 @@ void Statistics::printHeadersToConsole() {
     cout << setw(6) << "gen" << setw(9) << "pop" << setw(9) << "deaths" << setw(9)
          << "float" << setw(9) << "group" << setw(9) << "maxGroup" << setw(9) << "age" << setw(9)
          << "alpha" << setw(9) << "alphaAge" << setw(9) << "beta" << setw(9)
-         << "gamma" << setw(9) << "gammaAge" << setw(9)
+         << "gamma" << setw(9) << "delta" << setw(9)
          << "disper" << setw(9) << "help" << setw(9) << "surv" << setw(9) << "relat" << endl;
 }
 
@@ -182,7 +182,7 @@ void Statistics::printToConsole(int generation, int deaths) {
               << setw(9) << setprecision(4) << alphaAge.calculateMean()
               << setw(9) << setprecision(4) << beta.calculateMean()
               << setw(9) << setprecision(4) << gamma.calculateMean()
-              << setw(9) << setprecision(4) << gammaAge.calculateMean()
+              << setw(9) << setprecision(4) << delta.calculateMean()
               << setw(9) << setprecision(4) << dispersal.calculateMean()
               << setw(9) << setprecision(4) << help.calculateMean()
               << setw(9) << setprecision(2) << survival.calculateMean()
@@ -201,7 +201,7 @@ void Statistics::printHeadersToFile() {
                                  << "Age_B" << "\t" << "Age_New_Breeder" << "\t"
                                  << "meanAlpha" << "\t" << "meanAlphaAge" << "\t"
                                  << "meanBeta" << "\t"
-                                 << "meanGamma" << "\t" << "meanGammaAge" << "\t"
+                                 << "meanGamma" << "\t" << "meandelta" << "\t"
                                  << "meanDispersal" << "\t"
                                  << "meanHelp" << "\t" << "meanCumHelp" << "\t"
                                  << "meanSurvival" << "\t" << "meanSurvival_H" << "\t" << "meanSurvival_F" << "\t"
@@ -210,7 +210,7 @@ void Statistics::printHeadersToFile() {
                                  << "SD_Age_F" << "\t" << "SD_Age_B" << "\t"
                                  << "SD_Alpha" << "\t" << "SD_AlphaAge" << "\t"
                                  << "SD_Beta" << "\t"
-                                 << "SD_Gamma" << "\t" << "SD_GammaAge" << "\t"
+                                 << "SD_Gamma" << "\t" << "SD_delta" << "\t"
                                  << "SD_Dispersal" << "\t"
                                  << "SD_Help" << "\t" << "SD_CumHelp0" << "\t"
                                  << "SD_Survival" << "\t" << "SD_Survival_H" << "\t" << "SD_Survival_F"
@@ -223,7 +223,7 @@ void Statistics::printHeadersToFile() {
                                            << "\t" << "type" << "\t" << "age" << "\t"
                                            << "alpha" << "\t" << "alphaAge" << "\t"
                                            << "beta" << "\t"
-                                           << "gamma" << "\t" << "gammaAge" << "\t" << "drift"<< "\t"
+                                           << "gamma" << "\t" << "delta" << "\t" << "drift"<< "\t"
                                            << "dispersal" << "\t" << "help" << "\t" << "survival" << endl;
 }
 
@@ -246,7 +246,7 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << alphaAge.calculateMean()
                                  << "\t" << setprecision(4) << beta.calculateMean()
                                  << "\t" << setprecision(4) << gamma.calculateMean()
-                                 << "\t" << setprecision(4) << gammaAge.calculateMean()
+                                 << "\t" << setprecision(4) << delta.calculateMean()
                                  << "\t" << setprecision(4) << dispersal.calculateMean()
                                  << "\t" << setprecision(4) << help.calculateMean()
                                  << "\t" << setprecision(4) << cumulativeHelp.calculateMean()
@@ -264,7 +264,7 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << alphaAge.calculateSD()
                                  << "\t" << setprecision(4) << beta.calculateSD()
                                  << "\t" << setprecision(4) << gamma.calculateSD()
-                                 << "\t" << setprecision(4) << gammaAge.calculateSD()
+                                 << "\t" << setprecision(4) << delta.calculateSD()
                                  << "\t" << setprecision(4) << dispersal.calculateSD()
                                  << "\t" << setprecision(4) << help.calculateSD()
                                  << "\t" << setprecision(4) << cumulativeHelp.calculateSD()
@@ -318,7 +318,7 @@ void Statistics::printIndividual(Individual individual, int generation, int grou
                                            << "\t" << setprecision(4) << individual.getAlphaAge()
                                            << "\t" << setprecision(4) << individual.getBeta()
                                            << "\t" << setprecision(4) << individual.getGamma()
-                                           << "\t" << setprecision(4) << individual.getGammaAge()
+                                           << "\t" << setprecision(4) << individual.getDelta()
                                            << "\t" << setprecision(4) << individual.getDrift()
                                            << "\t" << setprecision(4) << individual.getDispersal()
                                            << "\t" << setprecision(4) << individual.getHelp()

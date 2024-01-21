@@ -15,7 +15,7 @@ Individual::Individual(Individual &individual, FishType fishType, int &generatio
     this->beta = individual.beta;
 
     this->gamma = individual.gamma;
-    this->gammaAge = individual.gammaAge;
+    this->delta = individual.delta;
     this->drift = individual.getDrift();
 
     this->dispersal = Parameters::NO_VALUE;
@@ -35,7 +35,7 @@ Individual::Individual(FishType fishType) {
     this->alphaAge = param->getInitAlphaAge();
     this->beta = param->getInitBeta();
     this->gamma = param->getInitGamma();
-    this->gammaAge = param->getInitGammaAge();
+    this->delta = param->getInitDelta();
     this->drift = param->driftUniform(*param->getGenerator());
     this->initializeIndividual(fishType);
 }
@@ -62,7 +62,7 @@ void Individual::setGroupIndex(int groupIndex) {
 void Individual::calcDispersal() {
     if (age == 1) {
         //this->dispersal = beta;
-        this->dispersal = 0.5 + 0.5 * 1 / (1 + exp(- beta));
+        this->dispersal = 0.5 + 0.5 * 1 / (1 + exp(-beta));
 
     } else {
         this->dispersal = 0;
@@ -108,10 +108,10 @@ void Individual::calculateSurvival(const int &groupSize) {
                                   parameters->getXsh() * this->help));
     } else if (fishType == BREEDER) {
         this->survival = (1 - parameters->getM()) /
-                         (1 + exp(-parameters->getX0() - parameters->getXsn() * thisGroupSize)); // TODO: add a breeding cost?
+                         (1 + exp(-parameters->getX0() -
+                                  parameters->getXsn() * thisGroupSize)); // TODO: add a breeding cost?
     }
 }
-
 
 
 void Individual::mutate(int generation) // mutate genome of offspring
@@ -152,19 +152,17 @@ void Individual::mutate(int generation) // mutate genome of offspring
 
     }
 
-//    // Gamma
-//    if (parameters->uniform(rng) < parameters->getMutationGamma()) {
-//        gamma += NormalG(rng);
-//        if (!parameters->isReactionNormTask()) {
-//            if (gamma < 0) { gamma = 0; }
-//            else if (gamma > 1) { gamma = 1; }
-//        }
-//    }
-//    if (parameters->isReactionNormTask()) {
-//        if (parameters->uniform(rng) < parameters->getMutationGammaAge()) {
-//            gammaAge += NormalG(rng);
-//        }
-//    }
+    // Gamma
+    if (parameters->uniform(rng) < parameters->getMutationGamma()) {
+        gamma += NormalG(rng);
+    }
+
+
+    //Delta
+    if (parameters->uniform(rng) < parameters->getMutationDelta()) { //TODO: make new step size for delta?
+        delta += NormalG(rng);
+    }
+
 
     // Drift
     if (parameters->uniform(rng) < parameters->getMutationDrift()) {
@@ -207,8 +205,8 @@ double Individual::getGamma() const {
     return gamma;
 }
 
-double Individual::getGammaAge() const {
-    return gammaAge;
+double Individual::getDelta() const {
+    return delta;
 }
 
 double Individual::getDrift() const {
@@ -272,8 +270,8 @@ double Individual::get(Attribute type) const {
             return this->beta;
         case GAMMA:
             return this->gamma;
-        case GAMMA_AGE:
-            return this->gammaAge;
+        case DELTA:
+            return this->delta;
         case HELP:
             return this->help;
         case DISPERSAL:
