@@ -7,6 +7,8 @@
 #include "../Individual.h"
 
 struct IndividualVector : std::vector<Individual> {
+
+
     std::vector<double> get(Attribute) const;
 
     void merge(std::vector<Individual> vector);

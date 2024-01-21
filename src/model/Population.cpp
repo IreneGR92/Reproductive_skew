@@ -215,15 +215,30 @@ void Population::imigrate() {
     for (int i: indices) {
         Group &group = groups[i];
         // Do something with group
+        auto newHelpers = this->getAcceptedFloaters(group);
+        group.addHelpers(newHelpers);
+
+
     }
-
-
-    int proportionFloaters = round(floaters.size() * parameters->getBiasFloatBreeder() / parameters->getMaxColonies());
-
-
-
-
 }
 
 
+std::vector<Individual> &Population::getAcceptedFloaters(Group &group) {
+    int proportionFloaters = round(
+            floaters.size() * parameters->getBiasFloatBreeder() / parameters->getMaxColonies());
+
+// Shuffle the floaters vector
+    std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
+
+// Take the first proportionFloaters elements from the shuffled vector
+    std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + proportionFloaters);
+
+    int acceptedFloatersSize = round(sampleFloaters.size() * group.calcAcceptanceRate());
+
+    std::vector<Individual> acceptedFloaters(sampleFloaters.begin(), sampleFloaters.begin() + acceptedFloatersSize);
+    // Remove the selected floaters from the original floaters vector
+    floaters.erase(floaters.begin(), floaters.begin() + acceptedFloatersSize);
+
+    return acceptedFloaters;
+}
 

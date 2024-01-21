@@ -18,6 +18,9 @@ private:
     int deaths = 0;
 
     int newBreederFloater = 0, newBreederHelper = 0, inheritance = 0;
+
+    std::vector<Individual> &getAcceptedFloaters(Group &group);
+
 public:
     int getNewBreederFloater() const;
 
@@ -60,7 +63,6 @@ public:
     void reset();
 
     void imigrate();
-
 
 
 public:

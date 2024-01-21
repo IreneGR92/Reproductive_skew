@@ -32,7 +32,7 @@ std::vector<double> IndividualVector::get(Attribute type) const {
  *
  * @param vector The vector of individuals to be merged.
  */
-void IndividualVector::merge(vector<Individual> vector) {
+void IndividualVector::merge(std::vector<Individual> vector) {
     this->insert(end(), vector.begin(), vector.end());
 }
 

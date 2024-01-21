@@ -332,12 +332,19 @@ bool Group::hasHelpers() const {
     return !helpers.empty();
 }
 
-void Group::addHelper(const Individual &helper) {
+void Group::addHelper(Individual &helper) {
+    helper.setFishType(HELPER);
     this->helpers.emplace_back(helper);
 }
 
 const IndividualVector &Group::getHelpers() const {
     return helpers;
+}
+
+void Group::addHelpers(vector<Individual> &helpers) {
+    for (Individual &helper: helpers) {
+        this->addHelper(helper);
+    }
 }
 
 
