@@ -90,7 +90,7 @@ void Individual::calcHelp() {
 
 /*SURVIVAL*/
 
-void Individual::calculateSurvival(const int &groupSize) {
+void Individual::calcSurvival(const int &groupSize) {
 
     int thisGroupSize;
     if (parameters->isNoGroupAugmentation()) {

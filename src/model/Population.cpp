@@ -132,7 +132,7 @@ void Population::survival() {
 
 void Population::survivalFloaters() {
     for (Individual &floater:floaters) {
-        floater.calculateSurvival(0); // TODO:Change to 1?
+        floater.calcSurvival(0); // TODO:Change to 1?
     }
 }
 

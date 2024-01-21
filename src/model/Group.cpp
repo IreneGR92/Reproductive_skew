@@ -80,6 +80,32 @@ std::vector<Individual> Group::reassignNoRelatedness(int index) {
     return noRelatedHelpers;
 }
 
+/*  CALCULATE ACCEPTANCE RATE FOR IMMIGRANTS */
+
+double Group::calcAcceptanceRate() {
+
+    double acceptanceRate;
+    double expulssionEffort = 0;
+    double delta;
+
+    for (auto & helper : helpers) {
+        if (helper.getDelta() < 0) {
+            delta = 0;
+        } else {
+            delta = helper.getDelta();
+        }
+        expulssionEffort += delta;
+
+    }
+
+    acceptanceRate = 1 - expulssionEffort;
+    if (acceptanceRate < 0) {
+        acceptanceRate = 0;
+    }
+
+    return acceptanceRate;
+}
+
 
 /*  CALCULATE CUMULATIVE LEVEL OF HELP */
 
@@ -102,11 +128,11 @@ void Group::survivalGroup() {
     this->calculateGroupSize();
     //Calculate survival for the helpers
     for (Individual &helper: helpers) {
-        helper.calculateSurvival(groupSize);
+        helper.calcSurvival(groupSize);
     }
 
     //Calculate the survival of the mainBreeder
-        this->mainBreeder.calculateSurvival(groupSize);
+    this->mainBreeder.calcSurvival(groupSize);
 }
 
 void Group::mortalityGroup(int &deaths) {
@@ -196,47 +222,46 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederFloater, int
         }
     }
     //  Choose new mainBreeder
-        //    Choose mainBreeder with higher likelihood for the highest rank
-        for (candidateIt = candidates.begin(); candidateIt < candidates.end(); ++candidateIt) {
-            sumRank += (*candidateIt)->getAge(); //add all the ranks from the vector candidates
-        }
+    //    Choose mainBreeder with higher likelihood for the highest rank
+    for (candidateIt = candidates.begin(); candidateIt < candidates.end(); ++candidateIt) {
+        sumRank += (*candidateIt)->getAge(); //add all the ranks from the vector candidates
+    }
 
-        for (candidateIt = candidates.begin(); candidateIt < candidates.end(); ++candidateIt) {
-            position.push_back(static_cast<double>((*candidateIt)->getAge()) / static_cast<double>(sumRank) +
-                               currentPosition); //creates a vector with proportional segments to the rank of each individual
-            currentPosition = position[position.size() - 1];
-        }
+    for (candidateIt = candidates.begin(); candidateIt < candidates.end(); ++candidateIt) {
+        position.push_back(static_cast<double>((*candidateIt)->getAge()) / static_cast<double>(sumRank) +
+                           currentPosition); //creates a vector with proportional segments to the rank of each individual
+        currentPosition = position[position.size() - 1];
+    }
 
-        candidateIt = candidates.begin();
-        int counting = 0;
-        while (counting < candidates.size()) {
-            if (RandP < position[candidateIt - candidates.begin()]) //to access the same ind in the candidates vector
+    candidateIt = candidates.begin();
+    int counting = 0;
+    while (counting < candidates.size()) {
+        if (RandP < position[candidateIt - candidates.begin()]) //to access the same ind in the candidates vector
+        {
+            mainBreeder = **candidateIt; //substitute the previous dead mainBreeder
+            breederAlive = true;
+            mainBreeder.setAgeBecomeBreeder(mainBreeder.getAge());
+
+            if ((*candidateIt)->getFishType() == FLOATER) //delete the ind from the vector floaters
             {
-                mainBreeder = **candidateIt; //substitute the previous dead mainBreeder
-                breederAlive = true;
-                mainBreeder.setAgeBecomeBreeder(mainBreeder.getAge());
-
-                if ((*candidateIt)->getFishType() == FLOATER) //delete the ind from the vector floaters
-                {
-                    **candidateIt = floaters[floaters.size() - 1];
-                    floaters.pop_back();
-                    newBreederFloater++;
-                } else {
-                    **candidateIt = helpers[helpers.size() - 1]; //delete the ind from the vector helpers
-                    helpers.pop_back();
-                    newBreederHelper++;
-                    if ((*candidateIt)->isInherit() == 1) {
-                        inheritance++;                    //calculates how many individuals that become breeders are natal to the territory
-                    }
+                **candidateIt = floaters[floaters.size() - 1];
+                floaters.pop_back();
+                newBreederFloater++;
+            } else {
+                **candidateIt = helpers[helpers.size() - 1]; //delete the ind from the vector helpers
+                helpers.pop_back();
+                newBreederHelper++;
+                if ((*candidateIt)->isInherit() == 1) {
+                    inheritance++;                    //calculates how many individuals that become breeders are natal to the territory
                 }
+            }
 
-                mainBreeder.setFishType(BREEDER); //modify the class
-                counting = candidates.size();//end loop
-            } else
-                ++candidateIt, ++counting;
-        }
+            mainBreeder.setFishType(BREEDER); //modify the class
+            counting = candidates.size();//end loop
+        } else
+            ++candidateIt, ++counting;
+    }
 }
-
 
 
 /* INCREASE AGE OF ALL GROUP INDIVIDUALS*/
@@ -265,7 +290,8 @@ void Group::reproduce(int generation) { // populate offspring generation
         for (int i = 0; i < realFecundity; i++) { //number of offspring dependent on real fecundity
             Individual offspring = Individual(mainBreeder, HELPER, generation);
 
-            helpers.emplace_back(offspring); //create a new individual as helper in the group. Call construct to assign the mother genetic values to the offspring, construct calls Mutate function.
+            helpers.emplace_back(
+                    offspring); //create a new individual as helper in the group. Call construct to assign the mother genetic values to the offspring, construct calls Mutate function.
         }
     }
 }

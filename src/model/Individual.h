@@ -47,7 +47,7 @@ public:
 
     void calcHelp();
 
-    void calculateSurvival(const int &groupSize);
+    void calcSurvival(const int &groupSize);
 
     //Getters and setters
     double getAlpha() const;

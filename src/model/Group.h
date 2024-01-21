@@ -31,6 +31,8 @@ public:
 
     std::vector<Individual> disperse();
 
+    double calcAcceptanceRate();
+
     void calculateCumulativeHelp();
 
     const IndividualVector &getHelpers() const;
