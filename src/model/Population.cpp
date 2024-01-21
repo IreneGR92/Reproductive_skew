@@ -210,7 +210,7 @@ void Population::immigrate() {
     std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
 
 // Loop through the groups in a random order
-    while (!floaters.empty()) {
+    if (!floaters.empty()) {
         for (int i: indices) {
             Group &group = groups[i];
             // Add new helpers to the group
