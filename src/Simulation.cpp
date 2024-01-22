@@ -30,7 +30,6 @@ void Simulation::run() {
         statistics = new Statistics();
         population.reset();
 
-        population.reassignFloaters();
         population.disperse(generation);
         population.immigrate();
         population.help();

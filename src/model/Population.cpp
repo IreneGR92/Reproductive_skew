@@ -31,19 +31,6 @@ Population::Population() {
 }
 
 
-void Population::reassignFloaters() {
-    std::uniform_int_distribution<int> UniformMaxCol(0, parameters->getMaxColonies() - 1);
-    int selectGroup;
-    while (!floaters.empty()) {
-        Individual floater = floaters.at(floaters.size() - 1);
-        floater.setHelp(0);
-        selectGroup = UniformMaxCol(*parameters->getGenerator());
-        groups[selectGroup].addHelper(floater); //add the floater to the helper vector in a randomly selected group
-        floaters.pop_back(); //remove the floater from its vector
-    }
-}
-
-
 void Population::disperse(int generation) {
 
     int groupID = 0;
@@ -95,24 +82,7 @@ void Population::disperse(int generation) {
                 timeout++; //if not other group to put the helper than the original one, do it anyway
             }
         }
-        // Assign helpers to completely random groups, group size not maintained
-    } //else if (parameters->isNoRelatedness() && !allNoRelatedHelpers.empty() && parameters->isNoRelatednessRandomGroup()) {
-//        int timeout = 0;
-//        while (!allNoRelatedHelpers.empty()) {
-//            std::uniform_int_distribution<int> UniformMaxCol(0, parameters->getMaxColonies() - 1);
-//            int selectGroupIndex = UniformMaxCol(*parameters->getGenerator()); // selects a random index;
-//            auto indexLastIndividual = allNoRelatedHelpers.size() - 1;
-//
-//            if (selectGroupIndex != allNoRelatedHelpers[indexLastIndividual].getGroupIndex() || timeout > 5000) {
-//                groups[selectGroupIndex].addHelper(
-//                        allNoRelatedHelpers[indexLastIndividual]); //add the no related helper to the helper vector in a randomly selected group
-//                allNoRelatedHelpers.pop_back(); //remove the no related helper from its vector
-//
-//            } else {
-//                timeout++; //if not other group to put the helper than the original one, do it anyway
-//            }
-//        }
-//    }
+    }
 }
 
 
