@@ -36,8 +36,6 @@ public:
 
     Population();
 
-    void reassignFloaters();
-
     void disperse(int generation);
 
     void help();
