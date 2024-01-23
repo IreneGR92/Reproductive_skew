@@ -42,7 +42,7 @@ public:
 
     void help();
 
-    void survivalGroupMembers();
+    void survival();
 
     void mortality();
 
