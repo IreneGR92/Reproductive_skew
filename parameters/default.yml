@@ -22,6 +22,7 @@ n: 1.2      # multiplier to m for lower mortality of floaters (only in the new l
 X0: 1.5   # base survival without the effect of help or group size
 Xsh: 4    # cost of help in survival
 Xsn: 3    # benefit of group size in survival
+Xse: 0    # cost of expulsion of immigrants in survival
 
 #Modifiers in fecundity
 K0: 1    # min fecundity, fecundity when no help provided.

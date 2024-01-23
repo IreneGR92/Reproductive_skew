@@ -165,7 +165,7 @@ void Group::mortalityGroup(int &deaths) {
 /* BECOME BREEDER */
 
 void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
-    //    Select a random sample from the floaters
+
     int i = 0;
     double sumRank = 0;
     double currentPosition = 0; //age of the previous ind taken from Candidates

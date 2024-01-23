@@ -46,6 +46,7 @@ private:
     double X0;     //base survival without the effect of help or group size
     double Xsh;    // cost of help in survival
     double Xsn;    // benefit of group size in survival
+    double Xse;    // cost expulsion in survival
 
 //Modifiers in fecundity
     double K0;    // min fecundity, fecundity when no help provided.
@@ -136,6 +137,8 @@ public:
     double getXsh() const;
 
     double getXsn() const;
+
+    double getXse() const;
 
     double getK0() const;
 
