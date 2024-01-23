@@ -172,47 +172,43 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
     double RandP = parameters->uniform(*parameters->getGenerator());
     vector<Individual *> candidates;
     vector<double> position; //vector of age to choose with higher likelihood the ind with higher age
-    vector<int> TemporaryCandidates; // to prevent taking the same ind several times in the sample
 
 
     //    Join the helpers in the group to the vector candidates
-    vector<Individual, std::allocator<Individual>>::iterator helperIt;
-    for (helperIt = helpers.begin(); helperIt < helpers.end(); ++helperIt) {
-        candidates.push_back(&(*helperIt));
+    for (auto &helper : helpers) {
+        candidates.push_back(&helper);
     }
 
     //  Check if the candidates meet the age requirements, else remove them from the candidates vector
-    vector<Individual *, std::allocator<Individual *>>::iterator candidateIt;
-    candidateIt = candidates.begin();
-    while (candidateIt != std::end(candidates)) {
-        if ((*candidateIt)->isViableBreeder()) {
-            ++candidateIt;
-        } else {
-            candidateIt = candidates.erase(candidateIt);
-        }
-    }
+        candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
+                                    [](Individual* candidate) { return !candidate->isViableBreeder(); }), candidates.end());
+
+
     //  Choose new mainBreeder
-    //    Choose mainBreeder with higher likelihood for the highest rank
-    for (candidateIt = candidates.begin(); candidateIt < candidates.end(); ++candidateIt) {
-        sumRank += (*candidateIt)->getAge(); //add all the ranks from the vector candidates
+    //      Choose mainBreeder with higher likelihood for the highest rank
+    vector<Individual *, std::allocator<Individual *>>::iterator candidate;
+    for (candidate = candidates.begin(); candidate < candidates.end(); ++candidate) {
+        sumRank += (*candidate)->getAge(); //add all the ranks from the vector candidates
     }
 
-    for (candidateIt = candidates.begin(); candidateIt < candidates.end(); ++candidateIt) {
-        position.push_back(static_cast<double>((*candidateIt)->getAge()) / static_cast<double>(sumRank) +
+    for (candidate = candidates.begin(); candidate < candidates.end(); ++candidate) {
+        position.push_back(static_cast<double>((*candidate)->getAge()) / static_cast<double>(sumRank) +
                            currentPosition); //creates a vector with proportional segments to the rank of each individual
         currentPosition = position[position.size() - 1];
     }
 
-    candidateIt = candidates.begin();
+
+    //      Make the chosen candidate the new mainBreeder
+    candidate = candidates.begin();
     int counting = 0;
     while (counting < candidates.size()) {
-        if (RandP < position[candidateIt - candidates.begin()]) //to access the same ind in the candidates vector
+        if (RandP < position[candidate - candidates.begin()]) //to access the same ind in the candidates vector
         {
-            mainBreeder = **candidateIt; //substitute the previous dead mainBreeder
+            mainBreeder = **candidate; //substitute the previous dead mainBreeder
             breederAlive = true;
             mainBreeder.setAgeBecomeBreeder(mainBreeder.getAge());
 
-            if ((*candidateIt)->isInherit() == 0) //delete the ind from the vector floaters
+            if ((*candidate)->isInherit() == 0) //delete the ind from the vector floaters
             {
                 newBreederOutsider++;
             } else {
@@ -220,13 +216,13 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
                 inheritance++; //TODO: At the moment, newBreederInsider and inheritance are equivalent
             }
 
-            **candidateIt = helpers[helpers.size() - 1]; //delete the ind from the vector helpers
+            **candidate = helpers[helpers.size() - 1]; //delete the ind from the vector helpers
             helpers.pop_back();
 
             mainBreeder.setFishType(BREEDER); //modify the class
             counting = candidates.size();//end loop
         } else
-            ++candidateIt, ++counting;
+            ++candidate, ++counting;
     }
 }
 
