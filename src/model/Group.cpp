@@ -199,11 +199,8 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
 
 
     //      Make the chosen candidate the new mainBreeder
-    candidate = candidates.begin();
-    int counting = 0;
-    while (counting < candidates.size()) {
-        if (RandP < position[candidate - candidates.begin()]) //chooses the candidate with higher age
-        {
+    for (candidate = candidates.begin(); candidate != candidates.end(); ++candidate) {
+        if (RandP < position[candidate - candidates.begin()]){ //chooses the candidate with higher age
             mainBreeder = **candidate; //substitute the previous dead mainBreeder
             breederAlive = true;
             mainBreeder.setAgeBecomeBreeder(mainBreeder.getAge());
@@ -220,11 +217,12 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
             helpers.pop_back();
 
             mainBreeder.setFishType(BREEDER); //modify the class
-            counting = candidates.size();//end loop
-        } else
-            ++candidate, ++counting;
+            break;
+        }
     }
 }
+
+
 
 
 
