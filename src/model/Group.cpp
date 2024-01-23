@@ -86,15 +86,15 @@ double Group::getAcceptanceRate() {
 
     double acceptanceRate;
     double expulssionEffort = 0;
-    double delta;
+    double gamma;
 
     for (auto &helper: helpers) {
-        if (helper.getDelta() < 0) {
-            delta = 0;
+        if (helper.getGamma() < 0) {
+            gamma = 0;
         } else {
-            delta = helper.getDelta();
+            gamma = helper.getGamma();
         }
-        expulssionEffort += delta;
+        expulssionEffort += gamma;
 
     }
 
@@ -202,7 +202,7 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
     candidate = candidates.begin();
     int counting = 0;
     while (counting < candidates.size()) {
-        if (RandP < position[candidate - candidates.begin()]) //to access the same ind in the candidates vector
+        if (RandP < position[candidate - candidates.begin()]) //chooses the candidate with higher age
         {
             mainBreeder = **candidate; //substitute the previous dead mainBreeder
             breederAlive = true;
@@ -227,11 +227,31 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
 }
 
 
+
+double Group::getReproductiveShare() {
+
+    double reproductiveShare;
+
+    reproductiveShare = 1 - mainBreeder.getDelta();
+    if (reproductiveShare < 0) {
+        reproductiveShare = 0;
+    }
+
+    return reproductiveShare;
+}
+
+
+
 /* INCREASE AGE OF ALL GROUP INDIVIDUALS*/
 void Group::increaseAge() {
     for (Individual &helper: helpers) {
         helper.increaseAge();
     }
+
+    for (Individual &breeder: breeders) {
+        breeder.increaseAge();
+    }
+
     if (breederAlive) {
         mainBreeder.increaseAge(breederAlive);
     }

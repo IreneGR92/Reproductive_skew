@@ -43,6 +43,8 @@ public:
 
     void newBreeder(std::vector<Individual> &floaters, int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 
+    double getReproductiveShare();
+
     void increaseAge();
 
     void reproduce(int generation);
