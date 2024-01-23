@@ -85,6 +85,47 @@ void Population::disperse(int generation) {
     }
 }
 
+void Population::immigrate() {
+
+// Shuffle the group indices. This is done to ensure that the immigration process does not favor any particular group due to their position in the groups vector.
+    std::vector<int> indices(groups.size());
+    std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers
+    std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
+
+// Loop through the groups in a random order
+    if (!floaters.empty()) { // checks if there are any floaters available for immigration.
+        for (int i: indices) {
+            Group &group = groups[i];
+            // Add new helpers to the group
+            auto newHelpers = this->getAcceptedFloaters(group); //  gets a list of floaters that are accepted by the current group.
+            group.addHelpers(newHelpers);
+
+        }
+    }
+}
+
+
+// Calculates the proportion of floaters that should be considered for immigration into the current group, based on the biasFloatBreeder parameter, the total number of colonies and the acceptance rate of the group.
+std::vector<Individual> Population::getAcceptedFloaters(Group &group) {
+    int proportionFloaters = round(
+            floaters.size() * parameters->getBiasFloatBreeder() / parameters->getMaxColonies());
+
+// Shuffle the floaters vector
+    std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
+
+// Take a sample of floaters based on biasFloatBreeder parameter and the total number of colonies
+    std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + proportionFloaters);
+
+    int acceptedFloatersSize = round(sampleFloaters.size() * group.getAcceptanceRate());
+
+// Take a subsample of floaters based on the acceptance rate of the group
+    std::vector<Individual> acceptedFloaters(sampleFloaters.begin(), sampleFloaters.begin() + acceptedFloatersSize);
+    // Remove the selected floaters from the original floaters vector
+    floaters.erase(floaters.begin(), floaters.begin() + acceptedFloatersSize);
+
+    return acceptedFloaters;
+}
+
 
 void Population::help() {
     for (Group &group: groups) {
@@ -172,42 +213,5 @@ int Population::getInheritance() const {
     return inheritance;
 }
 
-void Population::immigrate() {
 
-// Shuffle the group indices
-    std::vector<int> indices(groups.size());
-    std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers
-    std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
-
-// Loop through the groups in a random order
-    if (!floaters.empty()) {
-        for (int i: indices) {
-            Group &group = groups[i];
-            // Add new helpers to the group
-            auto newHelpers = this->getAcceptedFloaters(group);
-            group.addHelpers(newHelpers);
-
-        }
-    }
-}
-
-
-std::vector<Individual> Population::getAcceptedFloaters(Group &group) {
-    int proportionFloaters = round(
-            floaters.size() * parameters->getBiasFloatBreeder() / parameters->getMaxColonies());
-
-// Shuffle the floaters vector
-    std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
-
-// Take proportionFloaters elements from the shuffled vector
-    std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + proportionFloaters);
-
-    int acceptedFloatersSize = round(sampleFloaters.size() * group.getAcceptanceRate());
-
-    std::vector<Individual> acceptedFloaters(sampleFloaters.begin(), sampleFloaters.begin() + acceptedFloatersSize);
-    // Remove the selected floaters from the original floaters vector
-    floaters.erase(floaters.begin(), floaters.begin() + acceptedFloatersSize);
-
-    return acceptedFloaters;
-}
 
