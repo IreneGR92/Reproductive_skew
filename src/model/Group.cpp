@@ -173,6 +173,9 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
     vector<Individual *> candidates;
     vector<double> position; //vector of age to choose with higher likelihood the ind with higher age
 
+    if (helpers.empty()) {
+        return; //TODO: Change behaviour of what happens when there are no helpers
+    }
 
     //    Join the helpers in the group to the vector candidates
     for (auto &helper : helpers) {
@@ -223,6 +226,48 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
 }
 
 
+Individual* Group::chooseNewBreeder() {
+    double sumAge = 0;
+    double currentPosition = 0;
+    double randP = parameters->uniform(*parameters->getGenerator());
+    std::vector<Individual*> candidates;
+    std::vector<double> position;
+
+    if (helpers.empty()) {
+        return nullptr; //TODO: Change behaviour of what happens when there are no helpers
+    }
+
+    //    Join the helpers in the group to the vector candidates
+    for (auto &helper : helpers) {
+        candidates.push_back(&helper);
+    }
+
+    //  Check if the candidates meet the age requirements, else remove them from the candidates vector
+    candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
+                                    [](Individual* candidate) { return !candidate->isViableBreeder(); }), candidates.end());
+
+
+    // Calculate the sum of ages
+    for (auto &candidate : candidates) {
+        sumAge += candidate->getAge();
+    }
+
+    // Create a vector with proportional segments to the age of each individual
+    for (auto &candidate : candidates) {
+        position.push_back(static_cast<double>(candidate->getAge()) / sumAge + currentPosition);
+        currentPosition = position.back();
+    }
+
+    // Choose the helper with higher age
+    for (auto candidate = candidates.begin(); candidate != candidates.end(); ++candidate) {
+        if (randP < position[std::distance(candidates.begin(), candidate)]) {
+            Individual* chosenNewBreeder = *candidate;
+            candidates.erase(candidate); // Remove the chosen helper from the candidates vector
+            helpers.removeIndividual(std::distance(candidates.begin(), candidate)); // Remove the chosen helper from the helpers vector
+            return chosenNewBreeder;
+        }
+    }
+}
 
 
 
