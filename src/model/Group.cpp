@@ -82,7 +82,7 @@ std::vector<Individual> Group::reassignNoRelatedness(int index) {
 
 /*  CALCULATE ACCEPTANCE RATE FOR IMMIGRANTS */
 
-double Group::calcAcceptanceRate() {
+double Group::getAcceptanceRate() {
 
     double acceptanceRate;
     double expulssionEffort = 0;
@@ -164,48 +164,18 @@ void Group::mortalityGroup(int &deaths) {
 
 /* BECOME BREEDER */
 
-void Group::newBreeder(vector<Individual> &floaters, int &newBreederFloater, int &newBreederHelper, int &inheritance) {
+void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
     //    Select a random sample from the floaters
     int i = 0;
     double sumRank = 0;
     double currentPosition = 0; //age of the previous ind taken from Candidates
-    int floaterSampledID;
     double RandP = parameters->uniform(*parameters->getGenerator());
-    int proportionFloaters;
-    proportionFloaters = round(floaters.size() * parameters->getBiasFloatBreeder() / parameters->getMaxColonies());
-
     vector<Individual *> candidates;
     vector<double> position; //vector of age to choose with higher likelihood the ind with higher age
     vector<int> TemporaryCandidates; // to prevent taking the same ind several times in the sample
 
-    if (!floaters.empty() && floaters.size() > proportionFloaters) {
-        while (i < proportionFloaters) {
-            uniform_int_distribution<int> UniformFloat(0, floaters.size() - 1); //random floater ID taken in the sample
-            floaterSampledID = UniformFloat(*parameters->getGenerator());
-            TemporaryCandidates.push_back(floaterSampledID); //add references of the floaters sampled to a vector
-            sort(TemporaryCandidates.begin(), TemporaryCandidates.end()); //sort vector
-            i++;
-        }
 
-        int temp = 0;
-        vector<int, std::allocator<int>>::iterator itTempCandidates;
-        for (itTempCandidates = TemporaryCandidates.begin();
-             itTempCandidates < TemporaryCandidates.end(); ++itTempCandidates) {
-            if (*itTempCandidates != temp) //to make sure the same ind is not taken more than ones
-            {
-                candidates.push_back(&floaters[floaterSampledID]);
-                temp = *itTempCandidates;
-            }
-        }
-    } else if (!floaters.empty() && floaters.size() <
-                                    proportionFloaters) { //TODO:When less floaters available than the sample size, takes all of them. Change to a proportion?
-        vector<Individual, std::allocator<Individual>>::iterator floaterIt;
-        for (floaterIt = floaters.begin(); floaterIt < floaters.end(); ++floaterIt) {
-            candidates.push_back(&(*floaterIt));
-        }
-    }
-
-    //    Join the helpers in the group to the sample of floaters
+    //    Join the helpers in the group to the vector candidates
     vector<Individual, std::allocator<Individual>>::iterator helperIt;
     for (helperIt = helpers.begin(); helperIt < helpers.end(); ++helperIt) {
         candidates.push_back(&(*helperIt));
@@ -242,19 +212,16 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederFloater, int
             breederAlive = true;
             mainBreeder.setAgeBecomeBreeder(mainBreeder.getAge());
 
-            if ((*candidateIt)->getFishType() == FLOATER) //delete the ind from the vector floaters
+            if ((*candidateIt)->isInherit() == 0) //delete the ind from the vector floaters
             {
-                **candidateIt = floaters[floaters.size() - 1];
-                floaters.pop_back();
-                newBreederFloater++;
+                newBreederOutsider++;
             } else {
-                **candidateIt = helpers[helpers.size() - 1]; //delete the ind from the vector helpers
-                helpers.pop_back();
-                newBreederHelper++;
-                if ((*candidateIt)->isInherit() == 1) {
-                    inheritance++;                    //calculates how many individuals that become breeders are natal to the territory
-                }
+                newBreederInsider++;
+                inheritance++; //TODO: At the moment, newBreederInsider and inheritance are equivalent
             }
+
+            **candidateIt = helpers[helpers.size() - 1]; //delete the ind from the vector helpers
+            helpers.pop_back();
 
             mainBreeder.setFishType(BREEDER); //modify the class
             counting = candidates.size();//end loop

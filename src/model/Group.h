@@ -31,7 +31,7 @@ public:
 
     std::vector<Individual> disperse();
 
-    double calcAcceptanceRate();
+    double getAcceptanceRate();
 
     void calculateCumulativeHelp();
 
@@ -41,7 +41,7 @@ public:
 
     void mortalityGroup(int &deaths);
 
-    void newBreeder(std::vector<Individual> &floaters, int &newBreederFloater, int &newBreederHelper, int &inheritance);
+    void newBreeder(std::vector<Individual> &floaters, int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 
     void increaseAge();
 

@@ -202,7 +202,7 @@ std::vector<Individual> Population::getAcceptedFloaters(Group &group) {
 // Take proportionFloaters elements from the shuffled vector
     std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + proportionFloaters);
 
-    int acceptedFloatersSize = round(sampleFloaters.size() * group.calcAcceptanceRate());
+    int acceptedFloatersSize = round(sampleFloaters.size() * group.getAcceptanceRate());
 
     std::vector<Individual> acceptedFloaters(sampleFloaters.begin(), sampleFloaters.begin() + acceptedFloatersSize);
     // Remove the selected floaters from the original floaters vector
