@@ -172,7 +172,12 @@ Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, int &ne
     if (!helpers.empty()) {
         if (!breederAlive) {
             mainBreeder = chooseNewBreeder(newBreederOutsider, newBreederInsider, inheritance);
-            breederAlive = true;
+
+            if (mainBreeder.getFishType() == DEAD) {
+                breederAlive = false;
+            } else {
+                breederAlive = true;
+            }
         }
     }
 
@@ -206,13 +211,13 @@ void Group::transferBreedersToHelpers() {
 }
 
 
-Individual Group::chooseNewBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
+Individual &Group::chooseNewBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
     double sumAge = 0;
     double currentPosition = 0;
     double randP = parameters->uniform(*parameters->getGenerator());
     std::vector<Individual *> candidates;
     std::vector<double> position;
-    Individual chosenNewBreeder(BREEDER);
+
 
 
     //    Join the helpers in the group to the vector candidates
@@ -240,7 +245,7 @@ Individual Group::chooseNewBreeder(int &newBreederOutsider, int &newBreederInsid
     // Choose the helper with higher age
     for (auto candidate = candidates.begin(); candidate != candidates.end(); ++candidate) {
         if (randP < position[std::distance(candidates.begin(), candidate)]) {
-            chosenNewBreeder = **candidate;
+            Individual &chosenNewBreeder = **candidate;
             chosenNewBreeder.setAgeBecomeBreeder(chosenNewBreeder.getAge());
             chosenNewBreeder.setFishType(BREEDER);
 
@@ -256,10 +261,12 @@ Individual Group::chooseNewBreeder(int &newBreederOutsider, int &newBreederInsid
             helpers.removeIndividual(
                     std::distance(candidates.begin(),
                                   candidate)); // Remove the chosen helper from the helpers vector
-            break;
+            return chosenNewBreeder;
         }
     }
-    return chosenNewBreeder;
+    // If no breeder is chosen, return a default breeder (this should not happen if the function is used correctly)
+    static Individual defaultBreeder(DEAD);
+    return defaultBreeder;
 }
 
 

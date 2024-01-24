@@ -5,7 +5,9 @@
 
 
 enum FishType {
-    BREEDER, HELPER, FLOATER
+    BREEDER, HELPER, FLOATER,
+    //this FishType is only used for a Default Instance and indicates that this Individual is just a placeholder
+    DEAD
 };
 
 

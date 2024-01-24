@@ -71,7 +71,7 @@ public:
 
     void transferBreedersToHelpers();
 
-    Individual chooseNewBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
+    Individual& chooseNewBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 };
 
 
