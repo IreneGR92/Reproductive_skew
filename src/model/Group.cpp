@@ -237,12 +237,48 @@ Individual Group::chooseNewBreeder(int &newBreederOutsider, int &newBreederInsid
         currentPosition = position.back();
     }
 
+//
+//    // Function to select an individual with a higher likelihood of being the one with the highest age
+//Individual* Group::selectIndividualByAge() {
+//    // Initialize total age to 0
+//    double totalAge = 0;
+//
+//    // Iterate over all helpers in the group
+//    for (auto &helper : helpers) {
+//        // Add the age of the current helper to the total age
+//        totalAge += helper.getAge();
+//    }
+//
+//    // Generate a random point in the range [0, totalAge)
+//    double randomPoint = totalAge * parameters->uniform(*parameters->getGenerator());
+//
+//    // Iterate over all helpers in the group
+//    for (auto &helper : helpers) {
+//        // If the random point is less than the age of the current helper
+//        if (randomPoint < helper.getAge())
+//            // Return the current helper
+//            return &helper;
+//        // Subtract the age of the current helper from the random point
+//        randomPoint -= helper.getAge();
+//    }
+//
+//    // In case due to floating point precision issues we haven't returned yet,
+//    // return the last helper.
+//    return &helpers.back();
+//}
+//
+
+
+
+
+
     // Choose the helper with higher age
     for (auto candidate = candidates.begin(); candidate != candidates.end(); ++candidate) {
         if (randP < position[std::distance(candidates.begin(), candidate)]) {
             chosenNewBreeder = **candidate;
             chosenNewBreeder.setAgeBecomeBreeder(chosenNewBreeder.getAge());
             chosenNewBreeder.setFishType(BREEDER);
+            //TODO: add here to the breeder vector and make the function a void?
 
             if (chosenNewBreeder.isInherit() == 0) //delete the ind from the vector floaters
             {
@@ -252,10 +288,10 @@ Individual Group::chooseNewBreeder(int &newBreederOutsider, int &newBreederInsid
                 inheritance++; //TODO: At the moment, newBreederInsider and inheritance are equivalent
             }
 
-            candidates.erase(candidate); // Remove the chosen helper from the candidates vector
+            candidates.erase(candidate); // Remove the chosen breeder from the candidates vector
             helpers.removeIndividual(
                     std::distance(candidates.begin(),
-                                  candidate)); // Remove the chosen helper from the helpers vector
+                                  candidate)); // Remove the chosen breeder from the helpers vector
             break;
         }
     }
