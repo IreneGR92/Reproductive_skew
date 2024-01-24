@@ -36,7 +36,7 @@ private:
 
 //Fix values
     int INIT_NUM_HELPERS;     //initial number of helpers per group
-    double BIAS_FLOAT_BREEDER; //mean of number of groups a floater can visit to try to become a breeder compared to 1 group for helpers
+    int BIAS_FLOAT_BREEDER; //floaters sampled to try to join a group
     int MIN_AGE_BECOME_BREEDER; //minimum age for individuals to be able to become breeders
     double FIXED_GROUP_SIZE;       //in the implementation of no group augmentation, virtual group size for survival for breeder and helpers
 
@@ -122,7 +122,7 @@ public:
 
     int getInitNumHelpers() const;
 
-    double getBiasFloatBreeder() const;
+    int getBiasFloatBreeder() const;
 
     double getFixedGroupSize() const;
 

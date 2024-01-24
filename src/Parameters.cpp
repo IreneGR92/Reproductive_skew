@@ -27,7 +27,7 @@ Parameters::Parameters(const string &url) {
     this->MAX_NUM_REPLICATES = config["MAX_NUM_REPLICATES"].as<int>();
     this->SKIP = config["SKIP"].as<int>();
     this->INIT_NUM_HELPERS = config["INIT_NUM_HELPERS"].as<int>();
-    this->BIAS_FLOAT_BREEDER = config["BIAS_FLOAT_BREEDER"].as<double>();
+    this->BIAS_FLOAT_BREEDER = config["BIAS_FLOAT_BREEDER"].as<int>();
     this->MIN_AGE_BECOME_BREEDER = config["MIN_AGE_BECOME_BREEDER"].as<int>();
     this->FIXED_GROUP_SIZE = config["FIXED_GROUP_SIZE"].as<double>();
     this->m = config["m"].as<double>();
@@ -161,7 +161,7 @@ int Parameters::getInitNumHelpers() const {
     return INIT_NUM_HELPERS;
 }
 
-double Parameters::getBiasFloatBreeder() const {
+int Parameters::getBiasFloatBreeder() const {
     return BIAS_FLOAT_BREEDER;
 }
 

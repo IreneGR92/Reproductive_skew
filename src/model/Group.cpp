@@ -175,6 +175,12 @@ Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, int &ne
             breederAlive = true;
         }
     }
+
+    int reproductiveShare = round(getReproductiveShare() * helpers.size());
+
+    for (int i = 0; i < reproductiveShare; i++) {
+        breeders.emplace_back(chooseNewBreeder(newBreederOutsider, newBreederInsider, inheritance));
+    }
 }
 
 void Group::transferBreedersToHelpers() {
@@ -248,7 +254,8 @@ Individual Group::chooseNewBreeder(int &newBreederOutsider, int &newBreederInsid
 
             candidates.erase(candidate); // Remove the chosen helper from the candidates vector
             helpers.removeIndividual(
-                    std::distance(candidates.begin(), candidate)); // Remove the chosen helper from the helpers vector
+                    std::distance(candidates.begin(),
+                                  candidate)); // Remove the chosen helper from the helpers vector
             break;
         }
     }
