@@ -173,6 +173,8 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
     vector<Individual *> candidates;
     vector<double> position; //vector of age to choose with higher likelihood the ind with higher age
 
+    this->transferBreedersToHelpers();
+
     if (helpers.empty()) {
         return; //TODO: Change behaviour of what happens when there are no helpers
     }
@@ -222,6 +224,28 @@ void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, in
             mainBreeder.setFishType(BREEDER); //modify the class
             break;
         }
+    }
+}
+
+void Group::transferBreedersToHelpers() {
+    // Move breeders to the helper vector
+    for (auto &breeder : breeders) {
+        // Change the fish type of the breeder to helper
+        breeder.setFishType(HELPER);
+        // Add the breeder to the helpers vector
+        helpers.emplace_back(breeder);
+    }
+    // Clear the breeders vector
+    breeders.clear();
+
+    // Move the main breeder also to the helper vector
+    if (breederAlive) { //TODO: This assumes that the main breeder is chosen again every round, change?
+        // Change the fish type of the mainBreeder to helper
+        mainBreeder.setFishType(HELPER);
+        // Add the mainBreeder to the helpers vector
+        helpers.emplace_back(mainBreeder);
+        // Set breederAlive to false as mainBreeder is no longer a breeder
+        breederAlive = false;
     }
 }
 
