@@ -201,7 +201,7 @@ void Statistics::printHeadersToFile() {
                                  << "Age_B" << "\t" << "Age_New_Breeder" << "\t"
                                  << "meanAlpha" << "\t" << "meanAlphaAge" << "\t"
                                  << "meanBeta" << "\t"
-                                 << "meanGamma" << "\t" << "meandelta" << "\t"
+                                 << "meanGamma" << "\t" << "meanDelta" << "\t"
                                  << "meanDispersal" << "\t"
                                  << "meanHelp" << "\t" << "meanCumHelp" << "\t"
                                  << "meanSurvival" << "\t" << "meanSurvival_H" << "\t" << "meanSurvival_F" << "\t"
@@ -210,12 +210,12 @@ void Statistics::printHeadersToFile() {
                                  << "SD_Age_F" << "\t" << "SD_Age_B" << "\t"
                                  << "SD_Alpha" << "\t" << "SD_AlphaAge" << "\t"
                                  << "SD_Beta" << "\t"
-                                 << "SD_Gamma" << "\t" << "SD_delta" << "\t"
+                                 << "SD_Gamma" << "\t" << "SD_Delta" << "\t"
                                  << "SD_Dispersal" << "\t"
                                  << "SD_Help" << "\t" << "SD_CumHelp0" << "\t"
                                  << "SD_Survival" << "\t" << "SD_Survival_H" << "\t" << "SD_Survival_F"
                                  << "\t" << "SD_Survival_B" << "\t"
-                                 << "newBreederFloater" << "\t" << "newBreederHelper" << "\t"
+                                 << "newBreederOutsider" << "\t" << "newBreederInsider" << "\t"
                                  << "inheritance" << endl;
 
     // column headings in output file last generation
