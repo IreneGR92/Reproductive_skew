@@ -19,8 +19,8 @@ int Population::getDeaths() const {
 void Population::reset() {
     this->deaths = 0;
     this->inheritance = 0;
-    this->newBreederHelper = 0;
-    this->newBreederFloater = 0;
+    this->newBreederInsider = 0;
+    this->newBreederOutsider = 0;
 }
 
 Population::Population() {
@@ -177,7 +177,7 @@ void Population::mortalityFloaters() {
 void Population::newBreeder() {
     for (Group &group: groups) {
         if (!group.isBreederAlive()) {
-            group.newBreeder(floaters, newBreederFloater, newBreederHelper, inheritance);
+            group.newBreeder(floaters, newBreederOutsider, newBreederInsider, inheritance);
         }
     }
 }
@@ -201,12 +201,12 @@ void Population::reproduce(int generation) {
     }
 }
 
-int Population::getNewBreederFloater() const {
-    return newBreederFloater;
+int Population::getNewBreederOutsider() const {
+    return newBreederOutsider;
 }
 
-int Population::getNewBreederHelper() const {
-    return newBreederHelper;
+int Population::getNewBreederInsider() const {
+    return newBreederInsider;
 }
 
 int Population::getInheritance() const {

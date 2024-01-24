@@ -227,8 +227,8 @@ void Statistics::printHeadersToFile() {
                                            << "dispersal" << "\t" << "help" << "\t" << "survival" << endl;
 }
 
-void Statistics::printToFile(int replica, int generation, int deaths, int newBreederFloater,
-                             int newBreederHelper, int inheritance) {
+void Statistics::printToFile(int replica, int generation, int deaths, int newBreederOutsider,
+                             int newBreederInsider, int inheritance) {
 
     *parameters->getMainWriter() << fixed << showpoint
                                  << replica
@@ -272,8 +272,8 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << survivalHelpers.calculateSD()
                                  << "\t" << setprecision(4) << survivalFloaters.calculateSD()
                                  << "\t" << setprecision(4) << survivalBreeders.calculateSD()
-                                 << "\t" << newBreederFloater
-                                 << "\t" << newBreederHelper
+                                 << "\t" << newBreederOutsider
+                                 << "\t" << newBreederInsider
                                  << "\t" << inheritance
                                  << endl;
 }
