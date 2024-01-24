@@ -164,72 +164,22 @@ void Group::mortalityGroup(int &deaths) {
 
 /* BECOME BREEDER */
 
-void Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
-
-    int i = 0;
-    double sumRank = 0;
-    double currentPosition = 0; //age of the previous ind taken from Candidates
-    double RandP = parameters->uniform(*parameters->getGenerator());
-    vector<Individual *> candidates;
-    vector<double> position; //vector of age to choose with higher likelihood the ind with higher age
+void
+Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
 
     this->transferBreedersToHelpers();
 
-    if (helpers.empty()) {
-        return; //TODO: Change behaviour of what happens when there are no helpers
-    }
-
-    //    Join the helpers in the group to the vector candidates
-    for (auto &helper : helpers) {
-        candidates.push_back(&helper);
-    }
-
-    //  Check if the candidates meet the age requirements, else remove them from the candidates vector
-        candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
-                                    [](Individual* candidate) { return !candidate->isViableBreeder(); }), candidates.end());
-
-
-    //  Choose new mainBreeder
-    //      Choose mainBreeder with higher likelihood for the highest rank
-    vector<Individual *, std::allocator<Individual *>>::iterator candidate;
-    for (candidate = candidates.begin(); candidate < candidates.end(); ++candidate) {
-        sumRank += (*candidate)->getAge(); //add all the ranks from the vector candidates
-    }
-
-    for (candidate = candidates.begin(); candidate < candidates.end(); ++candidate) {
-        position.push_back(static_cast<double>((*candidate)->getAge()) / static_cast<double>(sumRank) +
-                           currentPosition); //creates a vector with proportional segments to the rank of each individual
-        currentPosition = position[position.size() - 1];
-    }
-
-
-    //      Make the chosen candidate the new mainBreeder
-    for (candidate = candidates.begin(); candidate != candidates.end(); ++candidate) {
-        if (RandP < position[candidate - candidates.begin()]){ //chooses the candidate with higher age
-            mainBreeder = **candidate; //substitute the previous dead mainBreeder
+    if (!helpers.empty()) {
+        if (!breederAlive) {
+            mainBreeder = chooseNewBreeder(newBreederOutsider, newBreederInsider, inheritance);
             breederAlive = true;
-            mainBreeder.setAgeBecomeBreeder(mainBreeder.getAge());
-
-            if ((*candidate)->isInherit() == 0) //delete the ind from the vector floaters
-            {
-                newBreederOutsider++;
-            } else {
-                newBreederInsider++;
-                inheritance++; //TODO: At the moment, newBreederInsider and inheritance are equivalent
-            }
-
-            **candidate = helpers[helpers.size() - 1]; //delete the ind from the vector helpers
-            helpers.pop_back();
-
-            mainBreeder.setFishType(BREEDER); //modify the class
-            break;
         }
     }
 }
 
 void Group::transferBreedersToHelpers() {
     // Move breeders to the helper vector
-    for (auto &breeder : breeders) {
+    for (auto &breeder: breeders) {
         // Change the fish type of the breeder to helper
         breeder.setFishType(HELPER);
         // Add the breeder to the helpers vector
@@ -250,34 +200,33 @@ void Group::transferBreedersToHelpers() {
 }
 
 
-Individual* Group::chooseNewBreeder() {
+Individual Group::chooseNewBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
     double sumAge = 0;
     double currentPosition = 0;
     double randP = parameters->uniform(*parameters->getGenerator());
-    std::vector<Individual*> candidates;
+    std::vector<Individual *> candidates;
     std::vector<double> position;
+    Individual chosenNewBreeder(BREEDER);
 
-    if (helpers.empty()) {
-        return nullptr; //TODO: Change behaviour of what happens when there are no helpers
-    }
 
     //    Join the helpers in the group to the vector candidates
-    for (auto &helper : helpers) {
+    for (auto &helper: helpers) {
         candidates.push_back(&helper);
     }
 
     //  Check if the candidates meet the age requirements, else remove them from the candidates vector
     candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
-                                    [](Individual* candidate) { return !candidate->isViableBreeder(); }), candidates.end());
+                                    [](Individual *candidate) { return !candidate->isViableBreeder(); }),
+                     candidates.end());
 
 
     // Calculate the sum of ages
-    for (auto &candidate : candidates) {
+    for (auto &candidate: candidates) {
         sumAge += candidate->getAge();
     }
 
     // Create a vector with proportional segments to the age of each individual
-    for (auto &candidate : candidates) {
+    for (auto &candidate: candidates) {
         position.push_back(static_cast<double>(candidate->getAge()) / sumAge + currentPosition);
         currentPosition = position.back();
     }
@@ -285,14 +234,26 @@ Individual* Group::chooseNewBreeder() {
     // Choose the helper with higher age
     for (auto candidate = candidates.begin(); candidate != candidates.end(); ++candidate) {
         if (randP < position[std::distance(candidates.begin(), candidate)]) {
-            Individual* chosenNewBreeder = *candidate;
+            chosenNewBreeder = **candidate;
+            chosenNewBreeder.setAgeBecomeBreeder(chosenNewBreeder.getAge());
+            chosenNewBreeder.setFishType(BREEDER);
+
+            if (chosenNewBreeder.isInherit() == 0) //delete the ind from the vector floaters
+            {
+                newBreederOutsider++;
+            } else {
+                newBreederInsider++;
+                inheritance++; //TODO: At the moment, newBreederInsider and inheritance are equivalent
+            }
+
             candidates.erase(candidate); // Remove the chosen helper from the candidates vector
-            helpers.removeIndividual(std::distance(candidates.begin(), candidate)); // Remove the chosen helper from the helpers vector
-            return chosenNewBreeder;
+            helpers.removeIndividual(
+                    std::distance(candidates.begin(), candidate)); // Remove the chosen helper from the helpers vector
+            break;
         }
     }
+    return chosenNewBreeder;
 }
-
 
 
 double Group::getReproductiveShare() {
@@ -306,7 +267,6 @@ double Group::getReproductiveShare() {
 
     return reproductiveShare;
 }
-
 
 
 /* INCREASE AGE OF ALL GROUP INDIVIDUALS*/

@@ -69,9 +69,9 @@ public:
 
     std::vector<Individual> reassignNoRelatedness(int index);
 
-    Individual* chooseNewBreeder();
-
     void transferBreedersToHelpers();
+
+    Individual chooseNewBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 };
 
 
