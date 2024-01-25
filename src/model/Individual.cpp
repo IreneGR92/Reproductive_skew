@@ -8,6 +8,10 @@
 //Constructor for reproduction of a Breeder
 Individual::Individual(Individual &individual, FishType fishType, int &generation) {
 
+    if(individual.fishType != BREEDER){
+        std::cout << "Error: only breeders can reproduce" << std::endl;
+    }
+
     assert(individual.fishType == BREEDER);
 
     this->alpha = individual.alpha;

@@ -183,7 +183,7 @@ void Population::mortalityFloaters() {
 void Population::newBreeder() {
     for (Group &group: groups) {
         if (!group.isBreederAlive()) {
-            group.newBreeder(floaters, newBreederOutsider, newBreederInsider, inheritance);
+            group.newBreeder(newBreederOutsider, newBreederInsider, inheritance);
         }
     }
 }
