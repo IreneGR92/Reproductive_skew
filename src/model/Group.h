@@ -41,7 +41,7 @@ public:
 
     void mortalityGroup(int &deaths);
 
-    void newBreeder(std::vector<Individual> &floaters, int &newBreederOutsider, int &newBreederInsider, int &inheritance);
+    void newBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 
     double getReproductiveShare();
 
@@ -71,7 +71,7 @@ public:
 
     void transferBreedersToHelpers();
 
-    Individual& chooseNewBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
+    Individual &chooseNewBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 };
 
 

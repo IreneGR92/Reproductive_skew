@@ -164,8 +164,7 @@ void Group::mortalityGroup(int &deaths) {
 
 /* BECOME BREEDER */
 
-void
-Group::newBreeder(vector<Individual> &floaters, int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
+void Group::newBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
 
     this->transferBreedersToHelpers();
 
@@ -219,54 +218,87 @@ Individual &Group::chooseNewBreeder(int &newBreederOutsider, int &newBreederInsi
     std::vector<double> position;
 
 
-
     //    Join the helpers in the group to the vector candidates
     for (auto &helper: helpers) {
         candidates.push_back(&helper);
     }
 
-    //  Check if the candidates meet the age requirements, else remove them from the candidates vector
-    candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
-                                    [](Individual *candidate) { return !candidate->isViableBreeder(); }),
-                     candidates.end());
 
-
-    // Calculate the sum of ages
-    for (auto &candidate: candidates) {
-        sumAge += candidate->getAge();
-    }
-
-    // Create a vector with proportional segments to the age of each individual
-    for (auto &candidate: candidates) {
-        position.push_back(static_cast<double>(candidate->getAge()) / sumAge + currentPosition);
-        currentPosition = position.back();
-    }
-
-    // Choose the helper with higher age
-    for (auto candidate = candidates.begin(); candidate != candidates.end(); ++candidate) {
-        if (randP < position[std::distance(candidates.begin(), candidate)]) {
-            Individual &chosenNewBreeder = **candidate;
-            chosenNewBreeder.setAgeBecomeBreeder(chosenNewBreeder.getAge());
-            chosenNewBreeder.setFishType(BREEDER);
-
-            if (chosenNewBreeder.isInherit() == 0) //delete the ind from the vector floaters
-            {
-                newBreederOutsider++;
-            } else {
-                newBreederInsider++;
-                inheritance++; //TODO: At the moment, newBreederInsider and inheritance are equivalent
-            }
-
-            candidates.erase(candidate); // Remove the chosen helper from the candidates vector
-            helpers.removeIndividual(
-                    std::distance(candidates.begin(),
-                                  candidate)); // Remove the chosen helper from the helpers vector
-            return chosenNewBreeder;
+    int count = 0;
+    for (const auto &candidate: candidates) {
+        if (candidate->isViableBreeder()) {
+            count++;
         }
     }
-    // If no breeder is chosen, return a default breeder (this should not happen if the function is used correctly)
-    static Individual defaultBreeder(DEAD);
-    return defaultBreeder;
+
+    //in case candidate is empty, return a dead breeder
+    if (candidates.empty()) {
+        static Individual deadBreeder = Individual(DEAD);
+        return deadBreeder;
+
+    } else if (count < 1) {
+        std::shuffle(candidates.begin(), candidates.end(), *parameters->getGenerator());
+        mainBreeder = *candidates.front();
+    } else {
+
+
+        //  Check if the candidates meet the age requirements, else remove them from the candidates vector
+        candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
+                                        [](Individual *candidate) { return !candidate->isViableBreeder(); }),
+                         candidates.end());
+
+
+        // Calculate the sum of ages
+        for (auto &candidate: candidates) {
+            sumAge += candidate->getAge();
+        }
+
+        // Create a vector with proportional segments to the age of each individual
+        for (auto &candidate: candidates) {
+            position.push_back(static_cast<double>(candidate->getAge()) / sumAge + currentPosition);
+            currentPosition = position.back();
+        }
+
+        // Choose the helper with higher age
+        for (auto candidate = candidates.begin(); candidate != candidates.end(); ++candidate) {
+            if (randP < position[std::distance(candidates.begin(), candidate)]) {
+                Individual &chosenNewBreeder = **candidate;
+
+                // Move the chosen candidate to the front of the vector
+                auto x = *candidate;
+                candidates.erase(candidate);
+                candidates.insert(candidates.begin(), x);
+
+                break;
+            }
+        }
+
+    }
+
+    Individual &chosenNewBreeder = *candidates.front();
+
+    chosenNewBreeder.setAgeBecomeBreeder(chosenNewBreeder.getAge());
+    chosenNewBreeder.setFishType(BREEDER);
+
+
+    if (chosenNewBreeder.isInherit() == 0) //delete the ind from the vector floaters
+    {
+        newBreederOutsider++;
+    } else {
+        newBreederInsider++;
+        inheritance++; //TODO: At the moment, newBreederInsider and inheritance are equivalent
+    }
+
+    candidates.erase(candidates.begin()); // Remove the chosen helper from the candidates vector
+
+    //TODO remove candidate from helpers vector
+//    helpers.erase(std::remove_if(helpers.begin(), helpers.end(),
+//                                 [](const Individual& helper) {
+//                                     return helper.getFishType() == BREEDER;
+//                                 }), helpers.end());
+
+    assert(chosenNewBreeder.getFishType() == BREEDER);
+    return chosenNewBreeder;
 }
 
 
