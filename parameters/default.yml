@@ -27,6 +27,8 @@ Xse: 3    # cost of expulsion of immigrants in survival
 #Modifiers in fecundity
 K0: 1    # min fecundity, fecundity when no help provided.
 Kh: 1    # benefit of cumHelp in the fecundity
+Kt: 1    # benefit of age in the fecundity
+Knb: 1   # cost of number of breeders in the fecundity
 
 
 #Genetic values
@@ -44,13 +46,14 @@ MUTATION_BETA: 0.05         # mutation rate for the propensity to disperse
 STEP_BETA: 0.1             # mutation step size for the propensity to disperse
 
 #For expulsion of immigrants
-INIT_GAMMA: 0.0              #
-MUTATION_GAMMA: 0.05         #
-STEP_GAMMA: 0.1             #
+INIT_GAMMA: 0.0              # bigger values higher expulsion
+MUTATION_GAMMA: 0.05         # mutation rate for the expulsion effort
+STEP_GAMMA: 0.1             # mutation step size for the expulsion effort
 
 #For reproductive concessions
-INIT_DELTA: 0.0             #
-MUTATION_DELTA: 0.05         # mutation rate in delta for level of help
+INIT_DELTA: 0.0             # bigger values higher reproductive share
+MUTATION_DELTA: 0.05         # mutation rate in delta for level of reproductive share
+STEP_DELTA: 0.04            # mutation step size in delta for level of reproductive share
 
 #For relatedness
 MUTATION_DRIFT: 0.05        # mutation rate in the neutral selected value to track level of relatedness

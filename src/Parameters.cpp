@@ -38,6 +38,8 @@ Parameters::Parameters(const string &url) {
     this->Xse = config["Xse"].as<double>();
     this->K0 = config["K0"].as<double>();
     this->Kh = config["Kh"].as<double>();
+    this->Kt = config["Kt"].as<double>();
+    this->Knb = config["Knb"].as<double>();
     this->INIT_ALPHA = config["INIT_ALPHA"].as<double>();
     this->INIT_ALPHA_AGE = config["INIT_ALPHA_AGE"].as<double>();
     this->MUTATION_ALPHA = config["MUTATION_ALPHA"].as<double>();
@@ -51,6 +53,7 @@ Parameters::Parameters(const string &url) {
     this->MUTATION_GAMMA = config["MUTATION_GAMMA"].as<double>();
     this->MUTATION_DELTA = config["MUTATION_DELTA"].as<double>();
     this->STEP_GAMMA = config["STEP_GAMMA"].as<double>();
+    this->STEP_DELTA = config["STEP_DELTA"].as<double>();
     this->MUTATION_DRIFT = config["MUTATION_DRIFT"].as<double>();
     this->STEP_DRIFT = config["STEP_DRIFT"].as<double>();
 
@@ -98,21 +101,24 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "Xn(Benefit_group_size_survival):" << "\t" << this->getXsn() << endl
                  << "Xe(Cost_expulsion_survival):" << "\t" << this->getXse() << endl
                  << "K0(Base_fecundity):" << "\t" << this->getK0() << endl
-            << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
-            << "initAlpha:" << "\t" << this->getInitAlpha() << endl
-            << "initAlphaAge:" << "\t" << this->getInitAlphaAge() << endl
-            << "initBeta:" << "\t" << this->getInitBeta() << endl
-            << "initGamma:" << "\t" << this->getInitGamma() << endl
-            << "initDelta:" << "\t" << this->getInitDelta() << endl
-            << "mutAlpha:" << "\t" << this->getMutationAlpha() << endl
-            << "mutAlphaAge:" << "\t" << this->getMutationAlphaAge() << endl
-            << "mutBeta:" << "\t" << this->getMutationBeta() << endl
-            << "mutGamma:" << "\t" << this->getMutationGamma() << endl
-            << "mutDelta:" << "\t" << this->getMutationDelta() << endl
+                 << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
+                 << "Kt(Benefit_age_fecundity):" << "\t" << this->getKt() << endl
+                 << "Knb(Cost_number_breeders_fecundity):" << "\t" << this->getKnb() << endl
+                 << "initAlpha:" << "\t" << this->getInitAlpha() << endl
+                 << "initAlphaAge:" << "\t" << this->getInitAlphaAge() << endl
+                 << "initBeta:" << "\t" << this->getInitBeta() << endl
+                 << "initGamma:" << "\t" << this->getInitGamma() << endl
+                 << "initDelta:" << "\t" << this->getInitDelta() << endl
+                 << "mutAlpha:" << "\t" << this->getMutationAlpha() << endl
+                 << "mutAlphaAge:" << "\t" << this->getMutationAlphaAge() << endl
+                 << "mutBeta:" << "\t" << this->getMutationBeta() << endl
+                 << "mutGamma:" << "\t" << this->getMutationGamma() << endl
+                 << "mutDelta:" << "\t" << this->getMutationDelta() << endl
                  << "mutDrift:" << "\t" << this->getMutationDrift() << endl
                  << "stepAlpha:" << "\t" << this->getStepAlpha() << endl
                  << "stepBeta:" << "\t" << this->getStepBeta() << endl
                  << "stepGamma:" << "\t" << this->getStepGamma() << endl
+                 << "stepDelta:" << "\t" << this->getStepDelta() << endl
                  << "stepDrift:" << "\t" << this->getStepDrift() << endl << endl;
 }
 
@@ -205,6 +211,14 @@ double Parameters::getKh() const {
     return Kh;
 }
 
+double Parameters::getKt() const {
+    return Kt;
+}
+
+double Parameters::getKnb() const {
+    return Knb;
+}
+
 double Parameters::getInitAlpha() const {
     return INIT_ALPHA;
 }
@@ -255,6 +269,10 @@ double Parameters::getInitDelta() const {
 
 double Parameters::getMutationDelta() const {
     return MUTATION_DELTA;
+}
+
+double Parameters::getStepDelta() const {
+    return STEP_DELTA;
 }
 
 double Parameters::getMutationDrift() const {

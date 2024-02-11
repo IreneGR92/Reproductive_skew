@@ -128,7 +128,8 @@ void Individual::mutate(int generation) // mutate genome of offspring
     std::normal_distribution<double> NormalA(0, parameters->getStepAlpha()); //TODO: could be simplified
     std::normal_distribution<double> NormalB(0, parameters->getStepBeta());
     std::normal_distribution<double> NormalG(0, parameters->getStepGamma());
-    std::normal_distribution<double> NormalD(0, parameters->getStepDrift());
+    std::normal_distribution<double> NormalD(0, parameters->getStepDelta());
+    std::normal_distribution<double> NormalDrift(0, parameters->getStepDrift());
 
     // Alpha
     double mutationAlpha;
@@ -168,13 +169,13 @@ void Individual::mutate(int generation) // mutate genome of offspring
 
     //Delta
     if (parameters->uniform(rng) < parameters->getMutationDelta()) { //TODO: make new step size for delta?
-        delta += NormalG(rng);
+        delta += NormalD(rng);
     }
 
 
     // Drift
     if (parameters->uniform(rng) < parameters->getMutationDrift()) {
-        drift += NormalD(rng);
+        drift += NormalDrift(rng);
     }
 }
 

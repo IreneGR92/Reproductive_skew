@@ -65,6 +65,8 @@ private:
     // Modifiers in fecundity
     double K0;    ///< Minimum fecundity, fecundity when no help provided.
     double Kh;    ///< Benefit of cumulative help in the fecundity.
+    double Kt;    ///<  benefit of age in the fecundity
+    double Knb;   ///<  cost of number of breeders in the fecundity
 
     // Genetic values
 
@@ -90,6 +92,7 @@ private:
     // For reproductive concessions
     double INIT_DELTA;            ///< Initial value for genetic parameter delta.
     double MUTATION_DELTA;        ///< Mutation rate for the propensity for reproductive concessions.
+    double STEP_DELTA;            ///< Mutation step size for the propensity for reproductive concessions.
 
     // For relatedness
     double MUTATION_DRIFT;        ///< Mutation rate in the neutral selected value to track level of relatedness.
@@ -160,6 +163,10 @@ public:
 
     double getKh() const;
 
+    double getKt() const;
+
+    double getKnb() const;
+
     double getInitAlpha() const;
 
     double getInitAlphaAge() const;
@@ -185,6 +192,8 @@ public:
     double getInitDelta() const;
 
     double getMutationDelta() const;
+
+    double getStepDelta() const;
 
     double getMutationDrift() const;
 
