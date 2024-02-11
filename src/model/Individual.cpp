@@ -8,7 +8,7 @@
 //Constructor for reproduction of a Breeder
 Individual::Individual(Individual &individual, FishType fishType, int &generation) {
 
-    if(individual.fishType != BREEDER){
+    if (individual.fishType != BREEDER) {
         std::cout << "Error: only breeders can reproduce" << std::endl;
     }
 
@@ -53,6 +53,7 @@ void Individual::initializeIndividual(FishType type) {
     this->inherit = true;
     this->age = 1;
     this->ageBecomeBreeder = Parameters::NO_VALUE;
+    this->id = Parameters::instance()->nextId();
 
 }
 
@@ -114,7 +115,8 @@ void Individual::calcSurvival(const int &groupSize) {
     } else if (fishType == BREEDER) {
         this->survival = (1 - parameters->getM()) /
                          (1 + exp(-parameters->getX0() -
-                                  parameters->getXsn() * thisGroupSize + parameters->getXse() * this->gamma)); // TODO: add a breeding cost?
+                                  parameters->getXsn() * thisGroupSize +
+                                  parameters->getXse() * this->gamma)); // TODO: add a breeding cost?
     }
 }
 
@@ -253,8 +255,8 @@ int Individual::getAge() const {
     return age;
 }
 
-void Individual::setAgeBecomeBreeder(int ageBecomeBreeder_) {
-    Individual::ageBecomeBreeder = ageBecomeBreeder_;
+void Individual::setAgeBecomeBreeder() {
+    Individual::ageBecomeBreeder = this->age;
 }
 
 bool Individual::isInherit() const {
@@ -307,6 +309,9 @@ bool Individual::isViableBreeder() {
     }
 }
 
+bool Individual::operator==(const Individual &other) const {
+    return (this->id == other.id);
+}
 
 
 

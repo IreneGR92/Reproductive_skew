@@ -17,7 +17,7 @@ class Group {
 private:
     Parameters *parameters; ///< A pointer to the singleton instance of Parameters class.
     double cumHelp; ///< The cumulative help provided by the group.
-    bool breederAlive; ///< A flag indicating if the main breeder is alive.
+    bool mainBreederAlive; ///< A flag indicating if the main breeder is alive.
     int groupSize; ///< The size of the group.
     double fecundity; ///< The fecundity of the group.
     int realFecundity; ///< The real fecundity of the group.
@@ -26,6 +26,8 @@ private:
 
     IndividualVector helpers; ///< A vector of Individual objects that are helpers in the group.
     IndividualVector breeders; ///< A vector of Individual objects that are breeders in the group.
+
+    Individual *selectBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 
 public:
     /**
@@ -79,6 +81,7 @@ public:
      * @param inheritance A reference to the number of inheritance events.
      */
     void newBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
+
 
     /**
      * @brief Calculates the reproductive share of the group.
@@ -138,6 +141,8 @@ public:
      * @param helpers A vector of helpers to be added.
      */
     void addHelpers(std::vector<Individual> &helpers);
+
+    void reassignBreeders(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 
     /**
      * @brief Gets the attribute values of the individuals in the group.

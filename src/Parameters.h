@@ -104,6 +104,7 @@ private:
     std::ofstream *mainWriter; ///< A pointer to the main output stream writer.
     std::ofstream *lastGenerationWriter; ///< A pointer to the last generation output stream writer.
 
+    double idCounter = 0;
 public:
 
     std::uniform_real_distribution<double> driftUniform; ///< A uniform real distribution for drift.
@@ -196,6 +197,10 @@ public:
     std::ofstream *getLastGenerationWriter() const;
 
     std::default_random_engine *getGenerator() const;
+
+    double nextId() {
+        return idCounter++;
+    }
 
     /**
      * @brief Returns the singleton instance of the Parameters class.

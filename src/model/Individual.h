@@ -18,6 +18,7 @@ class Individual {
 private:
     Parameters *parameters; ///< A pointer to the singleton instance of Parameters class.
 
+    double id; ///< The unique identifier of the individual.
     double alpha; ///< Genetic parameter alpha.
     double alphaAge; ///< Genetic parameter alphaAge.
     double beta; ///< Genetic parameter beta.
@@ -63,6 +64,13 @@ public:
      * @param generation The current generation of the simulation.
      */
     Individual(Individual &individual, FishType fishType, int &generation);
+
+    /**
+     * compare function for the individual class
+     * @param other
+     * @return
+     */
+    bool operator==(const Individual &other) const;
 
     /**
      * @brief Constructor for the Individual class.
@@ -113,7 +121,7 @@ public:
 
     int getAge() const;
 
-    void setAgeBecomeBreeder(int ageBecomeBreeder_);
+    void setAgeBecomeBreeder();
 
     void increaseAge(bool alive); //for the breeder
     void increaseAge(); // For helpers and floaters
