@@ -1,4 +1,3 @@
-
 #ifndef CPP_PARAMETERS_H
 #define CPP_PARAMETERS_H
 
@@ -7,99 +6,115 @@
 #include <fstream>
 #include <random>
 
-//Singleton
+/**
+ * @class Parameters
+ * @brief A singleton class that holds the parameters for a population simulation model.
+ *
+ * This class maintains various parameters related to the simulation such as the number of generations, mutation rates, and other genetic parameters.
+ * It provides methods to access these parameters.
+ */
 class Parameters {
 
 public:
+    /**
+     * @brief Default constructor for the Parameters class.
+     */
     Parameters();
 
+    /**
+     * @brief Destructor for the Parameters class.
+     */
     virtual ~Parameters();
 
-    explicit Parameters(const std::string& url);
+    /**
+     * @brief Constructor for the Parameters class that takes a URL.
+     * @param url The URL to load parameters from.
+     */
+    explicit Parameters(const std::string &url);
 
 private:
 
+    std::string name; ///< The name of the simulation.
 
-    std::string name;
-///#Run parameters
-    bool REACTION_NORM_HELP;    //Apply reaction norm to age for dispersal?
-    bool EVOLUTION_HELP_AFTER_DISPERSAL; // help evolves only after the evolution of dispersal?
-    bool NO_GROUP_AUGMENTATION;
-    bool NO_RELATEDNESS;       //Apply implementation to remove the effect of relatedness?
-    bool AGE_NO_INFLUENCE_INHERITANCE; // Age no influence of who inherits territory, randomly sampled from candidate (helpers + sample floaters)
+    // Run parameters
+    bool REACTION_NORM_HELP;    ///< Apply reaction norm to age for dispersal?
+    bool EVOLUTION_HELP_AFTER_DISPERSAL; ///< Help evolves only after the evolution of dispersal?
+    bool NO_GROUP_AUGMENTATION; ///< No group augmentation in the simulation?
+    bool NO_RELATEDNESS;       ///< Apply implementation to remove the effect of relatedness?
+    bool AGE_NO_INFLUENCE_INHERITANCE; ///< Age has no influence on who inherits territory, randomly sampled from candidate (helpers + sample floaters)
 
+    int MAX_COLONIES;     ///< Maximum number of groups or colonies --> breeding spots.
+    int NUM_GENERATIONS;  ///< Number of generations in the simulation.
+    int MAX_NUM_REPLICATES; ///< Maximum number of replicates in the simulation.
+    int SKIP;   ///< Interval between print-outs
 
-    int MAX_COLONIES;     // max number of groups or colonies --> breeding spots.
-    int NUM_GENERATIONS;
-    int MAX_NUM_REPLICATES;
-    int SKIP;   // interval between print-outs
+    // Fixed values
+    int INIT_NUM_HELPERS;     ///< Initial number of helpers per group.
+    int BIAS_FLOAT_BREEDER; ///< Floaters sampled to try to join a group.
+    int MIN_AGE_BECOME_BREEDER; ///< Minimum age for individuals to be able to become breeders.
+    double FIXED_GROUP_SIZE;       ///< In the implementation of no group augmentation, virtual group size for survival for breeder and helpers.
 
-//Fix values
-    int INIT_NUM_HELPERS;     //initial number of helpers per group
-    int BIAS_FLOAT_BREEDER; //floaters sampled to try to join a group
-    int MIN_AGE_BECOME_BREEDER; //minimum age for individuals to be able to become breeders
-    double FIXED_GROUP_SIZE;       //in the implementation of no group augmentation, virtual group size for survival for breeder and helpers
+    // Modifiers in survival.
+    double m;      ///< Base mortality.
+    double n;      ///< Mortality linked to dispersal.
+    double X0;     ///< Base survival without the effect of help or group size.
+    double Xsh;    ///< Cost of help in survival.
+    double Xsn;    ///< Benefit of group size in survival.
+    double Xse;    ///< Cost of expulsion in survival.
 
-// Modifiers in survival.
-    double m;      //base mortality
-    double n;      //mortality linked to dispersal
-    double X0;     //base survival without the effect of help or group size
-    double Xsh;    // cost of help in survival
-    double Xsn;    // benefit of group size in survival
-    double Xse;    // cost expulsion in survival
+    // Modifiers in fecundity
+    double K0;    ///< Minimum fecundity, fecundity when no help provided.
+    double Kh;    ///< Benefit of cumulative help in the fecundity.
 
-//Modifiers in fecundity
-    double K0;    // min fecundity, fecundity when no help provided.
-    double Kh;    // benefit of cumHelp in the fecundity
+    // Genetic values
 
-//Genetic values
+    // For help
+    double INIT_ALPHA;            ///< Initial value for genetic parameter alpha.
+    double INIT_ALPHA_AGE;        ///< Initial value for genetic parameter alphaAge.
 
-//For help
-    double INIT_ALPHA;            // bigger values higher level of help
-    double INIT_ALPHA_AGE;            //linear term for age, positive: higher help with age
+    double MUTATION_ALPHA;        ///< Mutation rate in alpha for level of help.
+    double MUTATION_ALPHA_AGE;    ///< Mutation rate in alphaAge for level of help.
+    double STEP_ALPHA;            ///< Mutation step size in alpha for level of help.
 
-    double MUTATION_ALPHA;            // mutation rate in alpha for level of help
-    double MUTATION_ALPHA_AGE;
-    double STEP_ALPHA;            // mutation step size in alpha for level of help
+    // For dispersal
+    double INIT_BETA;             ///< Initial value for genetic parameter beta.
 
+    double MUTATION_BETA;         ///< Mutation rate for the propensity to disperse.
+    double STEP_BETA;             ///< Mutation step size for the propensity to disperse.
 
-//For dispersal
-    double INIT_BETA;            // bigger values higher dispersal
+    // For expulsion of immigrants
+    double INIT_GAMMA;            ///< Initial value for genetic parameter gamma.
+    double MUTATION_GAMMA;        ///< Mutation rate for the propensity to expel immigrants.
+    double STEP_GAMMA;            ///< Mutation step size for the propensity to expel immigrants.
 
-    double MUTATION_BETA;            // mutation rate for the propensity to disperse
-    double STEP_BETA;            // mutation step size for the propensity to disperse
+    // For reproductive concessions
+    double INIT_DELTA;            ///< Initial value for genetic parameter delta.
+    double MUTATION_DELTA;        ///< Mutation rate for the propensity for reproductive concessions.
 
-//For expulsion of immigrants
-    double INIT_GAMMA;
-    double MUTATION_GAMMA;
-    double STEP_GAMMA;
+    // For relatedness
+    double MUTATION_DRIFT;        ///< Mutation rate in the neutral selected value to track level of relatedness.
+    double STEP_DRIFT;            ///< Mutation step size in the neutral genetic value to track level of relatedness.
 
-//For reproductive concessions
-    double INIT_DELTA;
-    double MUTATION_DELTA;
+    std::default_random_engine *generator; ///< A pointer to the random number generator.
 
-//For relatedness
-    double MUTATION_DRIFT;            // mutation rate in the neutral selected value to track level of relatedness
-    double STEP_DRIFT; // mutation step size in the neutral genetic value to track level of relatedness
+    std::string getName(std::string url); ///< Helper function to get the name of the simulation from a URL.
 
-    std::default_random_engine *generator;
+    void print(std::ofstream &outputStream); ///< Helper function to print the parameters to an output stream.
 
-    std::string getName(std::string url);
-
-    void print(std::ofstream &outputStream);
-
-    std::ofstream *mainWriter;
-    std::ofstream *lastGenerationWriter;
+    std::ofstream *mainWriter; ///< A pointer to the main output stream writer.
+    std::ofstream *lastGenerationWriter; ///< A pointer to the last generation output stream writer.
 
 public:
 
+    std::uniform_real_distribution<double> driftUniform; ///< A uniform real distribution for drift.
+    std::uniform_real_distribution<double> uniform; ///< A uniform real distribution.
 
-    std::uniform_real_distribution<double> driftUniform;
-    std::uniform_real_distribution<double> uniform;
-
+    /**
+     * @brief Prints the parameters to the console.
+     */
     void print();
 
-
+    // Getters for the parameters
     const std::string &getName() const;
 
     bool isReactionNormHelp() const;
@@ -174,7 +189,7 @@ public:
 
     double getStepDrift() const;
 
-    static const int NO_VALUE = -1;
+    static const int NO_VALUE = -1; ///< A constant representing no value.
 
     std::ofstream *getMainWriter() const;
 
@@ -182,6 +197,10 @@ public:
 
     std::default_random_engine *getGenerator() const;
 
+    /**
+     * @brief Returns the singleton instance of the Parameters class.
+     * @return The singleton instance of the Parameters class.
+     */
     static Parameters *instance();
 
 };

@@ -1,7 +1,5 @@
 #include "Population.h"
 #include <vector>
-#include <iostream>
-#include <chrono>
 
 const std::vector<Group> &Population::getGroups() const {
     return groups;
