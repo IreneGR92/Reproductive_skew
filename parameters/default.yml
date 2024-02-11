@@ -6,7 +6,7 @@ NO_RELATEDNESS: false     # Apply implementation to remove the effect of related
 AGE_NO_INFLUENCE_INHERITANCE: false # Age no influence of who inherits territory, randomly sampled from candidate (helpers + sample floaters)
 
 MAX_COLONIES: 100     # max number of groups or colonies
-NUM_GENERATIONS: 5000
+NUM_GENERATIONS: 50000
 MAX_NUM_REPLICATES: 1
 SKIP: 100   # interval between print-outs
 

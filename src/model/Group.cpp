@@ -249,34 +249,6 @@ void Group::mortalityGroup(int &deaths) {
 //        assert(mainBreeder.getFishType() == BREEDER);
 //    }
 
-//    this->transferBreedersToHelpers();
-//
-//    if (!helpers.empty()) {
-//        if (!mainBreederAlive) {
-//            mainBreeder = chooseNewBreeder(newBreederOutsider, newBreederInsider, inheritance);
-//            helpers.erase(std::remove_if(helpers.begin(), helpers.end(),
-//                                         [](const Individual& helper) {
-//                                             return helper.getFishType() == BREEDER;
-//                                         }), helpers.end());
-//
-//            if (mainBreeder.getFishType() == DEAD) {
-//                mainBreederAlive = false;
-//            } else {
-//                mainBreederAlive = true;
-//            }
-//        }
-//    }
-
-//    int reproductiveShare = round(getReproductiveShare() * helpers.size());
-//
-//    for (int i = 0; i < reproductiveShare; i++) {
-//        breeders.emplace_back(chooseNewBreeder(newBreederOutsider, newBreederInsider, inheritance));
-//    }
-//    helpers.erase(std::remove_if(helpers.begin(), helpers.end(),
-//                                 [](const Individual& helper) {
-//                                     return helper.getFishType() == BREEDER;
-//                                 }), helpers.end());
-//}
 
 void Group::transferBreedersToHelpers() {
     // Move breeders to the helper vector
@@ -296,7 +268,6 @@ void Group::transferBreedersToHelpers() {
         // Add the mainBreeder to the helpers vector
         helpers.emplace_back(mainBreeder);
         // Set mainBreederAlive to false as mainBreeder is no longer a breeder
-        mainBreederAlive = false;
     }
 }
 
@@ -402,8 +373,6 @@ void Group::addHelpers(vector<Individual> &helpers) {
 }
 
 Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
-    this->transferBreedersToHelpers();
-
     double sumRank = 0;
     double currentPosition = 0; //age of the previous ind taken from Candidates
     double RandP = parameters->uniform(*parameters->getGenerator());
@@ -513,13 +482,32 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
 
 void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
 
-    auto selectedBreeder = selectBreeder(newBreederOutsider, newBreederInsider, inheritance);
+    this->transferBreedersToHelpers();
 
-    if (selectedBreeder != nullptr) {
-        mainBreeder = *selectedBreeder;
-        mainBreederAlive = true;
-    } else {
-        mainBreederAlive = false;
+    if (!helpers.empty()) {
+
+        //select main breeder
+        auto selectedBreeder = selectBreeder(newBreederOutsider, newBreederInsider, inheritance);
+
+        if (selectedBreeder != nullptr) {
+            mainBreeder = *selectedBreeder;
+            mainBreederAlive = true;
+        } else {
+            mainBreederAlive = false;
+        }
+
+
+        //select subordinate breeders
+        int reproductiveShare = round(getReproductiveShare() * helpers.size());
+
+        for (int i = 0; i < reproductiveShare; i++) {
+
+            selectedBreeder = selectBreeder(newBreederOutsider, newBreederInsider, inheritance);
+            if (selectedBreeder != nullptr) {
+                breeders.emplace_back(*selectedBreeder);
+            }
+        }
+
     }
 
 }
