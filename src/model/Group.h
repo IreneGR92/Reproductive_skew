@@ -29,6 +29,8 @@ private:
 
     Individual *selectBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 
+    void mortalityGroupVector(int &deaths, IndividualVector &individuals);
+
 public:
     /**
      * @brief Default constructor for the Group class.

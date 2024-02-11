@@ -131,27 +131,17 @@ void Group::survivalGroup() {
         helper.calcSurvival(groupSize);
     }
 
+    for (Individual &breeder: breeders) {
+        breeder.calcSurvival(groupSize);
+    }
+
     //Calculate the survival of the mainBreeder
     this->mainBreeder.calcSurvival(groupSize);
 }
 
 void Group::mortalityGroup(int &deaths) {
-
-    vector<Individual, std::allocator<Individual>>::iterator helperIt;
-    helperIt = helpers.begin();
-    int sizeVectorHelpers = helpers.size();
-    int counting = 0;
-    while (!helpers.empty() && sizeVectorHelpers > counting) {
-
-        //Mortality helpers
-        if (parameters->uniform(*parameters->getGenerator()) > helperIt->getSurvival()) {
-            *helperIt = helpers[helpers.size() - 1];
-            helpers.pop_back();
-            counting++;
-            deaths++;
-        } else
-            helperIt++, counting++; //go to next individual
-    }
+    this->mortalityGroupVector(deaths, helpers);
+    this->mortalityGroupVector(deaths, breeders);
 
     //Mortality mainBreeder
     if (parameters->uniform(*parameters->getGenerator()) > mainBreeder.getSurvival()) {
@@ -510,6 +500,24 @@ void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, in
 
     }
 
+}
+
+void Group::mortalityGroupVector(int &deaths, IndividualVector &individuals) {
+    vector<Individual, std::allocator<Individual>>::iterator individualsIt;
+    individualsIt = individuals.begin();
+    int size = individuals.size();
+    int counting = 0;
+    while (!individuals.empty() && size > counting) {
+
+        //Mortality of individuals
+        if (parameters->uniform(*parameters->getGenerator()) > individualsIt->getSurvival()) {
+            *individualsIt = individuals[individuals.size() - 1];
+            individuals.pop_back();
+            counting++;
+            deaths++;
+        } else
+            individualsIt++, counting++; //go to next individual
+    }
 }
 
 
