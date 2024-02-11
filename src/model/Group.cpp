@@ -13,8 +13,7 @@ Group::Group() : mainBreeder(BREEDER) {
 
     mainBreederAlive = true;
     cumHelp = Parameters::NO_VALUE;
-    fecundity = Parameters::NO_VALUE;
-    realFecundity = Parameters::NO_VALUE;
+
 
     for (int i = 0; i < parameters->getInitNumHelpers(); ++i) {
         auto individual = Individual(HELPER);
@@ -350,17 +349,14 @@ void Group::increaseAge() {
 
 /* REPRODUCTION */
 
+
 void Group::reproduce(int generation) { // populate offspring generation
 
-    //Calculate fecundity
-
-    fecundity = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
-
-    poisson_distribution<int> PoissonFecundity(fecundity);
-    realFecundity = PoissonFecundity(*parameters->getGenerator()); //integer number
+    int realFecundity;
 
     //Reproduction
     if (mainBreederAlive) {
+        realFecundity = mainBreeder.calcFecundity(breeders.size(), cumHelp);
         for (int i = 0; i < realFecundity; i++) { //number of offspring dependent on real fecundity
             Individual offspring = Individual(mainBreeder, HELPER, generation);
 
@@ -368,6 +364,16 @@ void Group::reproduce(int generation) { // populate offspring generation
                     offspring); //create a new individual as helper in the group. Call construct to assign the mother genetic values to the offspring, construct calls Mutate function.
         }
     }
+
+    for (Individual &breeder: breeders) {
+        realFecundity = breeder.calcFecundity(breeders.size(), cumHelp);
+        for (int i = 0; i < realFecundity; i++) {
+            Individual offspring = Individual(breeder, HELPER, generation);
+            helpers.emplace_back(
+                    offspring);
+        }
+    }
+
 }
 
 const Individual &Group::getBreeder() const {

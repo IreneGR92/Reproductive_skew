@@ -19,8 +19,7 @@ private:
     double cumHelp; ///< The cumulative help provided by the group.
     bool mainBreederAlive; ///< A flag indicating if the main breeder is alive.
     int groupSize; ///< The size of the group.
-    double fecundity; ///< The fecundity of the group.
-    int realFecundity; ///< The real fecundity of the group.
+
 
     Individual mainBreeder; ///< The main breeder of the group.
 
@@ -75,14 +74,6 @@ public:
      * @param deaths A reference to the number of deaths in the population.
      */
     void mortalityGroup(int &deaths);
-
-    /**
-     * @brief Handles the process of new breeders joining the group.
-     * @param newBreederOutsider A reference to the number of new breeders that were outsiders.
-     * @param newBreederInsider A reference to the number of new breeders that were insiders.
-     * @param inheritance A reference to the number of inheritance events.
-     */
-    void newBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 
 
     /**
@@ -173,14 +164,6 @@ public:
      */
     void transferBreedersToHelpers();
 
-    /**
-     * @brief Chooses a new breeder for the group.
-     * @param newBreederOutsider A reference to the number of new breeders that were outsiders.
-     * @param newBreederInsider A reference to the number of new breeders that were insiders.
-     * @param inheritance A reference to the number of inheritance events.
-     * @return The new breeder of the group.
-     */
-    Individual &chooseNewBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 };
 
 

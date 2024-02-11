@@ -1,4 +1,5 @@
 
+#include <algorithm>
 #include <iostream>
 #include <cassert>
 
@@ -24,6 +25,7 @@ Individual::Individual(Individual &individual, FishType fishType, int &generatio
 
     this->dispersal = Parameters::NO_VALUE;
     this->help = Parameters::NO_VALUE;
+    this->fecundity = Parameters::NO_VALUE;
 
     this->initializeIndividual(fishType);
 
@@ -120,12 +122,26 @@ void Individual::calcSurvival(const int &groupSize) {
 }
 
 
-/*MUTATION OF NEW OFFSPRING*/
+/*REPRODUCTION*/
+
+double Individual::calcFecundity(int breedersSize, double cumHelp) {
+
+    //Calculate fecundity
+    fecundity = (parameters->getK0() + parameters->getKt() * age) /
+                (1 + exp(parameters->getKnb() * breedersSize - parameters->getKh() * cumHelp));
+
+    // Transform fecundity to an integer number
+    std::poisson_distribution<int> PoissonFecundity(fecundity);
+    int realFecundity = PoissonFecundity(*parameters->getGenerator()); //integer number
+
+    return realFecundity;
+}
+
 
 void Individual::mutate(int generation) // mutate genome of offspring
 {
     auto rng = *parameters->getGenerator();
-    std::normal_distribution<double> NormalA(0, parameters->getStepAlpha()); //TODO: could be simplified
+    std::normal_distribution<double> NormalA(0, parameters->getStepAlpha());
     std::normal_distribution<double> NormalB(0, parameters->getStepBeta());
     std::normal_distribution<double> NormalG(0, parameters->getStepGamma());
     std::normal_distribution<double> NormalD(0, parameters->getStepDelta());
@@ -168,7 +184,7 @@ void Individual::mutate(int generation) // mutate genome of offspring
 
 
     //Delta
-    if (parameters->uniform(rng) < parameters->getMutationDelta()) { //TODO: make new step size for delta?
+    if (parameters->uniform(rng) < parameters->getMutationDelta()) {
         delta += NormalD(rng);
     }
 
@@ -314,6 +330,8 @@ bool Individual::isViableBreeder() {
 bool Individual::operator==(const Individual &other) const {
     return (this->id == other.id);
 }
+
+
 
 
 

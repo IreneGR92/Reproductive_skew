@@ -34,8 +34,9 @@ private:
     int age; ///< The age of the individual.
     int ageBecomeBreeder; ///< The age at which the individual became a breeder.
     bool inherit; ///< Flag indicating if the individual inherited the territory or dispersed.
-
+    double fecundity;
     int groupIndex; ///< The index of the group the individual belongs to.
+
 
     /**
      * @brief Mutates the individual.
@@ -56,7 +57,6 @@ public:
      */
     int getGroupIndex() const;
 
-public:
     /**
      * @brief Constructor for the Individual class.
      * @param individual The individual to copy.
@@ -77,6 +77,8 @@ public:
      * @param fishType The type of the individual.
      */
     explicit Individual(FishType fishType);
+
+    double calcFecundity(int breedersSize, double cumHelp);
 
     /**
      * @brief Calculates the dispersal rate of the individual.
