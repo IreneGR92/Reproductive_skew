@@ -78,7 +78,7 @@ public:
      */
     explicit Individual(FishType fishType);
 
-    double calcFecundity(int breedersSize, double cumHelp);
+    double getFecundity(int breedersSize, double cumHelp);
 
     /**
      * @brief Calculates the dispersal rate of the individual.

@@ -124,7 +124,7 @@ void Individual::calcSurvival(const int &groupSize) {
 
 /*REPRODUCTION*/
 
-double Individual::calcFecundity(int breedersSize, double cumHelp) {
+double Individual::getFecundity(int breedersSize, double cumHelp) {
 
     //Calculate fecundity
     fecundity = (parameters->getK0() + parameters->getKt() * age) /

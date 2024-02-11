@@ -84,7 +84,7 @@ std::vector<Individual> Group::reassignNoRelatedness(int index) {
 double Group::getAcceptanceRate() {
 
     double acceptanceRate;
-    double expulssionEffort = 0;
+    double expulsionEffort = 0;
     double gamma;
 
     for (auto &helper: helpers) {
@@ -93,11 +93,11 @@ double Group::getAcceptanceRate() {
         } else {
             gamma = helper.getGamma();
         }
-        expulssionEffort += gamma;
+        expulsionEffort += gamma;
 
     }
 
-    acceptanceRate = 1 - expulssionEffort;
+    acceptanceRate = 1 - expulsionEffort;
     if (acceptanceRate < 0) {
         acceptanceRate = 0;
     }
@@ -356,7 +356,7 @@ void Group::reproduce(int generation) { // populate offspring generation
 
     //Reproduction
     if (mainBreederAlive) {
-        realFecundity = mainBreeder.calcFecundity(breeders.size(), cumHelp);
+        realFecundity = mainBreeder.getFecundity(breeders.size(), cumHelp);
         for (int i = 0; i < realFecundity; i++) { //number of offspring dependent on real fecundity
             Individual offspring = Individual(mainBreeder, HELPER, generation);
 
@@ -366,7 +366,7 @@ void Group::reproduce(int generation) { // populate offspring generation
     }
 
     for (Individual &breeder: breeders) {
-        realFecundity = breeder.calcFecundity(breeders.size(), cumHelp);
+        realFecundity = breeder.getFecundity(breeders.size(), cumHelp);
         for (int i = 0; i < realFecundity; i++) {
             Individual offspring = Individual(breeder, HELPER, generation);
             helpers.emplace_back(

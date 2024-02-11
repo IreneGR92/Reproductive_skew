@@ -5,8 +5,8 @@ NO_GROUP_AUGMENTATION: false
 NO_RELATEDNESS: false     # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false # Age no influence of who inherits territory, randomly sampled from candidate (helpers + sample floaters)
 
-MAX_COLONIES: 100     # max number of groups or colonies
-NUM_GENERATIONS: 5000
+MAX_COLONIES: 300     # max number of groups or colonies
+NUM_GENERATIONS: 20000
 MAX_NUM_REPLICATES: 1
 SKIP: 100   # interval between print-outs
 
@@ -18,17 +18,17 @@ FIXED_GROUP_SIZE: 3		# in implementation "no group augmentation", virtual group 
 
 # Modifiers in survival
 m: 0.2    # mortality due to predation
-n: 1.2      # multiplier to m for lower mortality of floaters (only in the new logistic survival formula)
-X0: 1.5   # base survival without the effect of help or group size
+n: 1.2      # multiplier to m for lower mortality of floaters
+X0: 1   # base survival without the effect of help or group size
 Xsh: 4    # cost of help in survival
 Xsn: 3    # benefit of group size in survival
 Xse: 3    # cost of expulsion of immigrants in survival
 
 #Modifiers in fecundity
-K0: 1    # min fecundity, fecundity when no help provided.
-Kh: 1    # benefit of cumHelp in the fecundity
-Kt: 1    # benefit of age in the fecundity
-Knb: 1   # cost of number of breeders in the fecundity
+K0: 1    # baseline fecundity when no other factors influence it
+Kh: 0.5    # benefit of cumHelp in the fecundity
+Kt: 0.1    # benefit of age in the fecundity
+Knb: 2   # cost of number of breeders in the fecundity
 
 
 #Genetic values
