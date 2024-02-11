@@ -115,11 +115,12 @@ void Individual::calcSurvival(const int &groupSize) {
     } else if (fishType == BREEDER) {
         this->survival = (1 - parameters->getM()) /
                          (1 + exp(-parameters->getX0() -
-                                  parameters->getXsn() * thisGroupSize +
-                                  parameters->getXse() * this->gamma)); // TODO: add a breeding cost?
+                                  parameters->getXsn() * thisGroupSize + parameters->getXse() * this->gamma)); // TODO: add a breeding cost?
     }
 }
 
+
+/*MUTATION OF NEW OFFSPRING*/
 
 void Individual::mutate(int generation) // mutate genome of offspring
 {
