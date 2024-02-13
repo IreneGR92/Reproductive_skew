@@ -16,6 +16,7 @@ Group::Group() : mainBreeder(BREEDER) {
     cumHelp = Parameters::NO_VALUE;
     acceptanceRate = Parameters::NO_VALUE;
     acceptedFloatersSize = Parameters::NO_VALUE;
+    reproductiveShareRate = Parameters::NO_VALUE;
 
 
     for (int i = 0; i < parameters->getInitNumHelpers(); ++i) {
@@ -82,7 +83,7 @@ std::vector<Individual> Group::reassignNoRelatedness(int index) {
     return noRelatedHelpers;
 }
 
-/*  CALCULATE ACCEPTANCE RATE FOR IMMIGRANTS */
+/*  ACCEPTANCE OF IMMIGRANTS */
 
 void Group::calcAcceptanceRate() {
 
@@ -108,12 +109,11 @@ void Group::calcAcceptanceRate() {
 // Calculates the proportion of floaters that should be considered for immigration into the current group, based on the biasFloatBreeder parameter, the total number of colonies and the acceptance rate of the group.
 std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters) {
 
-    int numSampledFloaters = parameters->getBiasFloatBreeder();
-
 // Shuffle the floaters vector
     std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
 
 // Take a sample of floaters based on biasFloatBreeder
+    int numSampledFloaters = parameters->getBiasFloatBreeder();
     if (numSampledFloaters > floaters.size()) {
         numSampledFloaters = round(floaters.size() / parameters->getMaxColonies());
     }
@@ -216,7 +216,8 @@ void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, in
 
 
         //select subordinate breeders
-        int reproductiveShare = round(getReproductiveShare() * helpers.size());
+        this->calcReproductiveShareRate();
+        int reproductiveShare = round(reproductiveShareRate * helpers.size());
 
         for (int i = 0; i < reproductiveShare; i++) {
 
@@ -344,16 +345,12 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
     return selectedBreeder;
 }
 
-double Group::getReproductiveShare() {
+void Group::calcReproductiveShareRate() {
 
-    double reproductiveShare;
-
-    reproductiveShare = 1 - mainBreeder.getDelta();
-    if (reproductiveShare < 0) {
-        reproductiveShare = 0;
+    reproductiveShareRate = 1 - mainBreeder.getDelta();
+    if (reproductiveShareRate < 0) {
+        reproductiveShareRate = 0;
     }
-
-    return reproductiveShare;
 }
 
 
@@ -403,16 +400,20 @@ void Group::reproduce(int generation) { // populate offspring generation
 
 }
 
+
+
+/* GETTERS */
+
 const Individual &Group::getBreeder() const {
     return mainBreeder;
 }
 
-int Group::getGroupSize() const {
-    return groupSize;
-}
-
 bool Group::isBreederAlive() const {
     return mainBreederAlive;
+}
+
+int Group::getGroupSize() const {
+    return groupSize;
 }
 
 double Group::getCumHelp() const {
@@ -421,6 +422,10 @@ double Group::getCumHelp() const {
 
 double Group::getAcceptanceRate() const {
     return acceptanceRate;
+}
+
+double Group::getReproductiveShareRate() const {
+    return reproductiveShareRate;
 }
 
 std::vector<double> Group::get(Attribute attribute, bool includeBreeder) const {
@@ -457,6 +462,8 @@ void Group::addHelpers(vector<Individual> &helpers) {
         this->addHelper(helper);
     }
 }
+
+
 
 
 

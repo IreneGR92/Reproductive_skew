@@ -14,7 +14,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     //Counters
     population = 0, totalFloaters = 0, totalHelpers = 0, totalBreeders = 0,
 
-            //Relatedness
+    //Relatedness
     relatedness = 0.0;
 
 
