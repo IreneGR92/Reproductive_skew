@@ -17,6 +17,9 @@ Group::Group() : mainBreeder(BREEDER) {
     acceptanceRate = Parameters::NO_VALUE;
     acceptedFloatersSize = Parameters::NO_VALUE;
     reproductiveShareRate = Parameters::NO_VALUE;
+    offspringMainBreeder = 0;
+    offspringSubordinateBreeders = 0;
+    totalOffspringGroup = 0;
 
 
     for (int i = 0; i < parameters->getInitNumHelpers(); ++i) {
@@ -373,32 +376,32 @@ void Group::increaseAge() {
 
 /* REPRODUCTION */
 
-
 void Group::reproduce(int generation) { // populate offspring generation
 
     int realFecundity;
+    offspringSubordinateBreeders = 0;
 
     //Reproduction
     if (mainBreederAlive) {
         realFecundity = mainBreeder.getFecundity(breeders.size(), cumHelp);
+        offspringMainBreeder = realFecundity;
         for (int i = 0; i < realFecundity; i++) { //number of offspring dependent on real fecundity
             Individual offspring = Individual(mainBreeder, HELPER, generation);
-
-            helpers.emplace_back(
-                    offspring); //create a new individual as helper in the group. Call construct to assign the mother genetic values to the offspring, construct calls Mutate function.
+            helpers.emplace_back(offspring); //create a new individual as helper in the group. Call construct to assign the mother genetic values to the offspring, construct calls Mutate function.
         }
     }
 
     for (Individual &breeder: breeders) {
         realFecundity = breeder.getFecundity(breeders.size(), cumHelp);
+        offspringSubordinateBreeders += realFecundity;
         for (int i = 0; i < realFecundity; i++) {
             Individual offspring = Individual(breeder, HELPER, generation);
-            helpers.emplace_back(
-                    offspring);
+            helpers.emplace_back(offspring);
         }
     }
-
+    totalOffspringGroup = offspringMainBreeder + offspringSubordinateBreeders;
 }
+
 
 
 
@@ -427,6 +430,19 @@ double Group::getAcceptanceRate() const {
 double Group::getReproductiveShareRate() const {
     return reproductiveShareRate;
 }
+
+int Group::getOffspringMainBreeder() const {
+    return offspringMainBreeder;
+}
+
+int Group::getOffspringSubordinateBreeders() const {
+    return offspringSubordinateBreeders;
+}
+
+int Group::getTotalOffspringGroup() const {
+    return totalOffspringGroup;
+}
+
 
 std::vector<double> Group::get(Attribute attribute, bool includeBreeder) const {
     std::vector<double> result;

@@ -103,7 +103,6 @@ void Population::immigrate() {
 }
 
 
-
 void Population::help() {
     for (Group &group: groups) {
         //Calculate help & cumulative help for group

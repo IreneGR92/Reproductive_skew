@@ -22,6 +22,9 @@ private:
     double acceptanceRate; ///< The acceptance rate of immigrants to the group.
     int acceptedFloatersSize; ///< Number of immigrants accepted by the group.
     double reproductiveShareRate; ///< Rate of how many helpers are allowed to breeder in the group.
+    int offspringMainBreeder;
+    int offspringSubordinateBreeders;
+    int totalOffspringGroup;
 
 
     Individual mainBreeder; ///< The main breeder of the group.
@@ -76,6 +79,12 @@ public:
 
     double getReproductiveShareRate() const;
 
+    int getOffspringMainBreeder() const;
+
+    int getOffspringSubordinateBreeders() const;
+
+    int getTotalOffspringGroup() const;
+
     bool hasHelpers() const;
 
     void addHelper(Individual &helper);
@@ -87,6 +96,8 @@ public:
     std::vector<double> get(Attribute attribute) const;
 
     std::vector<double> get(Attribute attribute, bool includeBreeder) const;
+
+
 
 };
 
