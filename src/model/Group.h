@@ -19,6 +19,7 @@ private:
     double cumHelp; ///< The cumulative help provided by the group.
     bool mainBreederAlive; ///< A flag indicating if the main breeder is alive.
     int groupSize; ///< The size of the group.
+    double acceptanceRate; ///< The acceptance rate of immigrants to the group.
 
 
     Individual mainBreeder; ///< The main breeder of the group.
@@ -51,7 +52,7 @@ public:
      * @brief Calculates the acceptance rate of the group.
      * @return The acceptance rate of the group.
      */
-    double getAcceptanceRate();
+    void calcAcceptanceRate();
 
     /**
      * @brief Calculates the cumulative help provided by the group.
@@ -104,6 +105,8 @@ public:
      * @return The size of the group.
      */
     int getGroupSize() const;
+
+    double getAcceptanceRate () const;
 
     /**
      * @brief Checks if the main breeder is alive.

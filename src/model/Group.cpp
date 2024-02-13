@@ -13,6 +13,7 @@ Group::Group() : mainBreeder(BREEDER) {
 
     mainBreederAlive = true;
     cumHelp = Parameters::NO_VALUE;
+    acceptanceRate = Parameters::NO_VALUE;
 
 
     for (int i = 0; i < parameters->getInitNumHelpers(); ++i) {
@@ -81,9 +82,8 @@ std::vector<Individual> Group::reassignNoRelatedness(int index) {
 
 /*  CALCULATE ACCEPTANCE RATE FOR IMMIGRANTS */
 
-double Group::getAcceptanceRate() {
+void Group::calcAcceptanceRate() {
 
-    double acceptanceRate;
     double expulsionEffort = 0;
     double gamma;
 
@@ -101,8 +101,6 @@ double Group::getAcceptanceRate() {
     if (acceptanceRate < 0) {
         acceptanceRate = 0;
     }
-
-    return acceptanceRate;
 }
 
 
@@ -392,6 +390,10 @@ double Group::getCumHelp() const {
     return cumHelp;
 }
 
+double Group::getAcceptanceRate() const {
+    return acceptanceRate;
+}
+
 std::vector<double> Group::get(Attribute attribute, bool includeBreeder) const {
     std::vector<double> result;
     if (includeBreeder && isBreederAlive()) {
@@ -426,6 +428,8 @@ void Group::addHelpers(vector<Individual> &helpers) {
         this->addHelper(helper);
     }
 }
+
+
 
 
 

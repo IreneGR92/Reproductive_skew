@@ -120,6 +120,7 @@ std::vector<Individual> Population::getAcceptedFloaters(Group &group) {
     std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + numSampledFloaters);
 
 // Calculate the number of floaters that should be accepted by the group
+    group.calcAcceptanceRate();
     acceptedFloatersSize = round(sampleFloaters.size() * group.getAcceptanceRate());
 
 // Take a subsample of floaters based on the acceptance rate of the group
