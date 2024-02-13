@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <vector>
 #include "Group.h"
 #include "FishType.h"
 
@@ -14,6 +15,7 @@ Group::Group() : mainBreeder(BREEDER) {
     mainBreederAlive = true;
     cumHelp = Parameters::NO_VALUE;
     acceptanceRate = Parameters::NO_VALUE;
+    acceptedFloatersSize = Parameters::NO_VALUE;
 
 
     for (int i = 0; i < parameters->getInitNumHelpers(); ++i) {
@@ -102,6 +104,33 @@ void Group::calcAcceptanceRate() {
         acceptanceRate = 0;
     }
 }
+
+// Calculates the proportion of floaters that should be considered for immigration into the current group, based on the biasFloatBreeder parameter, the total number of colonies and the acceptance rate of the group.
+std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters) {
+
+    int numSampledFloaters = parameters->getBiasFloatBreeder();
+
+// Shuffle the floaters vector
+    std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
+
+// Take a sample of floaters based on biasFloatBreeder
+    if (numSampledFloaters > floaters.size()) {
+        numSampledFloaters = round(floaters.size() / parameters->getMaxColonies());
+    }
+    std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + numSampledFloaters);
+
+// Calculate the number of floaters that should be accepted by the group
+    this->calcAcceptanceRate();
+    acceptedFloatersSize = round(sampleFloaters.size() * acceptanceRate);
+
+// Take a subsample of floaters based on the acceptance rate of the group
+    std::vector<Individual> acceptedFloaters(sampleFloaters.begin(), sampleFloaters.begin() + acceptedFloatersSize);
+    // Remove the selected floaters from the original floaters vector
+    floaters.erase(floaters.begin(), floaters.begin() + acceptedFloatersSize);
+
+    return acceptedFloaters;
+}
+
 
 
 /*  CALCULATE CUMULATIVE LEVEL OF HELP */

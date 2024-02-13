@@ -95,41 +95,13 @@ void Population::immigrate() {
         for (int i: indices) {
             Group &group = groups[i];
             // Add new helpers to the group
-            auto newHelpers = this->getAcceptedFloaters(
-                    group); //  gets a list of floaters that are accepted by the current group.
+            auto newHelpers = group.getAcceptedFloaters(floaters); //  gets a list of floaters that are accepted by the current group.
             group.addHelpers(newHelpers);
 
         }
     }
 }
 
-
-// Calculates the proportion of floaters that should be considered for immigration into the current group, based on the biasFloatBreeder parameter, the total number of colonies and the acceptance rate of the group.
-std::vector<Individual> Population::getAcceptedFloaters(Group &group) {
-
-    int numSampledFloaters = parameters->getBiasFloatBreeder();
-    int acceptedFloatersSize;
-
-// Shuffle the floaters vector
-    std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
-
-// Take a sample of floaters based on biasFloatBreeder
-    if (numSampledFloaters > floaters.size()) {
-        numSampledFloaters = round(floaters.size() / parameters->getMaxColonies());
-    }
-    std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + numSampledFloaters);
-
-// Calculate the number of floaters that should be accepted by the group
-    group.calcAcceptanceRate();
-    acceptedFloatersSize = round(sampleFloaters.size() * group.getAcceptanceRate());
-
-// Take a subsample of floaters based on the acceptance rate of the group
-    std::vector<Individual> acceptedFloaters(sampleFloaters.begin(), sampleFloaters.begin() + acceptedFloatersSize);
-    // Remove the selected floaters from the original floaters vector
-    floaters.erase(floaters.begin(), floaters.begin() + acceptedFloatersSize);
-
-    return acceptedFloaters;
-}
 
 
 void Population::help() {

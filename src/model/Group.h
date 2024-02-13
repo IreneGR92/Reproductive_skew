@@ -20,6 +20,7 @@ private:
     bool mainBreederAlive; ///< A flag indicating if the main breeder is alive.
     int groupSize; ///< The size of the group.
     double acceptanceRate; ///< The acceptance rate of immigrants to the group.
+    int acceptedFloatersSize; ///< Number of immigrants accepted by the group.
 
 
     Individual mainBreeder; ///< The main breeder of the group.
@@ -167,6 +168,7 @@ public:
      */
     void transferBreedersToHelpers();
 
+    std::vector<Individual> getAcceptedFloaters(IndividualVector &floaters);
 };
 
 

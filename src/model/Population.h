@@ -25,12 +25,6 @@ private:
 
     int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0; ///< Statistics related to new breeders and inheritance.
 
-    /**
-     * @brief Returns a list of floaters that are accepted by a given group.
-     * @param group The group to check for accepted floaters.
-     * @return A vector of Individual objects that are accepted by the group.
-     */
-    std::vector<Individual> getAcceptedFloaters(Group &group);
 
 public:
     /**
