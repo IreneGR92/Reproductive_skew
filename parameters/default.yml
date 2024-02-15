@@ -19,7 +19,7 @@ FIXED_GROUP_SIZE: 3		# in implementation "no group augmentation", virtual group 
 # Modifiers in survival
 m: 0.2    # mortality due to predation
 n: 1.2      # multiplier to m for lower mortality of floaters
-X0: 1   # base survival without the effect of help or group size
+X0: 1     # base survival without the effect of help or group size
 Xsh: 4    # cost of help in survival
 Xsn: 3    # benefit of group size in survival
 Xse: 3    # cost of expulsion of immigrants in survival
@@ -52,7 +52,7 @@ STEP_GAMMA: 0.1             # mutation step size for the expulsion effort
 
 #For reproductive concessions
 INIT_DELTA: 0.0             # bigger values higher reproductive share
-MUTATION_DELTA: 0.05         # mutation rate in delta for level of reproductive share
+MUTATION_DELTA: 0.05        # mutation rate in delta for level of reproductive share
 STEP_DELTA: 0.04            # mutation step size in delta for level of reproductive share
 
 #For relatedness

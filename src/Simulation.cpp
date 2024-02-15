@@ -51,7 +51,7 @@ void Simulation::run() {
         }*/
 
         population.mortality();
-        population.newBreeder();
+        population.reassingBreeder();
 
         // Print main file (separately since we need values of deaths, newBreederFloater, newBreederHelper and inheritance to be calculated)
         if (generation % parameters->getSkip() == 0) {

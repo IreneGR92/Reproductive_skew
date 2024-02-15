@@ -171,10 +171,6 @@ void Individual::mutate(int generation) // mutate genome of offspring
     // Beta
     if (parameters->uniform(rng) < parameters->getMutationBeta()) {
         beta += NormalB(rng);
-
-        //if (beta < 0.5) { beta = 0.5; }
-        //else if (beta > 1) { beta = 1; }
-
     }
 
     // Gamma

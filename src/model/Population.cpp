@@ -126,7 +126,7 @@ void Population::survivalGroup() {
 
 void Population::survivalFloaters() {
     for (Individual &floater: floaters) {
-        floater.calcSurvival(0); // TODO:Change to 1?
+        floater.calcSurvival(0);
     }
 }
 
@@ -164,7 +164,7 @@ void Population::mortalityFloaters() {
 
 void Population::reassingBreeder() {
     for (Group &group: groups) {
-        if (!group.isBreederAlive()) {
+        if (!group.isBreederAlive()) { //TODO: remove this if statement
             group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
         }
     }
