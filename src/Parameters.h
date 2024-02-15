@@ -58,9 +58,10 @@ private:
     double m;      ///< Base mortality.
     double n;      ///< Mortality linked to dispersal.
     double X0;     ///< Base survival without the effect of help or group size.
-    double Xsh;    ///< Cost of help in survival.
-    double Xsn;    ///< Benefit of group size in survival.
-    double Xse;    ///< Cost of expulsion in survival.
+    double Xh;    ///< Cost of help in survival.
+    double Xn;    ///< Benefit of group size in survival.
+    double Xe;    ///< Cost of expulsion in survival.
+    double Xrs;   ///< Cost of reproductive suppression in survival.
 
     // Modifiers in fecundity
     double K0;    ///< Minimum fecundity, fecundity when no help provided.
@@ -153,11 +154,13 @@ public:
 
     double getX0() const;
 
-    double getXsh() const;
+    double getXh() const;
 
-    double getXsn() const;
+    double getXn() const;
 
-    double getXse() const;
+    double getXe() const;
+
+    double getXrs() const;
 
     double getK0() const;
 

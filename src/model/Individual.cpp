@@ -112,12 +112,12 @@ void Individual::calcSurvival(const int &groupSize) {
         this->survival = (1 - parameters->getM() * parameters->getN()) / (1 + exp(-parameters->getX0()));
     } else if (fishType == HELPER) {
         this->survival = (1 - parameters->getM()) /
-                         (1 + exp(-parameters->getX0() - parameters->getXsn() * thisGroupSize +
-                                  parameters->getXsh() * this->help + parameters->getXse() * this->gamma));
+                         (1 + exp(-parameters->getX0() - parameters->getXn() * thisGroupSize +
+                                  parameters->getXh() * this->help + parameters->getXe() * this->gamma));
     } else if (fishType == BREEDER) {
         this->survival = (1 - parameters->getM()) /
                          (1 + exp(-parameters->getX0() -
-                                  parameters->getXsn() * thisGroupSize + parameters->getXse() * this->gamma)); // TODO: add a breeding cost?
+                                  parameters->getXn() * thisGroupSize + parameters->getXe() * this->gamma)); // TODO: add a breeding cost?
     }
 }
 

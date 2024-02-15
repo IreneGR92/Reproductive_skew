@@ -33,9 +33,9 @@ Parameters::Parameters(const string &url) {
     this->m = config["m"].as<double>();
     this->n = config["n"].as<double>();
     this->X0 = config["X0"].as<double>();
-    this->Xsh = config["Xsh"].as<double>();
-    this->Xsn = config["Xsn"].as<double>();
-    this->Xse = config["Xse"].as<double>();
+    this->Xh = config["Xh"].as<double>();
+    this->Xn = config["Xn"].as<double>();
+    this->Xe = config["Xe"].as<double>();
     this->K0 = config["K0"].as<double>();
     this->Kh = config["Kh"].as<double>();
     this->Kt = config["Kt"].as<double>();
@@ -97,9 +97,10 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "m(Overall_mortality):" << "\t" << this->getM() << endl
                  << "n(Mortality_dispersal):" << "\t" << this->getN() << endl
                  << "X0(intercept):" << "\t" << this->getX0() << endl
-                 << "Xh(Cost_help_survival):" << "\t" << this->getXsh() << endl
-                 << "Xn(Benefit_group_size_survival):" << "\t" << this->getXsn() << endl
-                 << "Xe(Cost_expulsion_survival):" << "\t" << this->getXse() << endl
+                 << "Xh(Cost_help_survival):" << "\t" << this->getXh() << endl
+                 << "Xn(Benefit_group_size_survival):" << "\t" << this->getXn() << endl
+                 << "Xe(Cost_expulsion_survival):" << "\t" << this->getXe() << endl
+                 << "Xrs(Reproductive_suppression_survival):" << "\t" << this->getXrs() << endl
                  << "K0(Base_fecundity):" << "\t" << this->getK0() << endl
                  << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
                  << "Kt(Benefit_age_fecundity):" << "\t" << this->getKt() << endl
@@ -191,16 +192,20 @@ double Parameters::getX0() const {
     return X0;
 }
 
-double Parameters::getXsh() const {
-    return Xsh;
+double Parameters::getXh() const {
+    return Xh;
 }
 
-double Parameters::getXsn() const {
-    return Xsn;
+double Parameters::getXn() const {
+    return Xn;
 }
 
-double Parameters::getXse() const {
-    return Xse;
+double Parameters::getXe() const {
+    return Xe;
+}
+
+double Parameters::getXrs() const {
+    return Xrs;
 }
 
 double Parameters::getK0() const {
