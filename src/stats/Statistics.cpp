@@ -102,6 +102,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 
     help.addValues(helpers.get(HELP));
     dispersal.addValues(helpers.get(DISPERSAL));
+    fecundity.addValues(individualsAll.get(FECUNDITY));
 
     survival.addValues(individualsAll.get(SURVIVAL));
     survivalHelpers.addValues(helpers.get(SURVIVAL));
