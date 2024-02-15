@@ -20,20 +20,18 @@ private:
     Parameters *parameters; ///< A pointer to the singleton instance of Parameters class.
 
     // Population parameters and Statistics
-    int population, totalFloaters, totalHelpers, totalBreeders; // Counters
+    int population, totalFloaters, totalHelpers, totalMainBreeders, totalSubordinateBreeders; // Counters
 
     double relatedness; ///< The relatedness in the population.
 
     // StatisticalFormulas objects for various statistics
-    StatisticalFormulas groupSize;
-    StatisticalFormulas age, ageBreeders, ageFloaters, ageHelpers, ageBecomeBreeder;
-    StatisticalFormulas alpha, alphaAge;
-    StatisticalFormulas beta;
-    StatisticalFormulas gamma, delta;
+    StatisticalFormulas groupSize, numOfSubBreeders;
+    StatisticalFormulas age, ageBreeders, ageFloaters, ageHelpers, ageBecomeBreeder; //age
+    StatisticalFormulas alpha, alphaAge, beta, gamma, delta; //genetic parameters
     StatisticalFormulas help, cumulativeHelp;
-    StatisticalFormulas dispersal, dispersalHelpers;
-    StatisticalFormulas task;
+    StatisticalFormulas dispersal, acceptanceRate;
     StatisticalFormulas survival, survivalBreeders, survivalFloaters, survivalHelpers;
+    StatisticalFormulas fecundity, reproductiveShareRate, offspringMainBreeder, offspringOfSubordinateBreeders, totalOffspringGroup;
     StatisticalFormulas driftB, driftH, driftBB, driftHB; // Relatedness
 
     /**

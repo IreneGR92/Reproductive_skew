@@ -383,7 +383,7 @@ void Group::reproduce(int generation) { // populate offspring generation
 
     //Reproduction
     if (mainBreederAlive) {
-        realFecundity = mainBreeder.getFecundity(breeders.size(), cumHelp);
+        realFecundity = mainBreeder.returnFecundity(breeders.size(), cumHelp);
         offspringMainBreeder = realFecundity;
         for (int i = 0; i < realFecundity; i++) { //number of offspring dependent on real fecundity
             Individual offspring = Individual(mainBreeder, HELPER, generation);
@@ -392,7 +392,7 @@ void Group::reproduce(int generation) { // populate offspring generation
     }
 
     for (Individual &breeder: breeders) {
-        realFecundity = breeder.getFecundity(breeders.size(), cumHelp);
+        realFecundity = breeder.returnFecundity(breeders.size(), cumHelp);
         offspringSubordinateBreeders += realFecundity;
         for (int i = 0; i < realFecundity; i++) {
             Individual offspring = Individual(breeder, HELPER, generation);
@@ -407,7 +407,7 @@ void Group::reproduce(int generation) { // populate offspring generation
 
 /* GETTERS */
 
-const Individual &Group::getBreeder() const {
+const Individual &Group::getMainBreeder() const {
     return mainBreeder;
 }
 
@@ -471,6 +471,10 @@ void Group::addHelper(Individual &helper) {
 
 const IndividualVector &Group::getHelpers() const {
     return helpers;
+}
+
+const IndividualVector &Group::getSubordinateBreeders() const {
+    return breeders;
 }
 
 void Group::addHelpers(vector<Individual> &helpers) {

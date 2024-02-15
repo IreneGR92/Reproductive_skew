@@ -67,7 +67,7 @@ public:
     void reproduce(int generation);
 
 
-    const Individual &getBreeder() const;
+    const Individual &getMainBreeder() const;
 
     bool isBreederAlive() const;
 
@@ -92,6 +92,8 @@ public:
     void addHelpers(std::vector<Individual> &helpers);
 
     const IndividualVector &getHelpers() const;
+
+    const IndividualVector &getSubordinateBreeders() const;
 
     std::vector<double> get(Attribute attribute) const;
 

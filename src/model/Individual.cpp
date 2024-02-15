@@ -124,7 +124,7 @@ void Individual::calcSurvival(const int &groupSize) {
 
 /*REPRODUCTION*/
 
-double Individual::getFecundity(int breedersSize, double cumHelp) {
+double Individual::returnFecundity(int breedersSize, double cumHelp) {
 
     //Calculate fecundity
     fecundity = (parameters->getK0() + parameters->getKt() * age) /
@@ -252,6 +252,10 @@ void Individual::setHelp(double help_) {
 
 double Individual::getSurvival() const {
     return survival;
+}
+
+double Individual::getFecundity() const {
+    return fecundity;
 }
 
 FishType Individual::getFishType() const {

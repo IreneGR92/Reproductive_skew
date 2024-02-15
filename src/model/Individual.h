@@ -78,7 +78,7 @@ public:
      */
     explicit Individual(FishType fishType);
 
-    double getFecundity(int breedersSize, double cumHelp);
+    double returnFecundity(int breedersSize, double cumHelp);
 
     /**
      * @brief Calculates the dispersal rate of the individual.
@@ -136,6 +136,8 @@ public:
     void setGroupIndex(int groupIndex);
 
     bool isViableBreeder();
+
+    double getFecundity() const;
 };
 
 
