@@ -27,111 +27,49 @@ private:
 
 
 public:
-    /**
-     * @brief Getter for the number of new breeders that were outsiders.
-     * @return The number of new breeders that were outsiders.
-     */
-    int getNewBreederOutsider() const;
 
-    /**
-     * @brief Getter for the number of new breeders that were insiders.
-     * @return The number of new breeders that were insiders.
-     */
-    int getNewBreederInsider() const;
-
-    /**
-     * @brief Getter for the number of inheritance events.
-     * @return The number of inheritance events.
-     */
-    int getInheritance() const;
-
-public:
-    /**
-     * @brief Getter for the groups in the population.
-     * @return A vector of Group objects in the population.
-     */
     const std::vector<Group> &getGroups() const;
 
-    /**
-     * @brief Getter for the floaters in the population.
-     * @return A vector of Individual objects that are floaters in the population.
-     */
     const IndividualVector &getFloaters() const;
 
-    /**
-     * @brief Default constructor for the Population class.
-     */
-    Population();
-
-    /**
-     * @brief Handles the dispersal of individuals within the population.
-     * @param generation The current generation of the simulation.
-     */
-    void disperse(int generation);
-
-    /**
-     * @brief Calculates the cumulative help for each group.
-     */
-    void help();
-
-    /**
-     * @brief Handles the survival process for groups.
-     */
-    void survival();
-
-    /**
-     * @brief Handles the mortality process for groups.
-     */
-    void mortality();
-
-    /**
-     * @brief Handles the process of new breeders joining groups.
-     */
-    void newBreeder();
-
-    /**
-     * @brief Increases the age of individuals in groups.
-     */
-    void increaseAge();
-
-    /**
-     * @brief Increases the age of floaters.
-     */
-    void increaseAgeFloaters();
-
-    /**
-     * @brief Handles the reproduction process within groups.
-     * @param generation The current generation of the simulation.
-     */
-    void reproduce(int generation);
-
-    /**
-     * @brief Handles the survival process for floaters.
-     */
-    void survivalFloaters();
-
-    /**
-     * @brief Getter for the number of deaths in the population.
-     * @return The number of deaths in the population.
-     */
     int getDeaths() const;
 
-    /**
-     * @brief Handles the mortality process for floaters.
-     */
-    void mortalityFloaters();
-
-    /**
-     * @brief Resets the statistics for the population.
-     */
     void reset();
 
-    /**
-     * @brief Handles the immigration of individuals to different groups.
-     */
+    Population();
+
+    void disperse(int generation);
+
     void immigrate();
 
-public:
+    void help();
+
+    void survival();
+
+    void survivalGroup();
+
+    void survivalFloaters();
+
+    void mortality();
+
+    void mortalityGroup();
+
+    void mortalityFloaters();
+
+    void reassingBreeder();
+
+    void increaseAge();
+
+    void increaseAgeFloaters();
+
+    void reproduce(int generation);
+
+    int getNewBreederOutsider() const;
+
+    int getNewBreederInsider() const;
+
+    int getInheritance() const;
+
 };
 
 

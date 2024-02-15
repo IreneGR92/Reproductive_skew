@@ -117,6 +117,12 @@ void Population::survival() {
     this->survivalFloaters();
 }
 
+void Population::survivalGroup() {
+    for (Group &group: groups) {
+        group.survivalGroup();
+    }
+}
+
 
 void Population::survivalFloaters() {
     for (Individual &floater: floaters) {
@@ -130,6 +136,12 @@ void Population::mortality() {
     }
     this->mortalityFloaters();
 
+}
+
+void Population::mortalityGroup() {
+    for (Group &group: groups) {
+        group.mortalityGroup(deaths);
+    }
 }
 
 void Population::mortalityFloaters() {
@@ -150,7 +162,7 @@ void Population::mortalityFloaters() {
     }
 }
 
-void Population::newBreeder() {
+void Population::reassingBreeder() {
     for (Group &group: groups) {
         if (!group.isBreederAlive()) {
             group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);

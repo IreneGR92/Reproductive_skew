@@ -169,7 +169,11 @@ void Group::survivalGroup() {
 }
 
 void Group::mortalityGroup(int &deaths) {
+
+    //Mortality helpers
     this->mortalityGroupVector(deaths, helpers);
+
+    //Mortality subordinate breeders
     this->mortalityGroupVector(deaths, breeders);
 
     //Mortality mainBreeder
