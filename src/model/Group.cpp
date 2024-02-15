@@ -155,17 +155,27 @@ void Group::calculateCumulativeHelp() //Calculate accumulative help of all indiv
 
 void Group::survivalGroup() {
     this->calculateGroupSize();
+    double delta;
+
+    if (mainBreeder.getDelta()<0){
+        delta = 0;
+    } else {
+        delta = mainBreeder.getDelta();
+    };
+
+
     //Calculate survival for the helpers
     for (Individual &helper: helpers) {
-        helper.calcSurvival(groupSize);
+        helper.calcSurvival(groupSize, 0);
     }
 
+    //Calculate the survival for the subordinate breeders
     for (Individual &breeder: breeders) {
-        breeder.calcSurvival(groupSize);
+        breeder.calcSurvival(groupSize,0);
     }
 
-    //Calculate the survival of the mainBreeder
-    this->mainBreeder.calcSurvival(groupSize);
+    //Calculate the survival of the dominant breeder
+    this->mainBreeder.calcSurvival(groupSize, delta);
 }
 
 void Group::mortalityGroup(int &deaths) {
@@ -357,6 +367,8 @@ void Group::calcReproductiveShareRate() {
     reproductiveShareRate = 1 - mainBreeder.getDelta();
     if (reproductiveShareRate < 0) {
         reproductiveShareRate = 0;
+    } else if (reproductiveShareRate > 1){
+        reproductiveShareRate = 1;
     }
 }
 

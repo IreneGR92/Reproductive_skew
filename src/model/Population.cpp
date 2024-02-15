@@ -126,7 +126,7 @@ void Population::survivalGroup() {
 
 void Population::survivalFloaters() {
     for (Individual &floater: floaters) {
-        floater.calcSurvival(0);
+        floater.calcSurvival(0, 0);
     }
 }
 

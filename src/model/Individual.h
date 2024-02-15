@@ -94,7 +94,7 @@ public:
      * @brief Calculates the survival rate of the individual.
      * @param groupSize The size of the group the individual belongs to.
      */
-    void calcSurvival(const int &groupSize);
+    void calcSurvival(const int &groupSize, double delta);
 
     // Getters and setters
     double getAlpha() const;

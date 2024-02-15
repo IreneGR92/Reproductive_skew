@@ -98,7 +98,7 @@ void Individual::calcHelp() {
 
 /*SURVIVAL*/
 
-void Individual::calcSurvival(const int &groupSize) {
+void Individual::calcSurvival(const int &groupSize, double delta) {
 
     double thisGroupSize;
     if (parameters->isNoGroupAugmentation()) {
@@ -114,10 +114,10 @@ void Individual::calcSurvival(const int &groupSize) {
         this->survival = (1 - parameters->getM()) /
                          (1 + exp(-parameters->getX0() - parameters->getXn() * thisGroupSize +
                                   parameters->getXh() * this->help + parameters->getXe() * this->gamma));
-    } else if (fishType == BREEDER) {
+    } else if (fishType == BREEDER) { // TODO: add a breeding cost?
         this->survival = (1 - parameters->getM()) /
-                         (1 + exp(-parameters->getX0() -
-                                  parameters->getXn() * thisGroupSize + parameters->getXe() * this->gamma)); // TODO: add a breeding cost?
+                         (1 + exp(-parameters->getX0() - parameters->getXn() * thisGroupSize +
+                         parameters->getXe() * this->gamma + parameters->getXrs() * delta));
     }
 }
 
