@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "../../main/model/Group.h"
 
+
 // Demonstrate some basic assertions.
 TEST(GroupTest, BasicAssertions) {
     // Expect two strings not to be equal.
@@ -9,18 +10,28 @@ TEST(GroupTest, BasicAssertions) {
     EXPECT_EQ(7 * 6, 42);
 }
 
+//
+
 TEST(GroupTest, GroupReassignBreeders) {
     //given
-
     Group group;
-//when
+    int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0;
+    int deaths = 0;
+    group.calculateGroupSize();
+    const int initialGroupSize = group.getGroupSize();
 
-    group.reassignBreeders();
+    //when
+    for (int i = 0; i < 100; i++) {
+        group.survivalGroup();
+        group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
+        group.mortalityGroup(deaths);
+        if (i == 6) {
+            std::cout << "GroupTest, GroupReassignBreeders" << std::endl;
+        }
 
-//then
-
-
-    std::cout << "GroupTest, GroupReassignBreeders" << std::endl;
-
-
+        //then
+        if (group.getGroupSize() == 0) {
+            EXPECT_EQ(deaths, initialGroupSize);
+        }
+    }
 }
