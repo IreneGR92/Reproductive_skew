@@ -16,22 +16,59 @@ FetchContent_Declare(
 
 # Fetch the yaml-cpp library
 FetchContent_GetProperties(yaml-cpp)
-if(NOT yaml-cpp_POPULATED)
+if (NOT yaml-cpp_POPULATED)
     FetchContent_Populate(yaml-cpp)
     add_subdirectory(${yaml-cpp_SOURCE_DIR} ${yaml-cpp_BINARY_DIR})
-endif()
+endif ()
 
 
 # Define the source files for the App executable
-set(SOURCE_FILES src/main.cpp src/Parameters.h src/Parameters.cpp src/Simulation.cpp src/Simulation.h src/model/Attribute.h src/model/Individual.h src/model/Individual.cpp src/model/Group.h src/model/Group.cpp src/model/Population.cpp src/model/Population.h src/stats/Statistics.h src/stats/Statistics.cpp src/stats/StatisticalFormulas.h src/stats/StatisticalFormulas.cpp src/model/container/IndividualVector.h src/model/container/IndividualVector.cpp)
+set(SOURCE_FILES
+        src/main/Parameters.h
+        src/main/Parameters.cpp
+        src/main/Simulation.cpp
+        src/main/Simulation.h
+        src/main/model/Attribute.h
+        src/main/model/Individual.h
+        src/main/model/Individual.cpp
+        src/main/model/Group.h
+        src/main/model/Group.cpp
+        src/main/model/Population.cpp
+        src/main/model/Population.h
+        src/main/stats/Statistics.h
+        src/main/stats/Statistics.cpp
+        src/main/stats/StatisticalFormulas.h
+        src/main/stats/StatisticalFormulas.cpp
+        src/main/model/container/IndividualVector.h
+        src/main/model/container/IndividualVector.cpp)
 
 # Define the App executable and link the yaml-cpp library
-add_executable(App ${SOURCE_FILES})
+add_executable(App src/main/main.cpp ${SOURCE_FILES})
 target_link_libraries(App PUBLIC yaml-cpp)
 
+
+# Testing
+
+
+# Declare Google Test
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG 58d77fa8070e8cec2dc1ed015d66b454c8d78850 # release-1.12.1
+        OVERRIDE_FIND_PACKAGE)
+FetchContent_MakeAvailable(googletest)
+add_library(googletest ALIAS gtest)
+
+
 # Define the source files for the Test executable
-set(TEST_FILES src/test.cpp src/Parameters.h src/Parameters.cpp src/Simulation.cpp src/Simulation.h src/model/container/Container.h src/model/Attribute.h src/model/Individual.h src/model/Individual.cpp src/model/Group.h src/model/Group.cpp src/model/Population.cpp src/model/Population.h src/stats/Statistics.h src/stats/Statistics.cpp src/stats/StatisticalFormulas.h src/stats/StatisticalFormulas.cpp src/model/container/IndividualVector.h src/model/container/IndividualVector.cpp)
+set(TEST_FILES
+        src/test/model/unit_tests.cpp
+        src/test/model/test_group.cpp
+        src/test/model/container/test_container.cpp
+)
 
 # Define the Test executable and link the yaml-cpp library
-add_executable(Test ${TEST_FILES})
-target_link_libraries(Test PUBLIC yaml-cpp)
+add_executable(UNIT_TESTS ${TEST_FILES} ${SOURCE_FILES})
+target_link_libraries(UNIT_TESTS PUBLIC gtest yaml-cpp)
+include(GoogleTest)
+gtest_discover_tests(UNIT_TESTS)
