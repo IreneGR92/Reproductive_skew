@@ -52,7 +52,7 @@ MUTATION_GAMMA: 0.05         # mutation rate for the expulsion effort
 STEP_GAMMA: 0.1             # mutation step size for the expulsion effort
 
 #For reproductive concessions
-INIT_DELTA: 0.0             # bigger values higher reproductive share
+INIT_DELTA: 0.5             # bigger values lower reproductive share
 MUTATION_DELTA: 0.05        # mutation rate in delta for level of reproductive share
 STEP_DELTA: 0.04            # mutation step size in delta for level of reproductive share
 

@@ -8,7 +8,7 @@ AGE_NO_INFLUENCE_INHERITANCE: false # Age no influence of who inherits territory
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 10000
 MAX_NUM_REPLICATES: 1
-SKIP: 1   # interval between print-outs
+SKIP: 100   # interval between print-outs
 
 #Fix values
 INIT_NUM_HELPERS: 3     # initial number of helpers per group
@@ -29,7 +29,7 @@ Xrs: 5    # cost of reproductive supression in survival
 K0: 1    # baseline fecundity when no other factors influence it
 Kh: 0.5    # benefit of cumHelp in the fecundity
 Kt: 0.1    # benefit of age in the fecundity
-Knb: 2   # cost of number of breeders in the fecundity
+Knb: 1   # cost of number of breeders in the fecundity
 
 
 #Genetic values
@@ -52,7 +52,7 @@ MUTATION_GAMMA: 0.05         # mutation rate for the expulsion effort
 STEP_GAMMA: 0.1             # mutation step size for the expulsion effort
 
 #For reproductive concessions
-INIT_DELTA: 0.0             # bigger values higher reproductive share
+INIT_DELTA: 0.0             # bigger values lower reproductive share
 MUTATION_DELTA: 0.05        # mutation rate in delta for level of reproductive share
 STEP_DELTA: 0.04            # mutation step size in delta for level of reproductive share
 

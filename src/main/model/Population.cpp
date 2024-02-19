@@ -95,8 +95,7 @@ void Population::immigrate() {
         for (int i: indices) {
             Group &group = groups[i];
             // Add new helpers to the group
-            auto newHelpers = group.getAcceptedFloaters(
-                    floaters); //  gets a list of floaters that are accepted by the current group.
+            auto newHelpers = group.getAcceptedFloaters(floaters); //  gets a list of floaters that are accepted by the current group.
             group.addHelpers(newHelpers);
 
         }
@@ -166,7 +165,7 @@ void Population::mortalityFloaters() {
 void Population::reassingBreeder() {
     for (Group &group: groups) {
 //        if (!group.isBreederAlive()) { //TODO: remove this if statement
-        group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
+            group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
 //        }
     }
 }
