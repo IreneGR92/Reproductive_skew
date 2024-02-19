@@ -312,10 +312,24 @@ default_random_engine *Parameters::getGenerator() const {
     return generator;
 }
 
+/**
+ * @brief Returns the singleton instance of the Parameters class.
+ * @return
+ */
 Parameters *Parameters::instance() {
     if (singletonInstance == nullptr) {
         singletonInstance = new Parameters;
     }
+    return singletonInstance;
+}
+
+/**
+ * @brief Initializes the singleton instance of the Parameters class for unit testing.
+ * @return
+ */
+Parameters *Parameters::unitTestInit() {
+    singletonInstance = new Parameters("../parameters/unit_tests.yml");
+    std::cout << "Unit test parameters initialized" << std::endl;
     return singletonInstance;
 }
 
