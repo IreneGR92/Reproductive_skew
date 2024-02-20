@@ -28,10 +28,13 @@ void Simulation::run() {
         population.reset();
 
         population.disperse(generation);
+        population.survivalFloaters();
+        population.mortalityFloaters();
         population.immigrate();
         population.reassingBreeder();
         population.help();
-        population.survival();
+        population.survivalGroup();
+
 
         //Calculate stats
         if (generation % parameters->getSkip() == 0) {
@@ -51,8 +54,7 @@ void Simulation::run() {
             std::cout << "HERE" << std::endl; //TODO: Stopper for debugging
         }*/
 
-        population.mortality();
-
+        population.mortalityGroup();
 
         // Print main file (separately since we need values of deaths, newBreederFloater, newBreederHelper and inheritance to be calculated)
         if (generation % parameters->getSkip() == 0) {
