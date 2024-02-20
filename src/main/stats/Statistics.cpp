@@ -95,18 +95,20 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 
     //Phenotypes
     age.addValues(individualsAll.get(AGE));
+    ageDomBreeders.addValues(mainBreeders.get(AGE));
+    ageSubBreeders.addValues(subordinateBreeders.get(AGE));
     ageHelpers.addValues(helpers.get(AGE));
-    ageBreeders.addValues(allBreeders.get(AGE));
     ageFloaters.addValues(populationObj.getFloaters().get(AGE));
     ageBecomeBreeder.addValues(allBreeders.get(AGE_BECOME_BREEDER));
 
     help.addValues(helpers.get(HELP));
     dispersal.addValues(helpers.get(DISPERSAL));
-    fecundity.addValues(individualsAll.get(FECUNDITY));
+    fecundity.addValues(individualsAll.get(FECUNDITY)); //TODO: make only for breeders?
 
     survival.addValues(individualsAll.get(SURVIVAL));
+    survivalDomBreeders.addValues(mainBreeders.get(SURVIVAL));
+    survivalSubBreeders.addValues(subordinateBreeders.get(SURVIVAL));
     survivalHelpers.addValues(helpers.get(SURVIVAL));
-    survivalBreeders.addValues(allBreeders.get(SURVIVAL));
     survivalFloaters.addValues(populationObj.getFloaters().get(SURVIVAL));
 
 
@@ -230,12 +232,12 @@ void Statistics::printHeadersToFile() {
     // column headings in output file main
     *parameters->getMainWriter() << "Replica" << "\t" << "Generation" << "\t" << "Population" << "\t"
                                  << "Deaths" << "\t" << "Floaters" << "\t" << "Group_size" << "\t" << "Sub_Breeders" << "\t"
-                                 << "Age_H" << "\t" << "Age_F" << "\t" << "Age_B" << "\t" << "Age_New_Breeder" << "\t"
+                                 << "Age_H" << "\t" << "Age_F" << "\t" << "Age_DomB" << "\t" << "Age_SubB" << "\t" << "Age_New_Breeder" << "\t"
                                  << "Alpha" << "\t" << "AlphaAge" << "\t"
                                  << "Beta" << "\t" << "Gamma" << "\t" << "Delta" << "\t"
                                  << "Dispersal" << "\t" << "AcceptRate" << "\t"
                                  << "Help" << "\t" << "CumHelp" << "\t"
-                                 << "Survival_H" << "\t" << "Survival_F" << "\t"<< "Survival_B" << "\t"
+                                 << "Survival_H" << "\t" << "Survival_F" << "\t"<< "Survival_DomB" << "\t"<< "Survival_SubB" << "\t"
                                  << "ReprodShareRate" << "\t" << "OffspringDomBreeder" << "\t"
                                  << "OffspringSubBreeders" << "\t" << "TotalOffspringGroup" << "\t"
                                  << "Relatedness" << "\t"
@@ -265,7 +267,8 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << numOfSubBreeders.calculateMean()
                                  << "\t" << setprecision(4) << ageHelpers.calculateMean()
                                  << "\t" << setprecision(4) << ageFloaters.calculateMean()
-                                 << "\t" << setprecision(4) << ageBreeders.calculateMean()
+                                 << "\t" << setprecision(4) << ageDomBreeders.calculateMean()
+                                 << "\t" << setprecision(4) << ageSubBreeders.calculateMean()
                                  << "\t" << setprecision(4) << ageBecomeBreeder.calculateMean()
                                  << "\t" << setprecision(4) << alpha.calculateMean()
                                  << "\t" << setprecision(4) << alphaAge.calculateMean()
@@ -278,7 +281,8 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << cumulativeHelp.calculateMean()
                                  << "\t" << setprecision(4) << survivalHelpers.calculateMean()
                                  << "\t" << setprecision(4) << survivalFloaters.calculateMean()
-                                 << "\t" << setprecision(4) << survivalBreeders.calculateMean()
+                                 << "\t" << setprecision(4) << survivalDomBreeders.calculateMean()
+                                 << "\t" << setprecision(4) << survivalSubBreeders.calculateMean()
                                  << "\t" << setprecision(4) << reproductiveShareRate.calculateMean()
                                  << "\t" << setprecision(4) << offspringMainBreeder.calculateMean()
                                  << "\t" << setprecision(4) << offspringOfSubordinateBreeders.calculateMean()
