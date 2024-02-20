@@ -220,6 +220,7 @@ public:
      */
     static Parameters *instance();
 
+    static Parameters *unitTestInit();
 };
 
 

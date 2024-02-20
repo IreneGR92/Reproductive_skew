@@ -135,7 +135,6 @@ std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters) {
 }
 
 
-
 /*  CALCULATE CUMULATIVE LEVEL OF HELP */
 
 void Group::calculateCumulativeHelp() //Calculate accumulative help of all individuals inside of each group.
@@ -157,7 +156,7 @@ void Group::survivalGroup() {
     this->calculateGroupSize();
     double delta;
 
-    if (mainBreeder.getDelta()<0){
+    if (mainBreeder.getDelta() < 0) {
         delta = 0;
     } else {
         delta = mainBreeder.getDelta();
@@ -171,7 +170,7 @@ void Group::survivalGroup() {
 
     //Calculate the survival for the subordinate breeders
     for (Individual &breeder: breeders) {
-        breeder.calcSurvival(groupSize,0);
+        breeder.calcSurvival(groupSize, 0);
     }
 
     //Calculate the survival of the dominant breeder
@@ -187,7 +186,7 @@ void Group::mortalityGroup(int &deaths) {
     this->mortalityGroupVector(deaths, breeders);
 
     //Mortality mainBreeder
-    if (parameters->uniform(*parameters->getGenerator()) > mainBreeder.getSurvival()) {
+    if (mainBreederAlive && parameters->uniform(*parameters->getGenerator()) > mainBreeder.getSurvival()) {
         mainBreederAlive = false;
         deaths++;
     }
@@ -296,7 +295,7 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
             selectedBreeder = &helpers.back(); //substitute the previous dead mainBreeder
             selectedBreeder->setAgeBecomeBreeder();
             selectedBreeder->setFishType(BREEDER); //modify the class
-            if (selectedBreeder->isInherit() == 0){ //delete the ind from the vector floaters
+            if (selectedBreeder->isInherit() == 0) { //delete the ind from the vector floaters
                 newBreederOutsider++;
             } else {
                 newBreederInsider++;
@@ -336,7 +335,7 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
                     selectedBreeder->setAgeBecomeBreeder();
                     selectedBreeder->setFishType(BREEDER); //modify the class
 
-                    if ((*candidate)->isInherit() == 0){ //delete the ind from the vector floaters
+                    if ((*candidate)->isInherit() == 0) { //delete the ind from the vector floaters
                         newBreederOutsider++;
                     } else {
                         newBreederInsider++;
@@ -367,7 +366,7 @@ void Group::calcReproductiveShareRate() {
     reproductiveShareRate = 1 - mainBreeder.getDelta();
     if (reproductiveShareRate < 0) {
         reproductiveShareRate = 0;
-    } else if (reproductiveShareRate > 1){
+    } else if (reproductiveShareRate > 1) {
         reproductiveShareRate = 1;
     }
 }
@@ -403,7 +402,8 @@ void Group::reproduce(int generation) { // populate offspring generation
         offspringMainBreeder = realFecundity;
         for (int i = 0; i < realFecundity; i++) { //number of offspring dependent on real fecundity
             Individual offspring = Individual(mainBreeder, HELPER, generation);
-            helpers.emplace_back(offspring); //create a new individual as helper in the group. Call construct to assign the mother genetic values to the offspring, construct calls Mutate function.
+            helpers.emplace_back(
+                    offspring); //create a new individual as helper in the group. Call construct to assign the mother genetic values to the offspring, construct calls Mutate function.
         }
     }
 
@@ -417,8 +417,6 @@ void Group::reproduce(int generation) { // populate offspring generation
     }
     totalOffspringGroup = offspringMainBreeder + offspringSubordinateBreeders;
 }
-
-
 
 
 /* GETTERS */

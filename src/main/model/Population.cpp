@@ -164,9 +164,9 @@ void Population::mortalityFloaters() {
 
 void Population::reassingBreeder() {
     for (Group &group: groups) {
-        if (!group.isBreederAlive()) { //TODO: remove this if statement
+//        if (!group.isBreederAlive()) { //TODO: remove this if statement
             group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
-        }
+//        }
     }
 }
 
