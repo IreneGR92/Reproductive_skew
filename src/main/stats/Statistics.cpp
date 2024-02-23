@@ -15,7 +15,8 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     population = 0, totalFloaters = 0, totalHelpers = 0, totalMainBreeders = 0, totalSubordinateBreeders = 0;
 
     //Relatedness
-    relatedness = 0.0;
+    relatednessHelpers = 0.0, relatednessBreeders = 0.0;
+
 
 
     IndividualVector mainBreeders;
@@ -122,15 +123,16 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 
 
     //Correlations in different levels
-    relatedness = calculateRelatedness(populationObj.getGroups());
+    relatednessHelpers = calculateRelatednessHelpers(populationObj.getGroups());
+    relatednessBreeders = calculateRelatednessBreeders(populationObj.getGroups());
 
 }
 
 double
-Statistics::calculateRelatedness(const std::vector<Group> &groups) {
+Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
 
     //Relatedness
-    double correlation;          //relatedness related
+    double correlation;
     int counter = 0;
     double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
     double sumProductXY = 0, sumProductXX = 0, sumProductYY = 0;
@@ -179,6 +181,59 @@ Statistics::calculateRelatedness(const std::vector<Group> &groups) {
 }
 
 
+double
+Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups) {
+
+    //Relatedness
+    double correlation;
+    int counter = 0;
+    double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
+    double sumProductXY = 0, sumProductXX = 0, sumProductYY = 0;
+
+    for (const Group &group: groups) {
+        for (const Individual &breeder: group.getSubordinateBreeders()) {
+            if (group.isBreederAlive() && group.hasSubordinateBreeders()) {
+                sumX += breeder.getDrift();
+                sumY += group.getMainBreeder().getDrift();
+                counter++;
+            }
+        }
+    }
+
+    if (counter != 0) {
+        meanX = sumX / counter;
+        meanY = sumY / counter;
+    }
+
+    for (const Group &group: groups) {
+        for (const Individual &breeder: group.getSubordinateBreeders()) {
+            if (!std::isnan(breeder.getDispersal()) || !std::isnan(breeder.getHelp())) {  //TODO: check if this is correct or needed
+                double X = (breeder.getDrift() - meanX);
+                double Y = (group.getMainBreeder().getDrift() - meanY);
+
+                sumProductXY += X * Y;
+                sumProductXX += X * X;
+                sumProductYY += Y * Y;
+            }
+        }
+    }
+    if (counter != 0) {
+        stdevX = sqrt(sumProductXX / counter);
+        stdevY = sqrt(sumProductYY / counter);
+    }
+
+    if (stdevX * stdevY * counter == 0) {
+        correlation = 0;
+    } else {
+        correlation = sumProductXY / (stdevX * stdevY * counter);
+    }
+    //assert (abs(correlation) >= 0);
+    //assert (abs(correlation) <= 1);
+    return correlation;
+
+}
+
+
 /* PRINT STATISTICS TO CONSOLE */
 
 void Statistics::printHeadersToConsole() {
@@ -191,7 +246,7 @@ void Statistics::printHeadersToConsole() {
          << "disper" << setw(9) << "immRate" << setw(9)
          << "help" << setw(9) << "surv" << setw(9)
          << "skew" << setw(9)<< "offsDom" << setw(9) << "offsSub" << setw(9)
-         << "relat" << endl;
+         << "relatH" << setw(9) << "relatB"<< endl;
 }
 
 
@@ -218,7 +273,8 @@ void Statistics::printToConsole(int generation, int deaths) {
               << setw(9) << setprecision(2) << reproductiveShareRate.calculateMean()
               << setw(9) << setprecision(2) << offspringMainBreeder.calculateMean()
               << setw(9) << setprecision(2) << offspringOfSubordinateBreeders.calculateMean()
-              << setw(9) << setprecision(2) << relatedness
+              << setw(9) << setprecision(2) << relatednessHelpers
+              << setw(9) << setprecision(2) << relatednessBreeders
               << endl;
 }
 
@@ -237,9 +293,8 @@ void Statistics::printHeadersToFile() {
                                  << "Survival_H" << "\t" << "Survival_F" << "\t"<< "Survival_B" << "\t"
                                  << "ReprodShareRate" << "\t" << "OffspringDomBreeder" << "\t"
                                  << "OffspringSubBreeders" << "\t" << "TotalOffspringGroup" << "\t"
-                                 << "Relatedness" << "\t"
+                                 << "Relatedness_H" << "\t" << "Relatedness_B" << "\t"
                                  << "newBreederOutsider" << "\t" << "newBreederInsider" << "\t"
-                                 //<< "inheritance"
                                  << endl;
 
     // column headings in output file last generation
@@ -282,10 +337,10 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << offspringMainBreeder.calculateMean()
                                  << "\t" << setprecision(4) << offspringOfSubordinateBreeders.calculateMean()
                                  << "\t" << setprecision(4) << totalOffspringGroup.calculateMean()
-                                 << "\t" << setprecision(4) << relatedness
+                                 << "\t" << setprecision(4) << relatednessHelpers
+                                 << "\t" << setprecision(4) << relatednessBreeders
                                  << "\t" << newBreederOutsider
                                  << "\t" << newBreederInsider
-                                 //<< "\t" << inheritance
                                  << endl;
 }
 

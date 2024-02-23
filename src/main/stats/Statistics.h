@@ -22,7 +22,7 @@ private:
     // Population parameters and Statistics
     int population, totalFloaters, totalHelpers, totalMainBreeders, totalSubordinateBreeders; // Counters
 
-    double relatedness; ///< The relatedness in the population.
+    double relatednessHelpers, relatednessBreeders; ///< The relatedness in the population.
 
     // StatisticalFormulas objects for various statistics
     StatisticalFormulas groupSize, numOfSubBreeders;
@@ -60,7 +60,9 @@ public:
      * @param groups The groups in the population.
      * @return The relatedness in the population.
      */
-    double calculateRelatedness(const std::vector<Group> &groups);
+    double calculateRelatednessHelpers(const std::vector<Group> &groups);
+
+    double calculateRelatednessBreeders(const std::vector<Group> &groups);
 
     /**
      * @brief Prints the headers for the statistics to the console.

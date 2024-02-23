@@ -87,6 +87,8 @@ public:
 
     bool hasHelpers() const;
 
+    bool hasSubordinateBreeders() const;
+
     void addHelper(Individual &helper);
 
     void addHelpers(std::vector<Individual> &helpers);

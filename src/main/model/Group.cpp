@@ -478,6 +478,10 @@ bool Group::hasHelpers() const {
     return !helpers.empty();
 }
 
+bool Group::hasSubordinateBreeders() const {
+    return !breeders.empty();
+}
+
 void Group::addHelper(Individual &helper) {
     helper.setFishType(HELPER);
     this->helpers.emplace_back(helper);
