@@ -69,7 +69,7 @@ void Simulation::run() {
     }
 }
 
-const int Simulation::getReplica() const {
+int Simulation::getReplica() const {
     return replica;
 }
 

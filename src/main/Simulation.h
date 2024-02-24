@@ -28,7 +28,7 @@ public:
 
     // Returns the replica number for this simulation.
     // @return The replica number.
-    const int getReplica() const;
+    int getReplica() const;
 
     // Returns the current generation number in the simulation.
     // @return The generation number.

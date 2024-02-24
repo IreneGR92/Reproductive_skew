@@ -131,8 +131,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 
 }
 
-double
-Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
+double Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) { //TODO: generalize relatedness calculation
 
     //Relatedness
     double correlation;
@@ -184,8 +183,7 @@ Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
 }
 
 
-double
-Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups) {
+double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups) {
 
     //Relatedness
     double correlation;
