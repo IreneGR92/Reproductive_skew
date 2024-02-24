@@ -394,7 +394,7 @@ void Group::increaseAge() {
 
 /* REPRODUCTION */
 
-double Group::returnFecundity() {
+int Group::returnFecundity() {
 
     //Calculate fecundity
     fecundityGroup = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);

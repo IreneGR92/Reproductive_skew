@@ -2,16 +2,6 @@
 #include "../../main/model/Group.h"
 
 
-// Demonstrate some basic assertions.
-TEST(GroupTest, BasicAssertions) {
-    // Expect two strings not to be equal.
-    EXPECT_STRNE("hello", "world");
-    // Expect equality.
-    EXPECT_EQ(7 * 6, 42);
-}
-
-//
-
 TEST(GroupTest, GroupReassignBreeders) {
     //given
     Group group;
@@ -23,11 +13,13 @@ TEST(GroupTest, GroupReassignBreeders) {
     //when
     for (int i = 0; i < 100; i++) {
         group.survivalGroup();
+        group.transferBreedersToHelpers();
         group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
         group.mortalityGroup(deaths);
+        int currentGroupSize = group.getGroupSize();
 
         //then
-        if (group.getGroupSize() == 0) {
+        if (currentGroupSize == 0) {
             EXPECT_EQ(deaths, initialGroupSize);
         }
     }
@@ -42,11 +34,30 @@ TEST(GroupTest, GroupReassignBreedersStaySameSize) {
 
     //when
     for (int i = 0; i < 100; i++) {
+        group.transferBreedersToHelpers();
         group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
         group.calculateGroupSize();
         group.survivalGroup();
         //then
         EXPECT_EQ(group.getGroupSize(), initialGroupSize);
 
+    }
+}
+
+TEST(GroupTest, OffspringProduction) {
+    //given
+    Group group;
+    int initialGroupSize;
+    int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0;
+
+    //when
+    for (int i = 0; i < 10; i++) {
+        initialGroupSize = group.getGroupSize();
+        group.transferBreedersToHelpers();
+        group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
+        group.reproduce(i);
+        group.calculateGroupSize();
+        //then
+        EXPECT_EQ(group.getGroupSize(), initialGroupSize + group.returnFecundity());
     }
 }

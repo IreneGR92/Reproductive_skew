@@ -65,7 +65,7 @@ public:
 
     void increaseAge();
 
-    double returnFecundity();
+    int returnFecundity();
 
     void reproduce(int generation);
 
