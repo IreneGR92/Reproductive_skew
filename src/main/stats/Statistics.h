@@ -31,7 +31,7 @@ private:
     StatisticalFormulas help, cumulativeHelp;
     StatisticalFormulas dispersal, acceptanceRate;
     StatisticalFormulas survival, survivalDomBreeders,survivalSubBreeders, survivalFloaters, survivalHelpers;
-    StatisticalFormulas fecundity, reproductiveShareRate, offspringMainBreeder, offspringOfSubordinateBreeders, totalOffspringGroup;
+    StatisticalFormulas fecundityGroup, reproductiveShareRate, offspringMainBreeder, offspringOfSubordinateBreeders, totalOffspringGroup;
     StatisticalFormulas driftB, driftH, driftBB, driftHB; // Relatedness
 
     /**

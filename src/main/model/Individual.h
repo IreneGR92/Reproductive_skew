@@ -38,63 +38,26 @@ private:
     int groupIndex; ///< The index of the group the individual belongs to.
 
 
-    /**
-     * @brief Mutates the individual.
-     * @param generation The current generation of the simulation.
-     */
     void mutate(int generation);
 
-    /**
-     * @brief Initializes the individual.
-     * @param type The type of the individual.
-     */
     void initializeIndividual(FishType type);
 
 public:
-    /**
-     * @brief Getter for the group index of the individual.
-     * @return The group index of the individual.
-     */
+
     int getGroupIndex() const;
 
-    /**
-     * @brief Constructor for the Individual class.
-     * @param individual The individual to copy.
-     * @param fishType The type of the individual.
-     * @param generation The current generation of the simulation.
-     */
     Individual(Individual &individual, FishType fishType, int &generation);
 
-    /**
-     * compare function for the individual class
-     * @param other
-     * @return
-     */
     bool operator==(const Individual &other) const;
 
-    /**
-     * @brief Constructor for the Individual class.
-     * @param fishType The type of the individual.
-     */
     explicit Individual(FishType fishType);
 
-    double returnFecundity(int breedersSize, double cumHelp);
-
-    /**
-     * @brief Calculates the dispersal rate of the individual.
-     */
     void calcDispersal();
 
-    /**
-     * @brief Calculates the help provided by the individual.
-     */
     void calcHelp();
 
-    /**
-     * @brief Calculates the survival rate of the individual.
-     * @param groupSize The size of the group the individual belongs to.
-     */
     void calcSurvival(const int &groupSize, double delta);
+
 
     // Getters and setters
     double getAlpha() const;
@@ -137,7 +100,7 @@ public:
 
     bool isViableBreeder();
 
-    double getFecundity() const;
+    double getFecundity() const; //TODO: remove all individual fecundities
 };
 
 

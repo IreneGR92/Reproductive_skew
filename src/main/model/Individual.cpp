@@ -124,20 +124,6 @@ void Individual::calcSurvival(const int &groupSize, double delta) {
 
 /*REPRODUCTION*/
 
-double Individual::returnFecundity(int breedersSize, double cumHelp) {
-
-    //Calculate fecundity
-    fecundity = (parameters->getK0() + parameters->getKt() * age) /
-                (1 + exp(parameters->getKnb() * breedersSize - parameters->getKh() * cumHelp));
-
-    // Transform fecundity to an integer number
-    std::poisson_distribution<int> PoissonFecundity(fecundity);
-    int realFecundity = PoissonFecundity(*parameters->getGenerator()); //integer number
-
-    return realFecundity;
-}
-
-
 void Individual::mutate(int generation) // mutate genome of offspring
 {
     auto rng = *parameters->getGenerator();

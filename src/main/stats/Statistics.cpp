@@ -29,6 +29,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     std::vector<double> cumHelp;
     std::vector<double> acceptanceRates;
     std::vector<double> reproductiveShareRates;
+    std::vector<double> fecundityGroups;
     std::vector<double> offspringMainBreeders;
     std::vector<double> offspringSubordinateBreeders;
     std::vector<double> totalOffspringGroups;
@@ -65,6 +66,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
         cumHelp.push_back(group.getCumHelp());
         acceptanceRates.push_back(group.getAcceptanceRate());
         reproductiveShareRates.push_back(group.getReproductiveShareRate());
+        fecundityGroups.push_back(group.getFecundityGroup());
         offspringMainBreeders.push_back(group.getOffspringMainBreeder());
         offspringSubordinateBreeders.push_back(group.getOffspringSubordinateBreeders());
         totalOffspringGroups.push_back(group.getTotalOffspringGroup());
@@ -104,7 +106,6 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 
     help.addValues(helpers.get(HELP));
     dispersal.addValues(helpers.get(DISPERSAL));
-    fecundity.addValues(individualsAll.get(FECUNDITY)); //TODO: make only for breeders?
 
     survival.addValues(individualsAll.get(SURVIVAL));
     survivalDomBreeders.addValues(mainBreeders.get(SURVIVAL));
@@ -119,6 +120,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     cumulativeHelp.addValues(cumHelp);
     acceptanceRate.addValues(acceptanceRates);
     reproductiveShareRate.addValues(reproductiveShareRates);
+    fecundityGroup.addValues(fecundityGroups);
     offspringMainBreeder.addValues(offspringMainBreeders);
     offspringOfSubordinateBreeders.addValues(offspringSubordinateBreeders);
     totalOffspringGroup.addValues(totalOffspringGroups);
@@ -246,7 +248,8 @@ void Statistics::printHeadersToConsole() {
          << "gamma" << setw(9) << "delta" << setw(9)
          << "disper" << setw(9) << "immRate" << setw(9)
          << "help" << setw(9) << "surv" << setw(9)
-         << "skew" << setw(9)<< "offsDom" << setw(9) << "offsSub" << setw(9)
+         << "skew" << setw(9) << "offpr" << setw(9)
+         //<< "offsDom" << setw(9) << "offsSub" << setw(9)
          << "relatH" << setw(9) << "relatB"<< endl;
 }
 
@@ -272,8 +275,9 @@ void Statistics::printToConsole(int generation, int deaths) {
               << setw(9) << setprecision(4) << help.calculateMean()
               << setw(9) << setprecision(2) << survival.calculateMean()
               << setw(9) << setprecision(2) << reproductiveShareRate.calculateMean()
-              << setw(9) << setprecision(2) << offspringMainBreeder.calculateMean()
-              << setw(9) << setprecision(2) << offspringOfSubordinateBreeders.calculateMean()
+              << setw(9) << setprecision(2) << fecundityGroup.calculateMean()
+              //<< setw(9) << setprecision(2) << offspringMainBreeder.calculateMean()
+              //<< setw(9) << setprecision(2) << offspringOfSubordinateBreeders.calculateMean()
               << setw(9) << setprecision(2) << relatednessHelpers
               << setw(9) << setprecision(2) << relatednessBreeders
               << endl;
@@ -292,8 +296,8 @@ void Statistics::printHeadersToFile() {
                                  << "Dispersal" << "\t" << "AcceptRate" << "\t"
                                  << "Help" << "\t" << "CumHelp" << "\t"
                                  << "Survival_H" << "\t" << "Survival_F" << "\t"<< "Survival_DomB" << "\t"<< "Survival_SubB" << "\t"
-                                 << "ReprodShareRate" << "\t" << "OffspringDomBreeder" << "\t"
-                                 << "OffspringSubBreeders" << "\t" << "TotalOffspringGroup" << "\t"
+                                 << "ReprodShareRate" << "\t" << "FecundityGroup" << "\t"
+                                 //<< "OffspringDomBreeder" << "\t" << "OffspringSubBreeders" << "\t" << "TotalOffspringGroup" << "\t"
                                  << "Relatedness_H" << "\t" << "Relatedness_B" << "\t"
                                  << "newBreederOutsider" << "\t" << "newBreederInsider" << "\t"
                                  << endl;
@@ -304,7 +308,8 @@ void Statistics::printHeadersToFile() {
                                            << "alpha" << "\t" << "alphaAge" << "\t" << "beta" << "\t"
                                            << "gamma" << "\t" << "delta" << "\t" << "drift"<< "\t"
                                            << "dispersal" << "\t" << "help" << "\t" << "survival" << "\t"
-                                           << "fecundity" << "\t" << "inherit" << endl;
+                                           //<< "fecundity" << "\t"
+                                           << "inherit" << endl;
 }
 
 void Statistics::printToFile(int replica, int generation, int deaths, int newBreederOutsider,
@@ -337,9 +342,10 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << survivalDomBreeders.calculateMean()
                                  << "\t" << setprecision(4) << survivalSubBreeders.calculateMean()
                                  << "\t" << setprecision(4) << reproductiveShareRate.calculateMean()
-                                 << "\t" << setprecision(4) << offspringMainBreeder.calculateMean()
-                                 << "\t" << setprecision(4) << offspringOfSubordinateBreeders.calculateMean()
-                                 << "\t" << setprecision(4) << totalOffspringGroup.calculateMean()
+                                 << "\t" << setprecision(4) << fecundityGroup.calculateMean()
+                                // << "\t" << setprecision(4) << offspringMainBreeder.calculateMean()
+                                // << "\t" << setprecision(4) << offspringOfSubordinateBreeders.calculateMean()
+                                // << "\t" << setprecision(4) << totalOffspringGroup.calculateMean()
                                  << "\t" << setprecision(4) << relatednessHelpers
                                  << "\t" << setprecision(4) << relatednessBreeders
                                  << "\t" << newBreederOutsider
@@ -392,7 +398,7 @@ void Statistics::printIndividual(Individual individual, int generation, int grou
                                            << "\t" << setprecision(4) << individual.getDispersal()
                                            << "\t" << setprecision(4) << individual.getHelp()
                                            << "\t" << setprecision(4) << individual.getSurvival()
-                                           << "\t" << setprecision(4) << individual.getFecundity()
+                                          // << "\t" << setprecision(4) << individual.getFecundity()
                                            << "\t" << setprecision(4) << individual.isInherit()
                                            << endl;
 }

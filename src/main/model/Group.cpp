@@ -17,6 +17,7 @@ Group::Group() : mainBreeder(BREEDER) {
     acceptanceRate = Parameters::NO_VALUE;
     acceptedFloatersSize = Parameters::NO_VALUE;
     reproductiveShareRate = Parameters::NO_VALUE;
+    fecundityGroup = Parameters::NO_VALUE;
     offspringMainBreeder = 0;
     offspringSubordinateBreeders = 0;
     totalOffspringGroup = 0;
@@ -29,6 +30,8 @@ Group::Group() : mainBreeder(BREEDER) {
 
     calculateGroupSize();
 }
+
+
 
 /* TOTAL NUMBER OF INDIVIDUALS PER GROUP*/
 
@@ -391,31 +394,47 @@ void Group::increaseAge() {
 
 /* REPRODUCTION */
 
+double Group::returnFecundity() {
+
+    //Calculate fecundity
+    fecundityGroup = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
+
+    //* (this->getBreedersSize() - parameters->getKnb() * this->getBreedersSize())
+
+    // Transform fecundity to an integer number
+    std::poisson_distribution<int> PoissonFecundity(fecundityGroup);
+    int realFecundity = PoissonFecundity(*parameters->getGenerator()); //integer number
+
+    return realFecundity;
+}
+
+
 void Group::reproduce(int generation) { // populate offspring generation
 
-    int realFecundity;
-    offspringSubordinateBreeders = 0;
+    std::vector<Individual *> breedersPointers;
+    int randomIndex;
+    int fecundity = this->returnFecundity();
 
-    //Reproduction
-    if (mainBreederAlive) {
-        realFecundity = mainBreeder.returnFecundity(breeders.size(), cumHelp);
-        offspringMainBreeder = realFecundity;
-        for (int i = 0; i < realFecundity; i++) { //number of offspring dependent on real fecundity
-            Individual offspring = Individual(mainBreeder, HELPER, generation);
-            helpers.emplace_back(
-                    offspring); //create a new individual as helper in the group. Call construct to assign the mother genetic values to the offspring, construct calls Mutate function.
-        }
-    }
 
     for (Individual &breeder: breeders) {
-        realFecundity = breeder.returnFecundity(breeders.size(), cumHelp);
-        offspringSubordinateBreeders += realFecundity;
-        for (int i = 0; i < realFecundity; i++) {
-            Individual offspring = Individual(breeder, HELPER, generation);
+        breedersPointers.push_back(&breeder);
+    }
+    if (mainBreederAlive) {
+        breedersPointers.push_back(&mainBreeder);
+    }
+
+    std::uniform_int_distribution<int> distribution(0, breedersPointers.size() - 1);
+    if (!breedersPointers.empty()) {
+        for (int i = 0; i < fecundity; i++) {
+            // Generate a random index
+            randomIndex = distribution(*parameters->getGenerator());
+            // Access the random individual
+            Individual *randomIndividual = breedersPointers[randomIndex];
+            //Reproduction
+            Individual offspring = Individual(*randomIndividual, HELPER, generation);
             helpers.emplace_back(offspring);
         }
     }
-    totalOffspringGroup = offspringMainBreeder + offspringSubordinateBreeders;
 }
 
 
@@ -433,6 +452,14 @@ int Group::getGroupSize() const {
     return groupSize;
 }
 
+int Group::getBreedersSize() const {
+    if (mainBreederAlive) {
+        return breeders.size() + 1;
+    } else {
+        return breeders.size();
+    }
+}
+
 double Group::getCumHelp() const {
     return cumHelp;
 }
@@ -443,6 +470,10 @@ double Group::getAcceptanceRate() const {
 
 double Group::getReproductiveShareRate() const {
     return reproductiveShareRate;
+}
+
+double Group::getFecundityGroup() const {
+    return fecundityGroup;
 }
 
 int Group::getOffspringMainBreeder() const {
