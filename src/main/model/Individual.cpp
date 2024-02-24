@@ -309,6 +309,8 @@ double Individual::get(Attribute type) const {
             return this->age;
         case AGE_BECOME_BREEDER:
             return this->ageBecomeBreeder;
+        case FECUNDITY:
+            return this->fecundity;
 
     }
 

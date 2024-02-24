@@ -90,6 +90,8 @@ std::vector<Individual> Group::reassignNoRelatedness(int index) {
 
 void Group::calcAcceptanceRate() {
 
+    this->transferBreedersToHelpers();
+
     double expulsionEffort = 0;
     double gamma;
 
@@ -215,8 +217,6 @@ void Group::mortalityGroupVector(int &deaths, IndividualVector &individuals) {
 /* BECOME BREEDER */
 
 void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
-
-    this->transferBreedersToHelpers();
 
     if (!helpers.empty()) {
 
