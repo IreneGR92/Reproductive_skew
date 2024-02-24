@@ -35,7 +35,6 @@ void Simulation::run() {
         population.help();
         population.survivalGroup();
 
-
         //Calculate stats
         if (generation % parameters->getSkip() == 0) {
             statistics->calculateStatistics(population);
