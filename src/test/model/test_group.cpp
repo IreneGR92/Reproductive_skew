@@ -47,7 +47,8 @@ TEST(GroupTest, GroupReassignBreedersStaySameSize) {
 TEST(GroupTest, OffspringProduction) { //TODO: This test is not working after reproduce method
     //given
     Group group;
-    int initialGroupSize;
+    int initialGroupSize, groupSizeAfterReproduction;
+    int fecundity;
     int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0;
 
     //when
@@ -56,8 +57,10 @@ TEST(GroupTest, OffspringProduction) { //TODO: This test is not working after re
         group.transferBreedersToHelpers();
         group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
         group.reproduce(i);
+        fecundity = group.returnFecundity();
         group.calculateGroupSize();
-        //then
-        EXPECT_EQ(group.getGroupSize(), initialGroupSize + group.returnFecundity());
+        groupSizeAfterReproduction = group.getGroupSize();
+                //then
+        EXPECT_EQ(groupSizeAfterReproduction, initialGroupSize + fecundity);
     }
 }

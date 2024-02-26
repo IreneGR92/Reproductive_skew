@@ -13,7 +13,7 @@ Group::Group() : mainBreeder(BREEDER) {
     this->parameters = Parameters::instance();
 
     mainBreederAlive = true;
-    cumHelp = Parameters::NO_VALUE;
+    cumHelp = 0;
     acceptanceRate = Parameters::NO_VALUE;
     acceptedFloatersSize = Parameters::NO_VALUE;
     reproductiveShareRate = Parameters::NO_VALUE;
@@ -396,6 +396,8 @@ void Group::increaseAge() {
 
 int Group::returnFecundity() {
 
+    assert (cumHelp>=0);
+
     //Calculate fecundity
     fecundityGroup = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
 
@@ -414,7 +416,8 @@ void Group::reproduce(int generation) { // populate offspring generation
     std::vector<Individual *> breedersPointers;
     int randomIndex;
     int fecundity = this->returnFecundity();
-
+    offspringMainBreeder = 0;
+    offspringSubordinateBreeders = 0;
 
     for (Individual &breeder: breeders) {
         breedersPointers.push_back(&breeder);
@@ -433,6 +436,11 @@ void Group::reproduce(int generation) { // populate offspring generation
             //Reproduction
             Individual offspring = Individual(*randomIndividual, HELPER, generation);
             helpers.emplace_back(offspring);
+            if (randomIndex = breedersPointers.size() - 1) {
+                offspringMainBreeder++;
+            } else {
+                offspringSubordinateBreeders++;
+            }
         }
     }
 }

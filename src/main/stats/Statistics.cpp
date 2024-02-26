@@ -178,8 +178,8 @@ double Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups)
     } else {
         correlation = sumProductXY / (stdevX * stdevY * counter);
     }
-    //assert (abs(correlation) >= 0);
-    //assert (abs(correlation) <= 1);
+    assert (abs(correlation) >= 0);
+    assert (abs(correlation) <= 1);
     return correlation;
 
 }
@@ -230,8 +230,8 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
     } else {
         correlation = sumProductXY / (stdevX * stdevY * counter);
     }
-    //assert (abs(correlation) >= 0);
-    //assert (abs(correlation) <= 1);
+    assert (abs(correlation) >= 0);
+    assert (abs(correlation) <= 1);
     return correlation;
 
 }
@@ -249,7 +249,7 @@ void Statistics::printHeadersToConsole() {
          << "disper" << setw(9) << "immRate" << setw(9)
          << "help" << setw(9) << "surv" << setw(9)
          << "skew" << setw(9) << "offpr" << setw(9)
-         //<< "offsDom" << setw(9) << "offsSub" << setw(9)
+         << "offsDom" << setw(9) << "offsSub" << setw(9)
          << "relatH" << setw(9) << "relatB"<< endl;
 }
 
@@ -276,8 +276,8 @@ void Statistics::printToConsole(int generation, int deaths) {
               << setw(9) << setprecision(2) << survival.calculateMean()
               << setw(9) << setprecision(2) << reproductiveShareRate.calculateMean()
               << setw(9) << setprecision(2) << fecundityGroup.calculateMean()
-              //<< setw(9) << setprecision(2) << offspringMainBreeder.calculateMean()
-              //<< setw(9) << setprecision(2) << offspringOfSubordinateBreeders.calculateMean()
+              << setw(9) << setprecision(2) << offspringMainBreeder.calculateMean()
+              << setw(9) << setprecision(2) << offspringOfSubordinateBreeders.calculateMean()
               << setw(9) << setprecision(2) << relatednessHelpers
               << setw(9) << setprecision(2) << relatednessBreeders
               << endl;
@@ -297,7 +297,7 @@ void Statistics::printHeadersToFile() {
                                  << "Help" << "\t" << "CumHelp" << "\t"
                                  << "Survival_H" << "\t" << "Survival_F" << "\t"<< "Survival_DomB" << "\t"<< "Survival_SubB" << "\t"
                                  << "ReprodShareRate" << "\t" << "FecundityGroup" << "\t"
-                                 //<< "OffspringDomBreeder" << "\t" << "OffspringSubBreeders" << "\t" << "TotalOffspringGroup" << "\t"
+                                 << "OffspringDomBreeder" << "\t" << "OffspringSubBreeders" << "\t" << "TotalOffspringGroup" << "\t"
                                  << "Relatedness_H" << "\t" << "Relatedness_B" << "\t"
                                  << "newBreederOutsider" << "\t" << "newBreederInsider" << "\t"
                                  << endl;
@@ -343,9 +343,9 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << survivalSubBreeders.calculateMean()
                                  << "\t" << setprecision(4) << reproductiveShareRate.calculateMean()
                                  << "\t" << setprecision(4) << fecundityGroup.calculateMean()
-                                // << "\t" << setprecision(4) << offspringMainBreeder.calculateMean()
-                                // << "\t" << setprecision(4) << offspringOfSubordinateBreeders.calculateMean()
-                                // << "\t" << setprecision(4) << totalOffspringGroup.calculateMean()
+                                 << "\t" << setprecision(4) << offspringMainBreeder.calculateMean()
+                                 << "\t" << setprecision(4) << offspringOfSubordinateBreeders.calculateMean()
+                                 << "\t" << setprecision(4) << totalOffspringGroup.calculateMean()
                                  << "\t" << setprecision(4) << relatednessHelpers
                                  << "\t" << setprecision(4) << relatednessBreeders
                                  << "\t" << newBreederOutsider
