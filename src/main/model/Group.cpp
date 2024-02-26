@@ -397,7 +397,7 @@ void Group::increaseAge() {
 void Group::calcFecundity() {
 
     assert (cumHelp>=0);
-    int initFecundity;
+    double initFecundity; //TODO: we store the actual fecundity of the group, no the calculated one, issue for debugging?
 
     //Calculate fecundity
     initFecundity = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
