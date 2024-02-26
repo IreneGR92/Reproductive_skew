@@ -62,5 +62,6 @@ TEST(GroupTest, OffspringProduction) { //TODO: This test is not working after re
         groupSizeAfterReproduction = group.getGroupSize();
                 //then
         EXPECT_EQ(groupSizeAfterReproduction, initialGroupSize + fecundity);
+        EXPECT_EQ(group.getFecundityGroup(), group.getOffspringMainBreeder() + group.getOffspringSubordinateBreeders());
     }
 }
