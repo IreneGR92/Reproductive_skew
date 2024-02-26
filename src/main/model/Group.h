@@ -22,7 +22,7 @@ private:
     double acceptanceRate; ///< The acceptance rate of immigrants to the group.
     int acceptedFloatersSize; ///< Number of immigrants accepted by the group.
     double reproductiveShareRate; ///< Rate of how many helpers are allowed to breeder in the group.
-    double fecundityGroup; ///< The max number of offspring produced by the group.
+    int fecundityGroup; ///< The max number of offspring produced by the group.
     int offspringMainBreeder;
     int offspringSubordinateBreeders;
     int totalOffspringGroup;
@@ -65,7 +65,7 @@ public:
 
     void increaseAge();
 
-    int returnFecundity();
+    void calcFecundity();
 
     void reproduce(int generation);
 

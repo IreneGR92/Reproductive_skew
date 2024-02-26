@@ -57,7 +57,7 @@ TEST(GroupTest, OffspringProduction) { //TODO: This test is not working after re
         group.transferBreedersToHelpers();
         group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
         group.reproduce(i);
-        fecundity = group.returnFecundity();
+        fecundity = group.getFecundityGroup();
         group.calculateGroupSize();
         groupSizeAfterReproduction = group.getGroupSize();
                 //then

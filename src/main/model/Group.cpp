@@ -394,20 +394,20 @@ void Group::increaseAge() {
 
 /* REPRODUCTION */
 
-int Group::returnFecundity() {
+void Group::calcFecundity() {
 
     assert (cumHelp>=0);
+    int initFecundity;
 
     //Calculate fecundity
-    fecundityGroup = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
+    initFecundity = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
 
     //* (this->getBreedersSize() - parameters->getKnb() * this->getBreedersSize())
 
     // Transform fecundity to an integer number
-    std::poisson_distribution<int> PoissonFecundity(fecundityGroup);
-    int realFecundity = PoissonFecundity(*parameters->getGenerator()); //integer number
+    std::poisson_distribution<int> PoissonFecundity(initFecundity);
+    fecundityGroup = PoissonFecundity(*parameters->getGenerator()); //integer number
 
-    return realFecundity;
 }
 
 
@@ -415,7 +415,7 @@ void Group::reproduce(int generation) { // populate offspring generation
 
     std::vector<Individual *> breedersPointers;
     int randomIndex;
-    int fecundity = this->returnFecundity();
+    this->calcFecundity();
     offspringMainBreeder = 0;
     offspringSubordinateBreeders = 0;
 
@@ -428,7 +428,7 @@ void Group::reproduce(int generation) { // populate offspring generation
 
     std::uniform_int_distribution<int> distribution(0, breedersPointers.size() - 1);
     if (!breedersPointers.empty()) {
-        for (int i = 0; i < fecundity; i++) {
+        for (int i = 0; i < fecundityGroup; i++) {
             // Generate a random index
             randomIndex = distribution(*parameters->getGenerator());
             // Access the random individual
