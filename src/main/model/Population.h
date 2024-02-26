@@ -25,6 +25,9 @@ private:
 
     int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0; ///< Statistics related to new breeders and inheritance.
 
+    int emigrants = 0; ///< The number of floaters generated before immigration.
+
+
 
 public:
 
@@ -33,6 +36,8 @@ public:
     const IndividualVector &getFloaters() const;
 
     int getDeaths() const;
+
+    int getEmigrants() const;
 
     void reset();
 

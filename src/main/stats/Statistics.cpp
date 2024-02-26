@@ -242,7 +242,7 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
 void Statistics::printHeadersToConsole() {
     // column headings on screen
     cout << setw(6) << "gen" << setw(9) << "pop" << setw(9) << "deaths" << setw(9)
-         << "float" << setw(9) << "group" << setw(9) << "maxGroup" << setw(9) << "subBreed" << setw(9)
+         << "emig" << setw(9) << "float" << setw(9) << "group" << setw(9) << "maxGroup" << setw(9) << "subBreed" << setw(9)
          << "age" << setw(9)
          << "alpha" << setw(9) << "alphaAge" << setw(9) << "beta" << setw(9)
          << "gamma" << setw(9) << "delta" << setw(9)
@@ -254,12 +254,13 @@ void Statistics::printHeadersToConsole() {
 }
 
 
-void Statistics::printToConsole(int generation, int deaths) {
+void Statistics::printToConsole(int generation, int deaths, int emigrants) {
     // show values on screen
     std::cout << fixed << showpoint
               << setw(6) << generation
               << setw(9) << population
               << setw(9) << deaths
+              << setw(9) << emigrants
               << setw(9) << totalFloaters
               << setw(9) << setprecision(2) << groupSize.calculateMean()
               << setw(9) << groupSize.getMaxValue()

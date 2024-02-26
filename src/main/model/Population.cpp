@@ -13,12 +13,16 @@ int Population::getDeaths() const {
     return deaths;
 }
 
+int Population::getEmigrants() const {
+    return emigrants;
+}
 
 void Population::reset() {
     this->deaths = 0;
     this->inheritance = 0;
     this->newBreederInsider = 0;
     this->newBreederOutsider = 0;
+    this->emigrants = 0;
 }
 
 Population::Population() {
@@ -42,6 +46,7 @@ void Population::disperse(int generation) {
         Group &group = groups[i];
         //Dispersal
         this->floaters.merge(group.disperse());
+        this->emigrants = floaters.size();
 
         // In the non relatedness implementation, helpers just born are reassigned to random groups. Groups receive as many helpers as helpers left the group for reassignment.
         if (parameters->isNoRelatedness() && generation > 0) {

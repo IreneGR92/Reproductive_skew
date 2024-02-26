@@ -79,7 +79,7 @@ public:
      * @param generation The current generation of the simulation.
      * @param deaths The number of deaths in the population.
      */
-    void printToConsole(int generation, int deaths);
+    void printToConsole(int generation, int deaths, int emigrants);
 
     /**
      * @brief Prints the statistics to a file.

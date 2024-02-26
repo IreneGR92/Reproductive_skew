@@ -1,4 +1,4 @@
-
+#include <iostream>
 #include "Simulation.h"
 #include "stats/Statistics.h"
 #include <vector>
@@ -18,7 +18,7 @@ void Simulation::run() {
 
     statistics->calculateStatistics(population);
     statistics->printHeadersToConsole();
-    statistics->printToConsole(generation, population.getDeaths());
+    statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
 //    statistics->printToFile(replica, generation, population.getDeaths(), newBreederOutsider, newBreederInsider, inheritance);
 
     delete statistics;
@@ -49,15 +49,15 @@ void Simulation::run() {
             }
         }
 
-/*        if (replica == 0 && generation == 2000){
-            std::cout << "HERE" << std::endl; //TODO: Stopper for debugging
-        }*/
+//        if (replica == 0 && generation == 20000){
+//            std::cout << "HERE" << std::endl; //TODO: Stopper for debugging
+//        }
 
         population.mortalityGroup();
 
         // Print main file (separately since we need values of deaths, newBreederFloater, newBreederHelper and inheritance to be calculated)
         if (generation % parameters->getSkip() == 0) {
-            statistics->printToConsole(generation, population.getDeaths());
+            statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
             statistics->printToFile(replica, generation, population.getDeaths(), population.getNewBreederOutsider(),
                                     population.getNewBreederInsider(), population.getInheritance());
         }
