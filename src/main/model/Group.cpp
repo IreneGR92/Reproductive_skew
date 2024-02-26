@@ -436,7 +436,7 @@ void Group::reproduce(int generation) { // populate offspring generation
             //Reproduction
             Individual offspring = Individual(*randomIndividual, HELPER, generation);
             helpers.emplace_back(offspring);
-            if (randomIndex = breedersPointers.size() - 1) {
+            if (randomIndex == breedersPointers.size() - 1) {
                 offspringMainBreeder++;
             } else {
                 offspringSubordinateBreeders++;
