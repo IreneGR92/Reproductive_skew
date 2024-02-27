@@ -65,6 +65,7 @@ set(TEST_FILES
         src/test/model/unit_tests.cpp
         src/test/model/test_group.cpp
         src/test/model/container/test_container.cpp
+        src/test/model/stats/test_statistical_formulas.cpp
 )
 
 # Define the Test executable and link the yaml-cpp library

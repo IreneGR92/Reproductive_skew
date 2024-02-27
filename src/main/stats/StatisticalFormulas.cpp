@@ -78,8 +78,14 @@ void StatisticalFormulas::addValue(double toAdd) {
 }
 
 void StatisticalFormulas::merge(const StatisticalFormulas statisticalFormulas) {
-    this->individualValues.insert(individualValues.end(), statisticalFormulas.getValues().begin(),
-                                  statisticalFormulas.getValues().end());
+
+    std::vector<double> result(this->individualValues.size() + statisticalFormulas.getValues().size());
+
+    std::merge(this->individualValues.begin(), this->individualValues.end(), statisticalFormulas.getValues().begin(),
+               statisticalFormulas.getValues().end(), result.begin());
+    this->individualValues = result;
+
+
 }
 
 int StatisticalFormulas::size() {
