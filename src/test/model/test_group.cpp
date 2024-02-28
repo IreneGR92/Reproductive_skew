@@ -44,7 +44,7 @@ TEST(GroupTest, GroupReassignBreedersStaySameSize) {
     }
 }
 
-TEST(GroupTest, OffspringProduction) { //TODO: This test is not working after reproduce method
+TEST(GroupTest, OffspringProduction) {
     //given
     Group group;
     int initialGroupSize, groupSizeAfterReproduction;

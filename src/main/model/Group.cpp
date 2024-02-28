@@ -399,15 +399,18 @@ void Group::calcFecundity() {
     assert (cumHelp>=0);
     double initFecundity; //TODO: we store the actual fecundity of the group, no the calculated one, issue for debugging?
 
-    //Calculate fecundity
-    initFecundity = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
+    if (isBreederAlive() || breeders.size() > 0) {
+        //Calculate fecundity
+        initFecundity = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
 
-    //* (this->getBreedersSize() - parameters->getKnb() * this->getBreedersSize())
+        //* (this->getBreedersSize() - parameters->getKnb() * this->getBreedersSize())
 
-    // Transform fecundity to an integer number
-    std::poisson_distribution<int> PoissonFecundity(initFecundity);
-    fecundityGroup = PoissonFecundity(*parameters->getGenerator()); //integer number
-
+        // Transform fecundity to an integer number
+        std::poisson_distribution<int> PoissonFecundity(initFecundity);
+        fecundityGroup = PoissonFecundity(*parameters->getGenerator()); //integer number
+    } else {
+        fecundityGroup = 0;
+    }
 }
 
 
