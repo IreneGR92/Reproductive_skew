@@ -115,13 +115,6 @@ void Population::help() {
     }
 }
 
-void Population::survival() {
-    for (Group &group: groups) {
-        group.survivalGroup();
-    }
-    this->survivalFloaters();
-}
-
 void Population::survivalGroup() {
     for (Group &group: groups) {
         group.survivalGroup();
@@ -133,14 +126,6 @@ void Population::survivalFloaters() {
     for (Individual &floater: floaters) {
         floater.calcSurvival(0, 0);
     }
-}
-
-void Population::mortality() {
-    for (Group &group: groups) {
-        group.mortalityGroup(deaths);
-    }
-    this->mortalityFloaters();
-
 }
 
 void Population::mortalityGroup() {

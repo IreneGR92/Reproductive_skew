@@ -49,13 +49,9 @@ public:
 
     void help();
 
-    void survival();
-
     void survivalGroup();
 
     void survivalFloaters();
-
-    void mortality();
 
     void mortalityGroup();
 
