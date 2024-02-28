@@ -399,7 +399,7 @@ void Group::calcFecundity() {
     assert (cumHelp>=0);
     double initFecundity; //TODO: we store the actual fecundity of the group, no the calculated one, issue for debugging?
 
-    if (isBreederAlive() || breeders.size() > 0) {
+    if (getBreedersSize() > 0) {
         //Calculate fecundity
         initFecundity = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
 
