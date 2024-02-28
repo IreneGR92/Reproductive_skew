@@ -63,10 +63,14 @@ private:
     double Xe;    ///< Cost of expulsion in survival.
     double Xrs;   ///< Cost of reproductive suppression in survival.
 
+    // Modifiers in offspring mortality
+    double mOff;     ///< mortality of offspring
+    double mRate;    ///< rate of change in mortality of offspring
+    double mStep;    ///< step size in mortality of offspring
+
     // Modifiers in fecundity
     double K0;    ///< Minimum fecundity, fecundity when no help provided.
     double Kh;    ///< Benefit of cumulative help in the fecundity.
-    double Kt;    ///<  benefit of age in the fecundity
     double Knb;   ///<  cost of number of breeders in the fecundity
 
     // Genetic values
@@ -162,11 +166,15 @@ public:
 
     double getXrs() const;
 
+    double getMOff() const;
+
+    double getMRate() const;
+
+    double getMStep() const;
+
     double getK0() const;
 
     double getKh() const;
-
-    double getKt() const;
 
     double getKnb() const;
 

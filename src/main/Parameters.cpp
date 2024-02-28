@@ -36,9 +36,11 @@ Parameters::Parameters(const string &url) {
     this->Xh = config["Xh"].as<double>();
     this->Xn = config["Xn"].as<double>();
     this->Xe = config["Xe"].as<double>();
+    this->mOff = config["mOff"].as<double>();
+    this->mRate = config["mRate"].as<double>();
+    this->mStep = config["mStep"].as<double>();
     this->K0 = config["K0"].as<double>();
     this->Kh = config["Kh"].as<double>();
-    this->Kt = config["Kt"].as<double>();
     this->Knb = config["Knb"].as<double>();
     this->INIT_ALPHA = config["INIT_ALPHA"].as<double>();
     this->INIT_ALPHA_AGE = config["INIT_ALPHA_AGE"].as<double>();
@@ -101,9 +103,11 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "Xn(Benefit_group_size_survival):" << "\t" << this->getXn() << endl
                  << "Xe(Cost_expulsion_survival):" << "\t" << this->getXe() << endl
                  << "Xrs(Reproductive_suppression_survival):" << "\t" << this->getXrs() << endl
+                 << "mOff(Average_mortality_offspring):" << "\t" << this->getMOff() << endl
+                 << "mRate(Change_mortality_offspring):" << "\t" << this->getMRate() << endl
+                 << "mStep(Rate_change_mortality_offspring):" << "\t" << this->getMStep() << endl
                  << "K0(Base_fecundity):" << "\t" << this->getK0() << endl
                  << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
-                 << "Kt(Benefit_age_fecundity):" << "\t" << this->getKt() << endl
                  << "Knb(Cost_number_breeders_fecundity):" << "\t" << this->getKnb() << endl
                  << "initAlpha:" << "\t" << this->getInitAlpha() << endl
                  << "initAlphaAge:" << "\t" << this->getInitAlphaAge() << endl
@@ -208,16 +212,24 @@ double Parameters::getXrs() const {
     return Xrs;
 }
 
+double Parameters::getMOff() const {
+    return mOff;
+}
+
+double Parameters::getMRate() const {
+    return mRate;
+}
+
+double Parameters::getMStep() const {
+    return mStep;
+}
+
 double Parameters::getK0() const {
     return K0;
 }
 
 double Parameters::getKh() const {
     return Kh;
-}
-
-double Parameters::getKt() const {
-    return Kt;
 }
 
 double Parameters::getKnb() const {
