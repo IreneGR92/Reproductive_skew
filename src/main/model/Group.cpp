@@ -401,7 +401,7 @@ void Group::calcFecundity(double mk) {
 
     if (getBreedersSize() > 0) {
         //Calculate fecundity
-        initFecundity = parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp);
+        initFecundity = mk + mk *(parameters->getKh() * cumHelp / (1 + cumHelp));
 
         //* (this->getBreedersSize() - parameters->getKnb() * this->getBreedersSize())
 
