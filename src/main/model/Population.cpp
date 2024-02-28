@@ -205,7 +205,7 @@ double Population::getOffspringSurvival() const {
 void Population::reproduce(int generation) {
     this->mk = getOffspringSurvival();
     for (Group &group: groups) {
-        group.reproduce(generation);
+        group.reproduce(generation, mk);
     }
 }
 

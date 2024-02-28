@@ -65,9 +65,9 @@ public:
 
     void increaseAge();
 
-    void calcFecundity();
+    void calcFecundity(double mk);
 
-    void reproduce(int generation);
+    void reproduce(int generation, double mk);
 
 
     const Individual &getMainBreeder() const;

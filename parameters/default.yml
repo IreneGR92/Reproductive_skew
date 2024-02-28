@@ -8,7 +8,7 @@ AGE_NO_INFLUENCE_INHERITANCE: false # Age no influence of who inherits territory
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 50000
 MAX_NUM_REPLICATES: 1
-SKIP: 200   # interval between print-outs
+SKIP: 1   # interval between print-outs
 
 #Fix values
 INIT_NUM_HELPERS: 10     # initial number of helpers per group
@@ -26,9 +26,9 @@ Xe: 3    # cost of expulsion of immigrants in survival
 Xrs: 5    # cost of reproductive suppression in survival
 
 # Modifiers in offspring mortality
-mOff: 0.1    # average mortality of offspring
-mRate: 1   # rate of change in mortality of offspring
-mStep: 0.05   # step size in mortality of offspring
+mOff: 0.8    # average mortality of offspring
+mRate: 0.3   # rate of change in mortality of offspring
+mStep: 5   # step size in mortality of offspring
 
 #Modifiers in fecundity
 K0: 1    # baseline fecundity when no other factors influence it

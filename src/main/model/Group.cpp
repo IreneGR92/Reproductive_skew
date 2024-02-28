@@ -394,7 +394,7 @@ void Group::increaseAge() {
 
 /* REPRODUCTION */
 
-void Group::calcFecundity() {
+void Group::calcFecundity(double mk) {
 
     assert (cumHelp>=0);
     double initFecundity; //TODO: we store the actual fecundity of the group, no the calculated one, issue for debugging?
@@ -414,11 +414,11 @@ void Group::calcFecundity() {
 }
 
 
-void Group::reproduce(int generation) { // populate offspring generation
+void Group::reproduce(int generation, double mk) { // populate offspring generation
 
     std::vector<Individual *> breedersPointers;
     int randomIndex;
-    this->calcFecundity();
+    this->calcFecundity(mk);
     offspringMainBreeder = 0;
     offspringSubordinateBreeders = 0;
 
