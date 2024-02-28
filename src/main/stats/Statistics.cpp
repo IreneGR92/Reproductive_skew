@@ -53,6 +53,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
         }
     }
 
+    mk = populationObj.getMk();
 
     for (const Group &group: populationObj.getGroups()) {
         if (group.isBreederAlive()) {
@@ -247,9 +248,8 @@ void Statistics::printHeadersToConsole() {
          << "alpha" << setw(9) << "alphaAge" << setw(9) << "beta" << setw(9)
          << "gamma" << setw(9) << "delta" << setw(9)
          << "disper" << setw(9) << "immRate" << setw(9)
-         << "help" << setw(9) << "surv" << setw(9)
-         << "skew" << setw(9) << "offpr" << setw(9)
-         << "offsDom" << setw(9) << "offsSub" << setw(9)
+         << "help" << setw(9) << "surv" << setw(9) << "survOff" << setw(9)
+         << "skew" << setw(9) << "offpr" << setw(9) << "offsDom" << setw(9) << "offsSub" << setw(9)
          << "relatH" << setw(9) << "relatB"<< endl;
 }
 
@@ -275,6 +275,7 @@ void Statistics::printToConsole(int generation, int deaths, int emigrants) {
               << setw(9) << setprecision(2) << acceptanceRate.calculateMean()
               << setw(9) << setprecision(4) << help.calculateMean()
               << setw(9) << setprecision(2) << survival.calculateMean()
+              << setw(9) << setprecision(2) << mk
               << setw(9) << setprecision(2) << reproductiveShareRate.calculateMean()
               << setw(9) << setprecision(2) << fecundityGroup.calculateMean()
               << setw(9) << setprecision(2) << offspringMainBreeder.calculateMean()

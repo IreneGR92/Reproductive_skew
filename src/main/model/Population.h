@@ -27,7 +27,7 @@ private:
 
     int emigrants = 0; ///< The number of floaters generated before immigration.
 
-
+    double mk = 0; ///< variable environmental mortality of offspring.
 
 public:
 
@@ -75,6 +75,9 @@ public:
 
     int getInheritance() const;
 
+    double getOffspringSurvival() const;
+
+    double getMk() const;
 };
 
 

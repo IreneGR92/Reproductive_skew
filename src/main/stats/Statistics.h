@@ -24,6 +24,8 @@ private:
 
     double relatednessHelpers, relatednessBreeders; ///< The relatedness in the population.
 
+    double mk; // variable environmental mortality of offspring.
+
     // StatisticalFormulas objects for various statistics
     StatisticalFormulas groupSize, numOfSubBreeders;
     StatisticalFormulas age, ageDomBreeders, ageSubBreeders, ageFloaters, ageHelpers, ageBecomeBreeder; //age

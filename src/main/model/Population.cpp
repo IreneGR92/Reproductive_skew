@@ -186,10 +186,31 @@ void Population::increaseAgeFloaters() {
     }
 }
 
+double Population::getOffspringSurvival() const {
+
+    double offspringSurvival = parameters->getMOff();
+    auto rng = *parameters->getGenerator();
+
+    std::normal_distribution<double> NormalDist(0, parameters->getMStep());
+    if (parameters->uniform(rng) < parameters->getMRate()) {
+        offspringSurvival += NormalDist(rng);
+    }
+    if (offspringSurvival < 0) {
+        offspringSurvival = 0;
+    }
+
+    return offspringSurvival;
+}
+
 void Population::reproduce(int generation) {
+    this->mk = getOffspringSurvival();
     for (Group &group: groups) {
         group.reproduce(generation);
     }
+}
+
+double Population::getMk() const {
+    return mk;
 }
 
 int Population::getNewBreederOutsider() const {

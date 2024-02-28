@@ -26,9 +26,9 @@ Xe: 3    # cost of expulsion of immigrants in survival
 Xrs: 5    # cost of reproductive suppression in survival
 
 # Modifiers in offspring mortality
-mOff: 0.1    # mortality of offspring
-mRate: 0.1   # rate of change in mortality of offspring
-mStep: 0.1   # step size in mortality of offspring
+mOff: 0.1    # average mortality of offspring
+mRate: 1   # rate of change in mortality of offspring
+mStep: 0.05   # step size in mortality of offspring
 
 #Modifiers in fecundity
 K0: 1    # baseline fecundity when no other factors influence it
