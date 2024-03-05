@@ -39,6 +39,8 @@ private:
 
     int countHelpersAgeOne();
 
+    int calculateHelpersToReassign();
+
     void transferBreedersToHelpers();
 
     void calcAcceptanceRate();

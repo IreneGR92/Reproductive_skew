@@ -69,7 +69,7 @@ void Individual::setGroupIndex(int groupIndex) {
 void Individual::calcDispersal() {
     if (age == 1) {
         this->dispersal = beta;
-        if (this->dispersal > 1) { this->dispersal = 1; } else if (this->dispersal < 0) { this->dispersal = 0; }
+        if (this->dispersal > 1) { this->dispersal = 1; } else if (this->dispersal < 0.5) { this->dispersal = 0.5; }
 
     } else {
         this->dispersal = 0;

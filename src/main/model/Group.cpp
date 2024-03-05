@@ -78,17 +78,32 @@ int Group::countHelpersAgeOne() {
     return count;
 }
 
+int Group::calculateHelpersToReassign() {
+    int helpersToReassign;
+    if (parameters->isNoRelatedness()) {
+        helpersToReassign = countHelpersAgeOne();
+    } else {
+        double value = static_cast<double>(countHelpersAgeOne()) / 2;
+        if (value != floor(value)) { // Check if the value is not an integer
+            if (parameters->uniform(*parameters->getGenerator()) < 0.5) {
+                helpersToReassign = floor(value);
+            } else {
+                helpersToReassign = ceil(value);
+            }
+        } else {
+            helpersToReassign = value;// If the value is an integer, just assign it normally
+        }
+    }
+    return helpersToReassign;
+}
+
+
 std::vector<Individual> Group::reassignNoRelatedness(int index) {
 
     std::vector<Individual> noRelatedHelpers;
 
     //Obtain the number of helpers to reassign
-    int helpersToReassign;
-    if (parameters->isNoRelatedness()) {
-        helpersToReassign = countHelpersAgeOne();
-    } else {
-        helpersToReassign = round(countHelpersAgeOne() / 2);
-    }
+    int helpersToReassign = calculateHelpersToReassign();
 
     //Reassign the helpers
     for (int i = 0; i < helpersToReassign; i++) {
