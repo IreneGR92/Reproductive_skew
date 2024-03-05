@@ -43,6 +43,8 @@ public:
 
     void calculateGroupSize();
 
+    int countHelpersAgeOne();
+
     std::vector<Individual> disperse();
 
     std::vector<Individual> reassignNoRelatedness(int index);

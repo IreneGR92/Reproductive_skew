@@ -179,7 +179,7 @@ double Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups)
     } else {
         correlation = sumProductXY / (stdevX * stdevY * counter);
     }
-    assert (abs(correlation) >= 0);
+
     assert (abs(correlation) <= 1);
     return correlation;
 
@@ -231,7 +231,7 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
     } else {
         correlation = sumProductXY / (stdevX * stdevY * counter);
     }
-    assert (abs(correlation) >= 0);
+
     assert (abs(correlation) <= 1);
     return correlation;
 

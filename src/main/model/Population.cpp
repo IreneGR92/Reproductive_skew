@@ -44,12 +44,12 @@ void Population::disperse(int generation) {
 
     for (int i = 0; i < groups.size(); i++) {
         Group &group = groups[i];
+
         //Dispersal
         this->floaters.merge(group.disperse());
-        this->emigrants = floaters.size();
 
         // In the non relatedness implementation, helpers just born are reassigned to random groups. Groups receive as many helpers as helpers left the group for reassignment.
-        if (parameters->isNoRelatedness() && generation > 0) {
+        if (generation > 0) {
             noRelatedHelpers = group.reassignNoRelatedness(i);
             for (int j = 0; j < noRelatedHelpers.size(); j++) {
                 noRelatednessGroupsID.push_back(groupID);
@@ -58,8 +58,13 @@ void Population::disperse(int generation) {
             groupID++;
         }
     }
+
+    // After all floater are created, the number of emigrants is set to the number of floaters.
+    this->emigrants = floaters.size();
+
+
     // Assign helpers to random group while maintaining the same group size
-    if (parameters->isNoRelatedness() && !allNoRelatedHelpers.empty()) {
+    if (!allNoRelatedHelpers.empty()) {
 
         int selectGroupID;
         int timeout = 0;

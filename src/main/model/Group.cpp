@@ -32,7 +32,6 @@ Group::Group() : mainBreeder(BREEDER) {
 }
 
 
-
 /* TOTAL NUMBER OF INDIVIDUALS PER GROUP*/
 
 void Group::calculateGroupSize() {
@@ -69,22 +68,36 @@ vector<Individual> Group::disperse() {
     return newFloaters;
 }
 
+int Group::countHelpersAgeOne() {
+    int count = 0;
+    for (Individual &helper : helpers) {
+        if (helper.getAge() == 1) {
+            count++;
+        }
+    }
+    return count;
+}
+
 std::vector<Individual> Group::reassignNoRelatedness(int index) {
 
     std::vector<Individual> noRelatedHelpers;
 
-    for (int i = 0; i < helpers.size();) {
-        Individual &helper = helpers[i];
-        if (helper.getAge() == 1) { // all new offspring is assigned to new groups so no related to breeder
+    //Obtain the number of helpers to reassign
+    int helpersToReassign;
+    if (parameters->isNoRelatedness()) {
+        helpersToReassign = countHelpersAgeOne();
+    } else {
+        helpersToReassign = round(countHelpersAgeOne() / 2);
+    }
 
-            helper.setInherit(false); //the location of the individual is not the natal territory
-            noRelatedHelpers.push_back(helper); //add the individual to the vector in the last position
-            helpers.removeIndividual(i); // removes the individual from the helpers vector
-
-        } else {
-            i++;
-        }
-        helper.setGroupIndex(index);
+    //Reassign the helpers
+    for (int i = 0; i < helpersToReassign; i++) {
+            Individual *helper = &helpers.back(); // since offspring are added at the end of the helper vector, access last helper
+            helper->setInherit(false); //the location of the individual is not the natal territory
+            noRelatedHelpers.push_back(*helper); //add the individual to the vector in the last position
+            helper->setGroupIndex(index);
+            assert(helper->getAge() == 1);
+            helpers.pop_back(); // Remove the last helper from the helpers vector
     }
     return noRelatedHelpers;
 }
@@ -396,12 +409,12 @@ void Group::increaseAge() {
 
 void Group::calcFecundity(double mk) {
 
-    assert (cumHelp>=0);
+    assert (cumHelp >= 0);
     double initFecundity; //TODO: we store the actual fecundity of the group, no the calculated one, issue for debugging?
 
     if (getBreedersSize() > 0) {
         //Calculate fecundity
-        initFecundity = mk + mk *(parameters->getKh() * cumHelp / (1 + cumHelp));
+        initFecundity = mk + mk * (parameters->getKh() * cumHelp / (1 + cumHelp));
 
         //* (this->getBreedersSize() - parameters->getKnb() * this->getBreedersSize())
 
