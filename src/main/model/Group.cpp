@@ -70,7 +70,7 @@ vector<Individual> Group::disperse() {
 
 int Group::countHelpersAgeOne() {
     int count = 0;
-    for (Individual &helper : helpers) {
+    for (Individual &helper: helpers) {
         if (helper.getAge() == 1) {
             count++;
         }
@@ -107,12 +107,12 @@ std::vector<Individual> Group::reassignNoRelatedness(int index) {
 
     //Reassign the helpers
     for (int i = 0; i < helpersToReassign; i++) {
-            Individual *helper = &helpers.back(); // since offspring are added at the end of the helper vector, access last helper
-            helper->setInherit(false); //the location of the individual is not the natal territory
-            noRelatedHelpers.push_back(*helper); //add the individual to the vector in the last position
-            helper->setGroupIndex(index);
-            assert(helper->getAge() == 1);
-            helpers.pop_back(); // Remove the last helper from the helpers vector
+        Individual *helper = &helpers.back(); // since offspring are added at the end of the helper vector, access last helper
+        helper->setInherit(false); //the location of the individual is not the natal territory
+        noRelatedHelpers.push_back(*helper); //add the individual to the vector in the last position
+        helper->setGroupIndex(index);
+        assert(helper->getAge() == 1);
+        helpers.pop_back(); // Remove the last helper from the helpers vector
     }
     return noRelatedHelpers;
 }
@@ -126,18 +126,22 @@ void Group::calcAcceptanceRate() {
     double expulsionEffort = 0;
     double gamma;
 
-    for (auto &helper: helpers) {
-        if (helper.getGamma() < 0) {
-            gamma = 0;
-        } else {
-            gamma = helper.getGamma();
+    if (helpers.empty()) {
+        acceptanceRate = 1;
+    } else {
+        for (auto &helper: helpers) {
+            if (helper.getGamma() < 0) {
+                gamma = 0;
+            } else {
+                gamma = helper.getGamma();
+            }
+            expulsionEffort += gamma;
         }
-        expulsionEffort += gamma;
 
+        acceptanceRate = 1 - expulsionEffort;
+        if (acceptanceRate < 0) { acceptanceRate = 0;}
     }
-
-    acceptanceRate = 1 - expulsionEffort;
-    if (acceptanceRate < 0) {
+    if (acceptanceRate != 0) {
         acceptanceRate = 0;
     }
 }
