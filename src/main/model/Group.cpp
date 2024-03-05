@@ -125,20 +125,26 @@ void Group::calcAcceptanceRate() {
 
     double expulsionEffort = 0;
     double gamma;
+    double counter = 0;
 
     if (helpers.empty()) {
-        acceptanceRate = 1;
+        acceptanceRate = 1; //if no group members alive, all immigrants are free to colonise the territory
     } else {
         for (auto &helper: helpers) {
             if (helper.getGamma() < 0) {
                 gamma = 0;
+            } else if (helper.getGamma() > 1) {
+                gamma = 1;
             } else {
                 gamma = helper.getGamma();
             }
             expulsionEffort += gamma;
+            counter++;
         }
 
-        acceptanceRate = 1 - expulsionEffort;
+        double meanExpulsionEffort = expulsionEffort / counter;
+
+        acceptanceRate = 1 - meanExpulsionEffort;
         if (acceptanceRate < 0) { acceptanceRate = 0;}
     }
 }
