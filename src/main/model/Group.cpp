@@ -141,9 +141,6 @@ void Group::calcAcceptanceRate() {
         acceptanceRate = 1 - expulsionEffort;
         if (acceptanceRate < 0) { acceptanceRate = 0;}
     }
-    if (acceptanceRate != 0) {
-        acceptanceRate = 0;
-    }
 }
 
 // Calculates the proportion of floaters that should be considered for immigration into the current group, based on the biasFloatBreeder parameter, the total number of colonies and the acceptance rate of the group.
