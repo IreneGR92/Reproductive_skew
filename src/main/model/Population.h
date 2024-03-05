@@ -29,15 +29,10 @@ private:
 
     double mk = 0; ///< variable environmental mortality of offspring.
 
+    void increaseAgeFloaters();
+
+
 public:
-
-    const std::vector<Group> &getGroups() const;
-
-    const IndividualVector &getFloaters() const;
-
-    int getDeaths() const;
-
-    int getEmigrants() const;
 
     void reset();
 
@@ -61,9 +56,18 @@ public:
 
     void increaseAge();
 
-    void increaseAgeFloaters();
-
     void reproduce(int generation);
+
+
+    // Getters and setters
+
+    const std::vector<Group> &getGroups() const;
+
+    const IndividualVector &getFloaters() const;
+
+    int getDeaths() const;
+
+    int getEmigrants() const;
 
     int getNewBreederOutsider() const;
 

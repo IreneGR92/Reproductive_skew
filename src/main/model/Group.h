@@ -29,13 +29,23 @@ private:
 
 
     Individual mainBreeder; ///< The main breeder of the group.
-
     IndividualVector helpers; ///< A vector of Individual objects that are helpers in the group.
     IndividualVector breeders; ///< A vector of Individual objects that are breeders in the group.
+
 
     Individual *selectBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 
     void mortalityGroupVector(int &deaths, IndividualVector &individuals);
+
+    int countHelpersAgeOne();
+
+    void transferBreedersToHelpers();
+
+    void calcAcceptanceRate();
+
+    void calcReproductiveShareRate();
+
+    void calcFecundity(double mk);
 
 public:
 
@@ -43,13 +53,9 @@ public:
 
     void calculateGroupSize();
 
-    int countHelpersAgeOne();
-
     std::vector<Individual> disperse();
 
     std::vector<Individual> reassignNoRelatedness(int index);
-
-    void calcAcceptanceRate();
 
     std::vector<Individual> getAcceptedFloaters(IndividualVector &floaters);
 
@@ -61,17 +67,12 @@ public:
 
     void reassignBreeders(int &newBreederOutsider, int &newBreederInsider, int &inheritance);
 
-    void transferBreedersToHelpers();
-
-    void calcReproductiveShareRate();
-
     void increaseAge();
-
-    void calcFecundity(double mk);
 
     void reproduce(int generation, double mk);
 
 
+    // Getters and setters
     const Individual &getMainBreeder() const;
 
     bool isBreederAlive() const;
@@ -93,6 +94,7 @@ public:
     int getOffspringSubordinateBreeders() const;
 
     int getTotalOffspringGroup() const;
+
 
     bool hasHelpers() const;
 
