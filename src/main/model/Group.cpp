@@ -83,16 +83,18 @@ int Group::calculateHelpersToReassign() {
     if (parameters->isNoRelatedness()) {
         helpersToReassign = countHelpersAgeOne();
     } else {
-        double value = static_cast<double>(countHelpersAgeOne()) / 2;
-        if (value != floor(value)) { // Check if the value is not an integer
-            if (parameters->uniform(*parameters->getGenerator()) < 0.5) {
-                helpersToReassign = floor(value);
-            } else {
-                helpersToReassign = ceil(value);
-            }
-        } else {
-            helpersToReassign = value;// If the value is an integer, just assign it normally
-        }
+        helpersToReassign = round(countHelpersAgeOne() / 3); //TODO: change to 2?
+
+//        double value = static_cast<double>(countHelpersAgeOne()) / 2;
+//        if (value != floor(value)) { // Check if the value is not an integer
+//            if (parameters->uniform(*parameters->getGenerator()) < 0.5) {
+//                helpersToReassign = floor(value);
+//            } else {
+//                helpersToReassign = ceil(value);
+//            }
+//        } else {
+//            helpersToReassign = value;// If the value is an integer, just assign it normally
+//        }
     }
     return helpersToReassign;
 }
@@ -108,7 +110,7 @@ std::vector<Individual> Group::noRelatedHelpersToReassign(int index) {
     //Reassign the helpers
     for (int i = 0; i < helpersToReassign; i++) {
         Individual *helper = &helpers.back(); // since offspring are added at the end of the helper vector, access last helper
-        helper->setInherit(false); //the location of the individual is not the natal territory
+        //helper->setInherit(false); //the location of the individual is not the natal territory //TODO: consider reassigned helpers insiders/outsiders?
         noRelatedHelpers.push_back(*helper); //add the individual to the vector in the last position
         helper->setGroupIndex(index);
         assert(helper->getAge() == 1);
@@ -333,7 +335,7 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
             selectedBreeder = &helpers.back(); //substitute the previous dead mainBreeder
             selectedBreeder->setAgeBecomeBreeder();
             selectedBreeder->setFishType(BREEDER); //modify the class
-            if (selectedBreeder->isInherit() == 0) { //delete the ind from the vector floaters
+            if (selectedBreeder->isInherit() == false) {
                 newBreederOutsider++;
             } else {
                 newBreederInsider++;
@@ -373,7 +375,7 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
                     selectedBreeder->setAgeBecomeBreeder();
                     selectedBreeder->setFishType(BREEDER); //modify the class
 
-                    if ((*candidate)->isInherit() == 0) { //delete the ind from the vector floaters
+                    if ((*candidate)->isInherit() == false) {
                         newBreederOutsider++;
                     } else {
                         newBreederInsider++;
