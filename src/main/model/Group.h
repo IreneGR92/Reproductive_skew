@@ -57,7 +57,7 @@ public:
 
     std::vector<Individual> disperse();
 
-    std::vector<Individual> reassignNoRelatedness(int index);
+    std::vector<Individual> noRelatedHelpersToReassign(int index);
 
     std::vector<Individual> getAcceptedFloaters(IndividualVector &floaters);
 

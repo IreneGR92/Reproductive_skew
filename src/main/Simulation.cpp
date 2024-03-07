@@ -27,7 +27,7 @@ void Simulation::run() {
         statistics = new Statistics();
         population.reset();
 
-        population.disperse(generation);
+        population.disperse();
         population.survivalFloaters();
         population.mortalityFloaters();
         population.immigrate();

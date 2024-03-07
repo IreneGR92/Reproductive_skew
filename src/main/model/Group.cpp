@@ -98,7 +98,7 @@ int Group::calculateHelpersToReassign() {
 }
 
 
-std::vector<Individual> Group::reassignNoRelatedness(int index) {
+std::vector<Individual> Group::noRelatedHelpersToReassign(int index) {
 
     std::vector<Individual> noRelatedHelpers;
 

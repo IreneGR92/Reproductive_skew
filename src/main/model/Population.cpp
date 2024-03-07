@@ -32,8 +32,18 @@ Population::Population() {
     }
 }
 
+void Population::disperse() {
 
-void Population::disperse(int generation) {
+    for (int i = 0; i < groups.size(); i++) {
+        Group &group = groups[i];
+        this->floaters.merge(group.disperse());
+    }
+    this->emigrants = floaters.size(); // After all floater are created, the number of emigrants is set to the number of floaters.
+
+    this->reassignNoRelatedHelpers();
+}
+
+void Population::reassignNoRelatedHelpers() {
 
     int groupID = 0;
 
@@ -41,27 +51,17 @@ void Population::disperse(int generation) {
     IndividualVector allNoRelatedHelpers;
     std::vector<int> noRelatednessGroupsID;
 
-
+    // Helpers just born are reassigned to random groups. Groups receive as many helpers as helpers left the group for reassignment.
     for (int i = 0; i < groups.size(); i++) {
         Group &group = groups[i];
 
-        //Dispersal
-        this->floaters.merge(group.disperse());
-
-        // Helpers just born are reassigned to random groups. Groups receive as many helpers as helpers left the group for reassignment.
-        if (generation > 0) {
-            noRelatedHelpers = group.reassignNoRelatedness(i);
-            for (int j = 0; j < noRelatedHelpers.size(); j++) {
-                noRelatednessGroupsID.push_back(groupID);
-            }
-            allNoRelatedHelpers.merge(noRelatedHelpers);
-            groupID++;
+        noRelatedHelpers = group.noRelatedHelpersToReassign(i);
+        for (int j = 0; j < noRelatedHelpers.size(); j++) {
+            noRelatednessGroupsID.push_back(groupID);
         }
+        allNoRelatedHelpers.merge(noRelatedHelpers);
+        groupID++;
     }
-
-    // After all floater are created, the number of emigrants is set to the number of floaters.
-    this->emigrants = floaters.size();
-
 
     // Assign helpers to random group while maintaining the same group size
     if (!allNoRelatedHelpers.empty()) {
@@ -93,6 +93,7 @@ void Population::disperse(int generation) {
     }
 }
 
+
 void Population::immigrate() {
 
 // Shuffle the group indices. This is done to ensure that the immigration process does not favor any particular group due to their position in the groups vector.
@@ -105,7 +106,8 @@ void Population::immigrate() {
         for (int i: indices) {
             Group &group = groups[i];
             // Add new helpers to the group
-            auto newHelpers = group.getAcceptedFloaters(floaters); //  gets a list of floaters that are accepted by the current group.
+            auto newHelpers = group.getAcceptedFloaters(
+                    floaters); //  gets a list of floaters that are accepted by the current group.
             group.addHelpers(newHelpers);
 
         }

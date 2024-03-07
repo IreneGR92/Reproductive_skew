@@ -29,6 +29,8 @@ private:
 
     double mk = 0; ///< variable environmental mortality of offspring.
 
+    void reassignNoRelatedHelpers();
+
     void increaseAgeFloaters();
 
 
@@ -38,7 +40,7 @@ public:
 
     Population();
 
-    void disperse(int generation);
+    void disperse();
 
     void immigrate();
 
@@ -78,6 +80,8 @@ public:
     double getOffspringSurvival() const;
 
     double getMk() const;
+
+
 };
 
 
