@@ -438,9 +438,7 @@ void Group::calcFecundity(double mk) {
 
     if (getBreedersSize() > 0) {
         //Calculate fecundity
-        initFecundity = mk + mk * (parameters->getKh() * cumHelp / (1 + cumHelp));
-
-        //* (this->getBreedersSize() - parameters->getKnb() * this->getBreedersSize())
+        initFecundity = mk + mk * ((parameters->getKh() * cumHelp + parameters->getKnb() * breeders.size()) / (1 + cumHelp + breeders.size()));
 
         // Transform fecundity to an integer number
         std::poisson_distribution<int> PoissonFecundity(initFecundity);

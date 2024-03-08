@@ -108,7 +108,7 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "mStep(Rate_change_mortality_offspring):" << "\t" << this->getMStep() << endl
                  << "K0(Base_fecundity):" << "\t" << this->getK0() << endl
                  << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
-                 << "Knb(Cost_number_breeders_fecundity):" << "\t" << this->getKnb() << endl
+                 << "Knb(Bnefit_number_breeders_fecundity):" << "\t" << this->getKnb() << endl
                  << "initAlpha:" << "\t" << this->getInitAlpha() << endl
                  << "initAlphaAge:" << "\t" << this->getInitAlphaAge() << endl
                  << "initBeta:" << "\t" << this->getInitBeta() << endl

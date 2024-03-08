@@ -28,12 +28,12 @@ Xrs: 5    # cost of reproductive suppression in survival
 # Modifiers in offspring mortality
 mOff: 0.2    # average survival of offspring
 mRate: 0.3   # rate of change in survival of offspring
-mStep: 5   # step size in survival of offspring
+mStep: 4   # step size in survival of offspring
 
 #Modifiers in fecundity
 K0: 1    # baseline fecundity when no other factors influence it
-Kh: 0.7    # benefit of cumHelp in the fecundity
-Knb: 0.5   # cost of number of breeders in the fecundity (between 0 and 1)
+Kh: 0    # benefit of cumHelp in the fecundity
+Knb: 2   # benefit of number of breeders in the group fecundity
 
 
 
@@ -41,28 +41,28 @@ Knb: 0.5   # cost of number of breeders in the fecundity (between 0 and 1)
 #Genetic values
 
 #For help
-INIT_ALPHA: 0.5             #bigger values higher level of help
+INIT_ALPHA: 0.0             #bigger values higher level of help
 INIT_ALPHA_AGE: 0.0         #linear term for age, if 0 age has no effect
-MUTATION_ALPHA: 0.1        # mutation rate in alpha for level of help
+MUTATION_ALPHA: 0.06        # mutation rate in alpha for level of help
 MUTATION_ALPHA_AGE: 0.05
 STEP_ALPHA: 0.04            # mutation step size in alpha for level of help
 
 #For dispersal
 INIT_BETA: 1.0              # bigger values higher dispersal
-MUTATION_BETA: 0.1         # mutation rate for the propensity to disperse
+MUTATION_BETA: 0.06         # mutation rate for the propensity to disperse
 STEP_BETA: 0.04             # mutation step size for the propensity to disperse
 
 #For expulsion of immigrants
 INIT_GAMMA: 0.0              # bigger values higher expulsion
-MUTATION_GAMMA: 0.1         # mutation rate for the expulsion effort
+MUTATION_GAMMA: 0.06         # mutation rate for the expulsion effort
 STEP_GAMMA: 0.04             # mutation step size for the expulsion effort
 
 #For reproductive concessions
 INIT_DELTA: 0.5             # bigger values lower reproductive share
-MUTATION_DELTA: 0.1        # mutation rate in delta for level of reproductive share
+MUTATION_DELTA: 0.06        # mutation rate in delta for level of reproductive share
 STEP_DELTA: 0.04            # mutation step size in delta for level of reproductive share
 
 #For relatedness
-MUTATION_DRIFT: 0.1        # mutation rate in the neutral selected value to track level of relatedness
+MUTATION_DRIFT: 0.06        # mutation rate in the neutral selected value to track level of relatedness
 STEP_DRIFT: 0.04            # mutation step size in the neutral genetic value to track level of relatedness
 
