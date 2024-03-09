@@ -31,7 +31,6 @@ Parameters::Parameters(const string &url) {
     this->MIN_AGE_BECOME_BREEDER = config["MIN_AGE_BECOME_BREEDER"].as<int>();
     this->FIXED_GROUP_SIZE = config["FIXED_GROUP_SIZE"].as<double>();
     this->m = config["m"].as<double>();
-    this->n = config["n"].as<double>();
     this->X0 = config["X0"].as<double>();
     this->Xh = config["Xh"].as<double>();
     this->Xn = config["Xn"].as<double>();
@@ -97,7 +96,6 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "Fixed_group_size:" << "\t" << this->getFixedGroupSize() << endl
                  << "Bias_float_breeder:" << "\t" << this->getBiasFloatBreeder() << endl
                  << "m(Overall_mortality):" << "\t" << this->getM() << endl
-                 << "n(Mortality_dispersal):" << "\t" << this->getN() << endl
                  << "X0(intercept):" << "\t" << this->getX0() << endl
                  << "Xh(Cost_help_survival):" << "\t" << this->getXh() << endl
                  << "Xn(Benefit_group_size_survival):" << "\t" << this->getXn() << endl
@@ -186,10 +184,6 @@ double Parameters::getFixedGroupSize() const {
 
 double Parameters::getM() const {
     return m;
-}
-
-double Parameters::getN() const {
-    return n;
 }
 
 double Parameters::getX0() const {

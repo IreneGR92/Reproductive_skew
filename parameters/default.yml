@@ -18,7 +18,6 @@ FIXED_GROUP_SIZE: 3		# in implementation "no group augmentation", virtual group 
 
 # Modifiers in overall survival
 m: 0.1    # environmental mortality
-n: 1      # multiplier to m for lower mortality of floaters
 X0: 0.6     # base survival (between 0 and 1)
 Xh: 1    # cost of help in survival
 Xn: 3    # benefit of group size in survival

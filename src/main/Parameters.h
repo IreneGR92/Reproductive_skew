@@ -56,7 +56,6 @@ private:
 
     // Modifiers in survival.
     double m;      ///< Base mortality.
-    double n;      ///< Mortality linked to dispersal.
     double X0;     ///< Base survival without the effect of help or group size.
     double Xh;    ///< Cost of help in survival.
     double Xn;    ///< Benefit of group size in survival.
@@ -153,8 +152,6 @@ public:
     int getMinAgeBecomeBreeder() const;
 
     double getM() const;
-
-    double getN() const;
 
     double getX0() const;
 
