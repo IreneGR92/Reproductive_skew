@@ -100,24 +100,43 @@ void Individual::calcHelp() {
 void Individual::calcSurvival(const int &groupSize, double delta) {
 
     double thisGroupSize;
+    double Xn, Xe, Xh, Xrs, X0,X1,m; //TODO: remove parameter n since no longer has an effect to floaters survival
+
     if (parameters->isNoGroupAugmentation()) {
         thisGroupSize = parameters->getFixedGroupSize();
     } else {
         thisGroupSize = groupSize;
     }
 
+    X0=parameters->getX0();
+    X1=1-X0;
+    m=parameters->getM();
 
     if (fishType == FLOATER) {
-        this->survival = (1 - parameters->getM() * parameters->getN()) / (1 + exp(-parameters->getX0()));
-    } else if (fishType == HELPER) {
-        this->survival = (1 - parameters->getM()) /
-                         (1 + exp(-parameters->getX0() - parameters->getXn() * thisGroupSize +
-                                  parameters->getXh() * this->help + parameters->getXe() * this->gamma));
-    } else if (fishType == BREEDER) { // TODO: add a breeding cost?
-        this->survival = (1 - parameters->getM()) /
-                         (1 + exp(-parameters->getX0() - parameters->getXn() * thisGroupSize +
-                         parameters->getXe() * this->gamma + parameters->getXrs() * delta));
+        Xn = 0;
+        Xe = 0;
+        Xh = 0;
+        Xrs = 0;
+    } else if (fishType == BREEDER) {
+        Xn = parameters->getXn();
+        Xe = parameters->getXe();
+        Xh = 0;
+        Xrs = parameters->getXrs();
+    } else {
+        Xn = parameters->getXn();
+        Xe = parameters->getXe();
+        Xh = parameters->getXh();
+        Xrs = 0;
     }
+
+    if (Xn+Xe+Xh+Xrs == 0){
+        this->survival = X0;
+    } else {
+        this->survival = X0 + ((Xn*(X1-m)/(1+exp(-thisGroupSize))) + (Xh*(X1-m)/(1+exp(this->help))) +
+                               (Xe*(X1-m)/(1+exp(this->gamma)))+(Xrs*(X1-m)/(1+exp(delta)))) / (Xn+Xe+Xh+Xrs);
+    }
+
+    assert(survival >= 0 && survival <= 1);
 }
 
 
