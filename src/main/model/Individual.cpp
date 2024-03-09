@@ -100,7 +100,7 @@ void Individual::calcHelp() {
 void Individual::calcSurvival(const int &groupSize, double delta) {
 
     double thisGroupSize;
-    double Xn, Xe, Xh, Xrs, X0,X1,m; //TODO: remove parameter n since no longer has an effect to floaters survival
+    double Xn, Xe, Xh, Xrs, X0, X1; //TODO: remove parameter n since no longer has an effect to floaters survival
 
     if (parameters->isNoGroupAugmentation()) {
         thisGroupSize = parameters->getFixedGroupSize();
@@ -108,32 +108,32 @@ void Individual::calcSurvival(const int &groupSize, double delta) {
         thisGroupSize = groupSize;
     }
 
-    X0=parameters->getX0();
-    X1=1-X0;
-    m=parameters->getM();
+    X0 = parameters->getX0();           // min survival
+    X1 = (1 - X0) - parameters->getM(); //  X0 + X1 max survival
 
     if (fishType == FLOATER) {
-        Xn = 0;
-        Xe = 0;
-        Xh = 0;
-        Xrs = 0;
+        Xn = 0;     // effect of group size
+        Xe = 0;     // effect of expulsion
+        Xh = 0;     // effect of help
+        Xrs = 0;    // effect of reproductive suppression
     } else if (fishType == BREEDER) {
         Xn = parameters->getXn();
         Xe = parameters->getXe();
         Xh = 0;
         Xrs = parameters->getXrs();
-    } else {
+    } else { //HELPER
         Xn = parameters->getXn();
         Xe = parameters->getXe();
         Xh = parameters->getXh();
         Xrs = 0;
     }
 
-    if (Xn+Xe+Xh+Xrs == 0){
+    if (Xn + Xe + Xh + Xrs == 0) {
         this->survival = X0;
     } else {
-        this->survival = X0 + ((Xn*(X1-m)/(1+exp(-thisGroupSize))) + (Xh*(X1-m)/(1+exp(this->help))) +
-                               (Xe*(X1-m)/(1+exp(this->gamma)))+(Xrs*(X1-m)/(1+exp(delta)))) / (Xn+Xe+Xh+Xrs);
+        this->survival = X0 + ((Xn * X1 / (1 + exp(-thisGroupSize))) + (Xh * X1 / (1 + exp(this->help))) +
+                               (Xe * X1 / (1 + exp(this->gamma))) + (Xrs * X1 / (1 + exp(delta)))) /
+                              (Xn + Xe + Xh + Xrs);
     }
 
     assert(survival >= 0 && survival <= 1);
