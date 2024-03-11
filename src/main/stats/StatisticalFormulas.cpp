@@ -1,5 +1,6 @@
 
 #include "StatisticalFormulas.h"
+#include "../Parameters.h"
 #include <cmath>
 #include <numeric>
 #include <algorithm>
@@ -95,7 +96,9 @@ int StatisticalFormulas::size() {
 
 void StatisticalFormulas::addValues(const std::vector<double> &values) {
     for (double value: values) {
-        this->addValue(value);
+        if (value != Parameters::NO_VALUE) {
+            this->addValue(value);
+        }
     }
 }
 
