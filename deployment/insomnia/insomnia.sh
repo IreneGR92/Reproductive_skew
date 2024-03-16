@@ -20,7 +20,7 @@
 
 # For array jobs
 # Indicate how many input files you have
-#SBATCH --array=0-135
+#SBATCH --array=0-1
 
 #### Your shell commands below this line ####
 
