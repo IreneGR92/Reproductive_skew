@@ -7,7 +7,7 @@ mkdir build
 
 cd build
 cmake ..
-make
+make App
 cd ..
 
 sbatch ubelix.sh
