@@ -8,7 +8,7 @@ AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits terri
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 50000
 MAX_NUM_REPLICATES: 3
-SKIP: 100   # interval between print-outs
+SKIP: 1   # interval between print-outs
 
 #Fix values
 INIT_NUM_HELPERS: 10     # initial number of helpers per group
