@@ -7,7 +7,7 @@
 #SBATCH --mail-type=end,fail
 
 # Job name
-#SBATCH --job-name="TaskSpecialization"
+#SBATCH --job-name="ReproductiveSkew"
 
 # Runtime and memory
 #SBATCH --time=120:00:00
