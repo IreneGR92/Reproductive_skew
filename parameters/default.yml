@@ -6,9 +6,9 @@ NO_RELATEDNESS: false                   # Apply implementation to remove the eff
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
 
 MAX_COLONIES: 500     # max number of groups or colonies
-NUM_GENERATIONS: 50000
-MAX_NUM_REPLICATES: 3
-SKIP: 1   # interval between print-outs
+NUM_GENERATIONS: 200000
+MAX_NUM_REPLICATES: 20
+SKIP: 100   # interval between print-outs
 
 #Fix values
 INIT_NUM_HELPERS: 10     # initial number of helpers per group
@@ -25,7 +25,7 @@ Xe: 1    # cost of expulsion of immigrants in survival
 Xrs: 1    # cost of reproductive suppression in survival
 
 # Modifiers in offspring mortality
-mOff: 0.2    # average survival of offspring
+mOff: 0.25    # average survival of offspring
 mRate: 0.3   # rate of change in survival of offspring
 mStep: 4   # step size in survival of offspring
 

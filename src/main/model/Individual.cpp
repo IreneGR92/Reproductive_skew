@@ -100,7 +100,7 @@ void Individual::calcHelp() {
 void Individual::calcSurvival(const int &groupSize, double delta) {
 
     double thisGroupSize;
-    double Xn, Xe, Xh, Xrs, X0, X1; //TODO: remove parameter n since no longer has an effect to floaters survival
+    double Xn, Xe, Xh, Xrs, X0, X1;
 
     if (parameters->isNoGroupAugmentation()) {
         thisGroupSize = parameters->getFixedGroupSize();
