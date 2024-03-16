@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --account=free
+#SBATCH --account=e3b
 
 # Mail on NONE, BEGIN, END, FAIL, REQUEUE, ALL
 #SBATCH --mail-user=ig2500@columbia.edu

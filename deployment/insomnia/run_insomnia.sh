@@ -10,4 +10,4 @@ cmake ..
 make
 cd ..
 
-sbatch habanero.sh
+sbatch insomnia.sh
