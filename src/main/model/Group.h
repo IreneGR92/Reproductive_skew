@@ -41,8 +41,6 @@ private:
 
     int calculateHelpersToReassign();
 
-    void transferBreedersToHelpers();
-
     void calcAcceptanceRate();
 
     void calcReproductiveShareRate();
@@ -60,6 +58,8 @@ public:
     std::vector<Individual> noRelatedHelpersToReassign(int index);
 
     std::vector<Individual> getAcceptedFloaters(IndividualVector &floaters);
+
+    void transferBreedersToHelpers();
 
     void calculateCumulativeHelp();
 
