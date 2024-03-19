@@ -1,10 +1,8 @@
 
 #include <algorithm>
 #include <cassert>
-#include <iostream>
 #include <vector>
 #include "Group.h"
-#include "FishType.h"
 
 using namespace std;
 
@@ -147,7 +145,7 @@ void Group::calcAcceptanceRate() {
         double meanExpulsionEffort = expulsionEffort / counter;
 
         acceptanceRate = 1 - meanExpulsionEffort;
-        if (acceptanceRate < 0) { acceptanceRate = 0;}
+        if (acceptanceRate < 0) { acceptanceRate = 0; }
     }
 }
 
@@ -282,6 +280,8 @@ void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, in
                 breeders.emplace_back(*selectedBreeder);
             }
         }
+    } else {
+        this->calcReproductiveShareRate();
     }
 }
 
@@ -402,15 +402,17 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
 }
 
 void Group::calcReproductiveShareRate() {
-
-    reproductiveShareRate = 1 - mainBreeder.getDelta();
-    if (reproductiveShareRate < 0) {
-        reproductiveShareRate = 0;
-    } else if (reproductiveShareRate > 1) {
-        reproductiveShareRate = 1;
+    if (mainBreederAlive) {
+        reproductiveShareRate = 1 - mainBreeder.getDelta();
+        if (reproductiveShareRate < 0) {
+            reproductiveShareRate = 0;
+        } else if (reproductiveShareRate > 1) {
+            reproductiveShareRate = 1;
+        }
+    } else {
+        reproductiveShareRate = Parameters::NO_VALUE;
     }
 }
-
 
 /* INCREASE AGE OF ALL GROUP INDIVIDUALS*/
 
@@ -438,7 +440,8 @@ void Group::calcFecundity(double mk) {
 
     if (getBreedersSize() > 0) {
         //Calculate fecundity
-        initFecundity = mk + mk * ((parameters->getK0() + parameters->getKh() * cumHelp ) / (1 + cumHelp) + parameters->getKnb() * breeders.size() / (1 + breeders.size()));
+        initFecundity = mk + mk * ((parameters->getK0() + parameters->getKh() * cumHelp) / (1 + cumHelp) +
+                                   parameters->getKnb() * breeders.size() / (1 + breeders.size()));
 
 
         // Transform fecundity to an integer number

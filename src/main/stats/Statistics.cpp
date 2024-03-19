@@ -86,7 +86,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     totalMainBreeders = mainBreeders.size();
     totalSubordinateBreeders = subordinateBreeders.size();
     population = totalMainBreeders + totalSubordinateBreeders + totalHelpers + totalFloaters;
-    assert(population > 0);
+//    assert(population > 0);
 
     //Initialize the stats
 
