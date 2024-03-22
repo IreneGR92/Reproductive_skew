@@ -20,14 +20,24 @@
 
 # For array jobs
 # Indicate how many input files you have
-#SBATCH --array=0
+#SBATCH --array=0-11
 
 #### Your shell commands below this line ####
 
 declare -a arr=(
 
-"default.yml"
-
+"m1_rate0.yml"
+"m1_rate0_h0.yml"
+"m1_rate03.yml"
+"m1_rate03_h0.yml"
+"m04_rate0.yml"
+"m04_rate0_h0.yml"
+"m025_rate03.yml"
+"m025_rate03_h0.yml"
+"m025_rate05.yml"
+"m025_rate05_h0.yml"
+"high_adult_mortality.yml"
+"high_adult_mortality_NoRelat.yml"
 
 
 		)
