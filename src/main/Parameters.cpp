@@ -94,7 +94,7 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "Number_replicates:" << "\t" << this->getMaxNumReplicates() << endl
                  << "Min_age_become_breeder:" << "\t" << this->getMinAgeBecomeBreeder() << endl
                  << "Fixed_group_size:" << "\t" << this->getFixedGroupSize() << endl
-                 << "Bias_float_breeder:" << "\t" << this->getBiasFloatBreeder() << endl
+                 << "ImmigrantsMax:" << "\t" << this->getBiasFloatBreeder() << endl
                  << "m(Overall_mortality):" << "\t" << this->getM() << endl
                  << "X0(intercept):" << "\t" << this->getX0() << endl
                  << "Xh(Cost_help_survival):" << "\t" << this->getXh() << endl
@@ -106,7 +106,7 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "mStep(Rate_change_mortality_offspring):" << "\t" << this->getMStep() << endl
                  << "K0(Base_fecundity):" << "\t" << this->getK0() << endl
                  << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
-                 << "Knb(Bnefit_number_breeders_fecundity):" << "\t" << this->getKnb() << endl
+                 << "Knb(Benefit_number_breeders_fecundity):" << "\t" << this->getKnb() << endl
                  << "initAlpha:" << "\t" << this->getInitAlpha() << endl
                  << "initAlphaAge:" << "\t" << this->getInitAlphaAge() << endl
                  << "initBeta:" << "\t" << this->getInitBeta() << endl
