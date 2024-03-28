@@ -441,8 +441,15 @@ void Group::calcFecundity(double mk) {
 
     if (getBreedersSize() > 0) {
         //Calculate fecundity
-        initFecundity = mk + mk * ((parameters->getK0() + parameters->getKh() * cumHelp) / (1 + cumHelp) +
-                                   parameters->getKnb() * breeders.size() / (1 + breeders.size()));
+        if (mk > parameters->getMOff() && parameters->isBetHedgingHelp()){
+            initFecundity = mk + mk * ((parameters->getK0() - parameters->getKh() * cumHelp) / (1 + cumHelp) +
+                                       parameters->getKnb() * breeders.size() / (1 + breeders.size()));
+        } else {
+            initFecundity = mk + mk * ((parameters->getK0() + parameters->getKh() * cumHelp) / (1 + cumHelp) +
+                                       parameters->getKnb() * breeders.size() / (1 + breeders.size()));
+        }
+
+
 
 
         // Transform fecundity to an integer number
