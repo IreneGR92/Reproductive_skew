@@ -37,7 +37,7 @@ private:
     std::string name; ///< The name of the simulation.
 
     // Run parameters
-    bool REACTION_NORM_HELP;    ///< Apply reaction norm to age for dispersal?
+    bool BET_HEDGING_HELP;    ///< Apply reaction norm to age for dispersal?
     bool EVOLUTION_HELP_AFTER_DISPERSAL; ///< Help evolves only after the evolution of dispersal?
     bool NO_GROUP_AUGMENTATION; ///< No group augmentation in the simulation?
     bool NO_RELATEDNESS;       ///< Apply implementation to remove the effect of relatedness?
@@ -76,15 +76,11 @@ private:
 
     // For help
     double INIT_ALPHA;            ///< Initial value for genetic parameter alpha.
-    double INIT_ALPHA_AGE;        ///< Initial value for genetic parameter alphaAge.
-
     double MUTATION_ALPHA;        ///< Mutation rate in alpha for level of help.
-    double MUTATION_ALPHA_AGE;    ///< Mutation rate in alphaAge for level of help.
     double STEP_ALPHA;            ///< Mutation step size in alpha for level of help.
 
     // For dispersal
     double INIT_BETA;             ///< Initial value for genetic parameter beta.
-
     double MUTATION_BETA;         ///< Mutation rate for the propensity to disperse.
     double STEP_BETA;             ///< Mutation step size for the propensity to disperse.
 
@@ -125,7 +121,7 @@ public:
     // Getters for the parameters
     const std::string &getName() const;
 
-    bool isReactionNormHelp() const;
+    bool isBetHedgingHelp() const;
 
     bool isEvolutionHelpAfterDispersal() const;
 
@@ -177,11 +173,7 @@ public:
 
     double getInitAlpha() const;
 
-    double getInitAlphaAge() const;
-
     double getMutationAlpha() const;
-
-    double getMutationAlphaAge() const;
 
     double getStepAlpha() const;
 

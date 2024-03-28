@@ -1,5 +1,5 @@
 #Run parameters
-REACTION_NORM_HELP: false               # Apply reaction norm to age for level of help?
+BET_HEDGING_HELP: false                 # Does help have a negative influence on fecundity when the environment is benign?
 EVOLUTION_HELP_AFTER_DISPERSAL: false   # Help evolves only after the evolution of dispersal?
 NO_GROUP_AUGMENTATION: false
 NO_RELATEDNESS: true                   # Apply implementation to remove the effect of relatedness?
@@ -39,9 +39,7 @@ Knb: 2   # benefit of number of breeders in the group fecundity
 
 #For help
 INIT_ALPHA: 0.0             #bigger values higher level of help
-INIT_ALPHA_AGE: 0.0         #linear term for age, if 0 age has no effect
 MUTATION_ALPHA: 0.0        # mutation rate in alpha for level of help
-MUTATION_ALPHA_AGE: 0.05
 STEP_ALPHA: 0.04            # mutation step size in alpha for level of help
 
 #For dispersal

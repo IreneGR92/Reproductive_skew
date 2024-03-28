@@ -29,7 +29,7 @@ private:
     // StatisticalFormulas objects for various statistics
     StatisticalFormulas groupSize, numOfSubBreeders;
     StatisticalFormulas age, ageDomBreeders, ageSubBreeders, ageFloaters, ageHelpers, ageBecomeBreeder; //age
-    StatisticalFormulas alpha, alphaAge, beta, gamma, delta; //genetic parameters
+    StatisticalFormulas alpha, beta, gamma, delta; //genetic parameters
     StatisticalFormulas help, cumulativeHelp;
     StatisticalFormulas dispersal, acceptanceRate;
     StatisticalFormulas survival, survivalDomBreeders,survivalSubBreeders, survivalFloaters, survivalHelpers;

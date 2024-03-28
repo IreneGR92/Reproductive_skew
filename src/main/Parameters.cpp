@@ -17,7 +17,7 @@ Parameters::Parameters(const string &url) {
     YAML::Node config = YAML::LoadFile(url);
 
     this->name = this->getName(url);
-    this->REACTION_NORM_HELP = config["REACTION_NORM_HELP"].as<bool>();
+    this->BET_HEDGING_HELP = config["BET_HEDGING_HELP"].as<bool>();
     this->EVOLUTION_HELP_AFTER_DISPERSAL = config["EVOLUTION_HELP_AFTER_DISPERSAL"].as<bool>();
     this->NO_GROUP_AUGMENTATION = config["NO_GROUP_AUGMENTATION"].as<bool>();
     this->NO_RELATEDNESS = config["NO_RELATEDNESS"].as<bool>();
@@ -42,9 +42,7 @@ Parameters::Parameters(const string &url) {
     this->Kh = config["Kh"].as<double>();
     this->Knb = config["Knb"].as<double>();
     this->INIT_ALPHA = config["INIT_ALPHA"].as<double>();
-    this->INIT_ALPHA_AGE = config["INIT_ALPHA_AGE"].as<double>();
     this->MUTATION_ALPHA = config["MUTATION_ALPHA"].as<double>();
-    this->MUTATION_ALPHA_AGE = config["MUTATION_ALPHA_AGE"].as<double>();
     this->STEP_ALPHA = config["STEP_ALPHA"].as<double>();
     this->INIT_BETA = config["INIT_BETA"].as<double>();
     this->MUTATION_BETA = config["MUTATION_BETA"].as<double>();
@@ -83,7 +81,7 @@ void Parameters::print() {
 void Parameters::print(std::ofstream &outputStream) {
     outputStream << "PARAMETER VALUES" << endl
 
-                 << "Reaction_norm_help?:" << "\t" << this->isReactionNormHelp() << endl
+                 << "Bet-hedging_help?:" << "\t" << this->isBetHedgingHelp() << endl
                  << "Evolution_help_after_dispersal?:" << "\t" << this->isEvolutionHelpAfterDispersal() << endl
                  << "No_group_augmentation?:" << "\t" << this->isNoGroupAugmentation() << endl
                  << "No_effect_relatedness?:" << "\t" << this->isNoRelatedness() << endl
@@ -108,12 +106,10 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
                  << "Knb(Benefit_number_breeders_fecundity):" << "\t" << this->getKnb() << endl
                  << "initAlpha:" << "\t" << this->getInitAlpha() << endl
-                 << "initAlphaAge:" << "\t" << this->getInitAlphaAge() << endl
                  << "initBeta:" << "\t" << this->getInitBeta() << endl
                  << "initGamma:" << "\t" << this->getInitGamma() << endl
                  << "initDelta:" << "\t" << this->getInitDelta() << endl
                  << "mutAlpha:" << "\t" << this->getMutationAlpha() << endl
-                 << "mutAlphaAge:" << "\t" << this->getMutationAlphaAge() << endl
                  << "mutBeta:" << "\t" << this->getMutationBeta() << endl
                  << "mutGamma:" << "\t" << this->getMutationGamma() << endl
                  << "mutDelta:" << "\t" << this->getMutationDelta() << endl
@@ -130,8 +126,8 @@ const string &Parameters::getName() const {
     return name;
 }
 
-bool Parameters::isReactionNormHelp() const {
-    return REACTION_NORM_HELP;
+bool Parameters::isBetHedgingHelp() const {
+    return BET_HEDGING_HELP;
 }
 
 bool Parameters::isEvolutionHelpAfterDispersal() const {
@@ -234,16 +230,8 @@ double Parameters::getInitAlpha() const {
     return INIT_ALPHA;
 }
 
-double Parameters::getInitAlphaAge() const {
-    return INIT_ALPHA_AGE;
-}
-
 double Parameters::getMutationAlpha() const {
     return MUTATION_ALPHA;
-}
-
-double Parameters::getMutationAlphaAge() const {
-    return MUTATION_ALPHA_AGE;
 }
 
 double Parameters::getStepAlpha() const {

@@ -16,9 +16,7 @@ Individual::Individual(Individual &individual, FishType fishType, int &generatio
     assert(individual.fishType == BREEDER);
 
     this->alpha = individual.alpha;
-    this->alphaAge = individual.alphaAge;
     this->beta = individual.beta;
-
     this->gamma = individual.gamma;
     this->delta = individual.delta;
     this->drift = individual.getDrift();
@@ -38,7 +36,6 @@ Individual::Individual(FishType fishType) {
     auto param = Parameters::instance();
 
     this->alpha = param->getInitAlpha();
-    this->alphaAge = param->getInitAlphaAge();
     this->beta = param->getInitBeta();
     this->gamma = param->getInitGamma();
     this->delta = param->getInitDelta();
@@ -80,14 +77,8 @@ void Individual::calcDispersal() {
 
 void Individual::calcHelp() {
     if (fishType == HELPER) {
-        if (!parameters->isReactionNormHelp()) {
-            help = alpha;
-
-        } else {
-            help = alpha + alphaAge * age;
-        }
+        help = alpha;
         if (help < 0) { help = 0; }
-
     } else {
         help = Parameters::NO_VALUE;
         std::cout << "Error: floaters get a help value" << std::endl;
@@ -153,23 +144,15 @@ void Individual::mutate(int generation) // mutate genome of offspring
 
     // Alpha
     double mutationAlpha;
-    double mutationAlphaAge;
 
     if (parameters->isEvolutionHelpAfterDispersal() && generation < 25000) {
         mutationAlpha = 0;
-        mutationAlphaAge = 0;
     } else {
         mutationAlpha = parameters->getMutationAlpha();
-        mutationAlphaAge = parameters->getMutationAlphaAge();
     }
 
     if (parameters->uniform(rng) < mutationAlpha) {
         alpha += NormalA(rng);
-    }
-    if (parameters->isReactionNormHelp()) {
-        if (parameters->uniform(rng) < mutationAlphaAge) {
-            alphaAge += NormalA(rng);
-        }
     }
 
     // Beta
@@ -216,10 +199,6 @@ void Individual::increaseAge() {
 
 double Individual::getAlpha() const {
     return alpha;
-}
-
-double Individual::getAlphaAge() const {
-    return alphaAge;
 }
 
 double Individual::getBeta() const {
@@ -293,8 +272,6 @@ double Individual::get(Attribute type) const {
     switch (type) {
         case ALPHA:
             return this->alpha;
-        case ALPHA_AGE:
-            return this->alphaAge;
         case BETA:
             return this->beta;
         case GAMMA:

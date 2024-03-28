@@ -92,7 +92,6 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 
     //Genes
     alpha.addValues(individualsAll.get(ALPHA));
-    alphaAge.addValues(individualsAll.get(ALPHA_AGE));
     beta.addValues(individualsAll.get(BETA));
     gamma.addValues(individualsAll.get(GAMMA));
     delta.addValues(individualsAll.get(DELTA));
@@ -245,8 +244,7 @@ void Statistics::printHeadersToConsole() {
     cout << setw(6) << "gen" << setw(9) << "pop" << setw(9) << "deaths" << setw(9)
          << "emig" << setw(9) << "float" << setw(9) << "group" << setw(9) << "maxGroup" << setw(9) << "subBreed" << setw(9)
          << "age" << setw(9)
-         << "alpha" << setw(9) << "alphaAge" << setw(9) << "beta" << setw(9)
-         << "gamma" << setw(9) << "delta" << setw(9)
+         << "alpha" << setw(9) << "beta" << setw(9) << "gamma" << setw(9) << "delta" << setw(9)
          << "disper" << setw(9) << "immRate" << setw(9)
          << "help" << setw(9) << "surv" << setw(9) << "survOff" << setw(9)
          << "skew" << setw(9) << "offpr" << setw(9) << "offsDom" << setw(9) << "offsSub" << setw(9)
@@ -267,13 +265,12 @@ void Statistics::printToConsole(int generation, int deaths, int emigrants) {
               << setw(9) << numOfSubBreeders.calculateMean()
               << setw(9) << setprecision(2) << age.calculateMean()
               << setw(9) << setprecision(4) << alpha.calculateMean()
-              << setw(9) << setprecision(4) << alphaAge.calculateMean()
               << setw(9) << setprecision(4) << beta.calculateMean()
               << setw(9) << setprecision(4) << gamma.calculateMean()
               << setw(9) << setprecision(4) << delta.calculateMean()
-              << setw(9) << setprecision(4) << dispersal.calculateMean()
+              << setw(9) << setprecision(2) << dispersal.calculateMean()
               << setw(9) << setprecision(2) << acceptanceRate.calculateMean()
-              << setw(9) << setprecision(4) << help.calculateMean()
+              << setw(9) << setprecision(2) << help.calculateMean()
               << setw(9) << setprecision(2) << survival.calculateMean()
               << setw(9) << setprecision(2) << mk
               << setw(9) << setprecision(2) << reproductiveShareRate.calculateMean()
@@ -293,8 +290,7 @@ void Statistics::printHeadersToFile() {
     *parameters->getMainWriter() << "Replica" << "\t" << "Generation" << "\t" << "Population" << "\t"
                                  << "Deaths" << "\t" << "Floaters" << "\t" << "Group_size" << "\t" << "Sub_Breeders" << "\t"
                                  << "Age_H" << "\t" << "Age_F" << "\t" << "Age_DomB" << "\t" << "Age_SubB" << "\t" << "Age_New_Breeder" << "\t"
-                                 << "Alpha" << "\t" << "AlphaAge" << "\t"
-                                 << "Beta" << "\t" << "Gamma" << "\t" << "Delta" << "\t"
+                                 << "Alpha" << "\t" << "Beta" << "\t" << "Gamma" << "\t" << "Delta" << "\t"
                                  << "Dispersal" << "\t" << "AcceptRate" << "\t"
                                  << "Help" << "\t" << "CumHelp" << "\t"
                                  << "Survival_H" << "\t" << "Survival_F" << "\t"<< "Survival_DomB" << "\t"<< "Survival_SubB" << "\t"
@@ -307,7 +303,7 @@ void Statistics::printHeadersToFile() {
     // column headings in output file last generation
     *parameters->getLastGenerationWriter() << "replica" << "\t" << "generation" << "\t" << "groupID"
                                            << "\t" << "type" << "\t" << "age" << "\t"
-                                           << "alpha" << "\t" << "alphaAge" << "\t" << "beta" << "\t"
+                                           << "alpha" << "\t" << "beta" << "\t"
                                            << "gamma" << "\t" << "delta" << "\t" << "drift"<< "\t"
                                            << "dispersal" << "\t" << "help" << "\t" << "survival" << "\t"
                                            << "inherit" << endl;
@@ -330,7 +326,6 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
                                  << "\t" << setprecision(4) << ageSubBreeders.calculateMean()
                                  << "\t" << setprecision(4) << ageBecomeBreeder.calculateMean()
                                  << "\t" << setprecision(4) << alpha.calculateMean()
-                                 << "\t" << setprecision(4) << alphaAge.calculateMean()
                                  << "\t" << setprecision(4) << beta.calculateMean()
                                  << "\t" << setprecision(4) << gamma.calculateMean()
                                  << "\t" << setprecision(4) << delta.calculateMean()
@@ -392,7 +387,6 @@ void Statistics::printIndividual(Individual individual, int generation, int grou
                                            << "\t" << individual.getFishType()
                                            << "\t" << setprecision(4) << individual.getAge()
                                            << "\t" << setprecision(4) << individual.getAlpha()
-                                           << "\t" << setprecision(4) << individual.getAlphaAge()
                                            << "\t" << setprecision(4) << individual.getBeta()
                                            << "\t" << setprecision(4) << individual.getGamma()
                                            << "\t" << setprecision(4) << individual.getDelta()

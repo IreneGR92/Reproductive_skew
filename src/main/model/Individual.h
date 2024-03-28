@@ -20,7 +20,6 @@ private:
 
     double id; ///< The unique identifier of the individual.
     double alpha; ///< Genetic parameter alpha.
-    double alphaAge; ///< Genetic parameter alphaAge.
     double beta; ///< Genetic parameter beta.
     double gamma; ///< Genetic parameter gamma.
     double delta; ///< Genetic parameter delta.
@@ -61,8 +60,6 @@ public:
 
     // Getters and setters
     double getAlpha() const;
-
-    double getAlphaAge() const;
 
     double getBeta() const;
 
