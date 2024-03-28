@@ -304,6 +304,7 @@ void Group::transferBreedersToHelpers() {
         // Add the mainBreeder to the helpers vector
         helpers.emplace_back(mainBreeder);
         // Set mainBreederAlive to false as mainBreeder is no longer a breeder
+        mainBreederAlive = false;
     }
 }
 
