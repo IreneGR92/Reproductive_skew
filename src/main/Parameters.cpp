@@ -41,6 +41,7 @@ Parameters::Parameters(const string &url) {
     this->K0 = config["K0"].as<double>();
     this->Kh = config["Kh"].as<double>();
     this->Knb = config["Knb"].as<double>();
+    this->y = config["y"].as<double>();
     this->INIT_ALPHA = config["INIT_ALPHA"].as<double>();
     this->MUTATION_ALPHA = config["MUTATION_ALPHA"].as<double>();
     this->STEP_ALPHA = config["STEP_ALPHA"].as<double>();
@@ -105,6 +106,7 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "K0(Base_fecundity):" << "\t" << this->getK0() << endl
                  << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
                  << "Knb(Benefit_number_breeders_fecundity):" << "\t" << this->getKnb() << endl
+                 << "y(Min_skew):" << "\t" << this->getY() << endl
                  << "initAlpha:" << "\t" << this->getInitAlpha() << endl
                  << "initBeta:" << "\t" << this->getInitBeta() << endl
                  << "initGamma:" << "\t" << this->getInitGamma() << endl
@@ -224,6 +226,10 @@ double Parameters::getKh() const {
 
 double Parameters::getKnb() const {
     return Knb;
+}
+
+double Parameters::getY() const {
+    return y;
 }
 
 double Parameters::getInitAlpha() const {

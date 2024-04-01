@@ -72,6 +72,9 @@ private:
     double Kh;    ///< Benefit of cumulative help in the fecundity.
     double Knb;   ///<  cost of number of breeders in the fecundity
 
+    // Modifiers in reproductive skew
+    double y;    ///< min skew in reproductive share
+
     // Genetic values
 
     // For help
@@ -170,6 +173,8 @@ public:
     double getKh() const;
 
     double getKnb() const;
+
+    double getY() const;
 
     double getInitAlpha() const;
 
