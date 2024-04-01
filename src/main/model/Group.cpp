@@ -441,7 +441,7 @@ void Group::calcFecundity(double mk) {
 
     if (getBreedersSize() > 0) {
         //Calculate fecundity
-        if (mk > 1 && parameters->isBetHedgingHelp()){ //TODO: Benign environment counted as 1 instead of mOff, change?
+        if (mk > 1 && parameters->isBetHedgingHelp()) { //TODO: Benign environment counted as 1 instead of mOff, change?
             initFecundity = mk + mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
                                        parameters->getKnb() * breeders.size() / (1 + breeders.size()));
         } else {
@@ -449,8 +449,9 @@ void Group::calcFecundity(double mk) {
                                        parameters->getKnb() * breeders.size() / (1 + breeders.size()));
         }
 
-
-
+        if (initFecundity < 0) {
+            initFecundity = 0;
+        }
 
         // Transform fecundity to an integer number
         std::poisson_distribution<int> PoissonFecundity(initFecundity);
