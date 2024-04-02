@@ -27,7 +27,7 @@ Parameters::Parameters(const string &url) {
     this->MAX_NUM_REPLICATES = config["MAX_NUM_REPLICATES"].as<int>();
     this->SKIP = config["SKIP"].as<int>();
     this->INIT_NUM_HELPERS = config["INIT_NUM_HELPERS"].as<int>();
-    this->BIAS_FLOAT_BREEDER = config["BIAS_FLOAT_BREEDER"].as<int>();
+    this->FLOATERS_SAMPLED_IMMIGRATION = config["FLOATERS_SAMPLED_IMMIGRATION"].as<int>();
     this->MIN_AGE_BECOME_BREEDER = config["MIN_AGE_BECOME_BREEDER"].as<int>();
     this->FIXED_GROUP_SIZE = config["FIXED_GROUP_SIZE"].as<double>();
     this->m = config["m"].as<double>();
@@ -93,7 +93,7 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "Number_replicates:" << "\t" << this->getMaxNumReplicates() << endl
                  << "Min_age_become_breeder:" << "\t" << this->getMinAgeBecomeBreeder() << endl
                  << "Fixed_group_size:" << "\t" << this->getFixedGroupSize() << endl
-                 << "ImmigrantsMax:" << "\t" << this->getBiasFloatBreeder() << endl
+                 << "ImmigrantsMax:" << "\t" << this->getFloatersSampledImmigration() << endl
                  << "m(Overall_mortality):" << "\t" << this->getM() << endl
                  << "X0(intercept):" << "\t" << this->getX0() << endl
                  << "Xh(Cost_help_survival):" << "\t" << this->getXh() << endl
@@ -168,8 +168,8 @@ int Parameters::getInitNumHelpers() const {
     return INIT_NUM_HELPERS;
 }
 
-int Parameters::getBiasFloatBreeder() const {
-    return BIAS_FLOAT_BREEDER;
+int Parameters::getFloatersSampledImmigration() const {
+    return FLOATERS_SAMPLED_IMMIGRATION;
 }
 
 int Parameters::getMinAgeBecomeBreeder() const {

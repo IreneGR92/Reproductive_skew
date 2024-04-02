@@ -156,7 +156,7 @@ std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters) {
     std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
 
 // Take a sample of floaters based on biasFloatBreeder
-    int numSampledFloaters = parameters->getBiasFloatBreeder();
+    int numSampledFloaters = parameters->getFloatersSampledImmigration();
     if (numSampledFloaters > floaters.size()) {
         numSampledFloaters = round(floaters.size() / parameters->getMaxColonies());
     }
