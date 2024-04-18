@@ -81,18 +81,18 @@ int Group::calculateHelpersToReassign() {
     if (parameters->isNoRelatedness()) {
         helpersToReassign = countHelpersAgeOne();
     } else {
-        //helpersToReassign = round(countHelpersAgeOne() / 3); //TODO: change to 3?
+        helpersToReassign = round(countHelpersAgeOne() / 3); //TODO: change to 2?
 
-        double value = static_cast<double>(countHelpersAgeOne()) / 2;
-        if (value != floor(value)) { // Check if the value is not an integer
-            if (parameters->uniform(*parameters->getGenerator()) < 0.5) {
-                helpersToReassign = floor(value);
-            } else {
-                helpersToReassign = ceil(value);
-            }
-        } else {
-            helpersToReassign = value;// If the value is an integer, just assign it normally
-        }
+//        double value = static_cast<double>(countHelpersAgeOne()) / 2;
+//        if (value != floor(value)) { // Check if the value is not an integer
+//            if (parameters->uniform(*parameters->getGenerator()) < 0.5) {
+//                helpersToReassign = floor(value);
+//            } else {
+//                helpersToReassign = ceil(value);
+//            }
+//        } else {
+//            helpersToReassign = value;// If the value is an integer, just assign it normally
+//        }
     }
     return helpersToReassign;
 }
@@ -442,11 +442,11 @@ void Group::calcFecundity(double mk) {
     if (getBreedersSize() > 0) {
         //Calculate fecundity
         if (mk > 1 && parameters->isBetHedgingHelp()) { //TODO: Benign environment counted as 1 instead of mOff, change?
-            initFecundity = mk + mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
+            initFecundity = mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
                                        parameters->getKnb() * breeders.size() / (1 + breeders.size()));
         } else {
-            initFecundity = mk + mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                       parameters->getKnb() * breeders.size() / (1 + breeders.size()));
+            initFecundity = mk * (parameters->getK0() + (parameters->getKh() * cumHelp / (1 + cumHelp)) +
+                    (parameters->getKnb() * breeders.size() / (1 + breeders.size())));
         }
 
         if (initFecundity < 0) {
