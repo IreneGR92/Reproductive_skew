@@ -54,7 +54,7 @@ public:
 
     void mortalityFloaters();
 
-    void reassingBreeder();
+    void reassignBreeder();
 
     void increaseAge();
 

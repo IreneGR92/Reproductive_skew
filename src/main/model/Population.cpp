@@ -159,7 +159,7 @@ void Population::mortalityFloaters() {
     }
 }
 
-void Population::reassingBreeder() {
+void Population::reassignBreeder() {
     for (Group &group: groups) {
         group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
     }

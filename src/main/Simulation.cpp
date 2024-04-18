@@ -31,7 +31,7 @@ void Simulation::run() {
         population.survivalFloaters();
         population.mortalityFloaters();
         population.immigrate();
-        population.reassingBreeder();
+        population.reassignBreeder();
         population.help();
         population.survivalGroup();
 
