@@ -4,6 +4,7 @@ EVOLUTION_HELP_AFTER_DISPERSAL: false   # Help evolves only after the evolution 
 NO_GROUP_AUGMENTATION: false
 NO_RELATEDNESS: false                   # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
+HELP_OBLIGATORY: false                  # Is help obligatory for successful reproduction?
 
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 100000

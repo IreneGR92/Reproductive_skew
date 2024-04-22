@@ -4,6 +4,7 @@ NO_GROUP_AUGMENTATION: false
 NO_RELATEDNESS: true                   # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
 BET-HEDGING_HELP: false                 # Does help have a negative influence on fecundity when the environment is benign?
+HELP_OBLIGATORY: false                  # Is help obligatory for successful reproduction?
 
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 100000
