@@ -35,6 +35,9 @@ K0: 0    # baseline fecundity when no other factors influence it
 Kh: 2    # benefit of cumHelp in the fecundity
 Knb: 2   # benefit of number of breeders in the group fecundity
 
+# Modifier in reproductive skew
+y: 0.9    # max proportion of reproductive share
+
 
 #Genetic values
 
