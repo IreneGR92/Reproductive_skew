@@ -4,7 +4,7 @@ NO_GROUP_AUGMENTATION: false
 NO_RELATEDNESS: true                   # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
 BET-HEDGING_HELP: false                 # Does help have a negative influence on fecundity when the environment is benign?
-HELP_OBLIGATORY: false                  # Is help obligatory for successful reproduction?
+HELP_OBLIGATORY: true                  # Is help obligatory for successful reproduction?
 
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 100000
@@ -33,7 +33,7 @@ mStep: 4   # step size in survival of offspring
 #Modifiers in fecundity
 K0: 0    # baseline fecundity when no other factors influence it
 Kh: 2    # benefit of cumHelp in the fecundity
-Knb: 2   # benefit of number of breeders in the group fecundity
+Knb: 3   # benefit of number of breeders in the group fecundity
 
 # Modifier in reproductive skew
 y: 0.9    # max proportion of reproductive share
@@ -57,7 +57,7 @@ MUTATION_GAMMA: 0.06         # mutation rate for the expulsion effort
 STEP_GAMMA: 0.04             # mutation step size for the expulsion effort
 
 #For reproductive concessions
-INIT_DELTA: 0.5             # bigger values lower reproductive share
+INIT_DELTA: 0.4             # bigger values lower reproductive share
 MUTATION_DELTA: 0.06        # mutation rate in delta for level of reproductive share
 STEP_DELTA: 0.04            # mutation step size in delta for level of reproductive share
 
