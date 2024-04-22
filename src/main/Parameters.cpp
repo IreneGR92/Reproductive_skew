@@ -18,6 +18,7 @@ Parameters::Parameters(const string &url) {
 
     this->name = this->getName(url);
     this->BET_HEDGING_HELP = config["BET_HEDGING_HELP"].as<bool>();
+    this->HELP_OBLIGATORY = config["HELP_OBLIGATORY"].as<bool>();
     this->EVOLUTION_HELP_AFTER_DISPERSAL = config["EVOLUTION_HELP_AFTER_DISPERSAL"].as<bool>();
     this->NO_GROUP_AUGMENTATION = config["NO_GROUP_AUGMENTATION"].as<bool>();
     this->NO_RELATEDNESS = config["NO_RELATEDNESS"].as<bool>();
@@ -83,6 +84,7 @@ void Parameters::print(std::ofstream &outputStream) {
     outputStream << "PARAMETER VALUES" << endl
 
                  << "Bet-hedging_help?:" << "\t" << this->isBetHedgingHelp() << endl
+                 << "Help_obligatory?:" << "\t" << this->isHelpObligatory() << endl
                  << "Evolution_help_after_dispersal?:" << "\t" << this->isEvolutionHelpAfterDispersal() << endl
                  << "No_group_augmentation?:" << "\t" << this->isNoGroupAugmentation() << endl
                  << "No_effect_relatedness?:" << "\t" << this->isNoRelatedness() << endl
@@ -130,6 +132,10 @@ const string &Parameters::getName() const {
 
 bool Parameters::isBetHedgingHelp() const {
     return BET_HEDGING_HELP;
+}
+
+bool Parameters::isHelpObligatory() const {
+    return HELP_OBLIGATORY;
 }
 
 bool Parameters::isEvolutionHelpAfterDispersal() const {

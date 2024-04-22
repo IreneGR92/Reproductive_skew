@@ -442,9 +442,12 @@ void Group::calcFecundity(double mk) {
         if (mk > 1 && parameters->isBetHedgingHelp()) { //TODO: Benign environment counted as 1 instead of mOff, change?
             initFecundity = mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
                                        parameters->getKnb() * breeders.size() / (1 + breeders.size()));
+        } else if (parameters->isHelpObligatory()){
+            initFecundity = mk * (parameters->getK0() + (parameters->getKh() * cumHelp / (1 + cumHelp))) *
+                    (1+ (parameters->getKnb() * breeders.size() / (1 + breeders.size())));
         } else {
-            initFecundity = mk * (parameters->getK0() + (parameters->getKh() * cumHelp / (1 + cumHelp)) +
-                    (parameters->getKnb() * breeders.size() / (1 + breeders.size())));
+            initFecundity = mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
+                                  parameters->getKnb() * breeders.size() / (1 + breeders.size()));
         }
 
         if (initFecundity < 0) {
