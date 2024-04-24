@@ -180,7 +180,7 @@ void Individual::mutate(int generation) // mutate genome of offspring
 
 
 /* INCREASE AGE */
-//for breeders
+//for main breeders
 void Individual::increaseAge(bool alive) {
     if (alive) {
         this->age++;
@@ -189,7 +189,7 @@ void Individual::increaseAge(bool alive) {
     }
 }
 
-//for helpers and floaters
+//for subordinate breeders, helpers and floaters
 void Individual::increaseAge() {
     this->increaseAge(true);
 }

@@ -29,8 +29,9 @@ private:
 
 
     Individual mainBreeder; ///< The main breeder of the group.
+    IndividualVector subordinateBreeders; ///< A vector of Individual objects that are breeders in the group.
     IndividualVector helpers; ///< A vector of Individual objects that are helpers in the group.
-    IndividualVector breeders; ///< A vector of Individual objects that are breeders in the group.
+
 
 
     Individual *selectBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance);

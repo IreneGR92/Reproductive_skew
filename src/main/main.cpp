@@ -50,17 +50,6 @@ int main(int count, char **argv) {
     }
 
 
-//    vector<double> testVector;
-//
-//    testVector.push_back(4);
-//    testVector.push_back(5);
-//
-//
-//    StatisticalFormulas test;
-//    test.addValues(testVector);
-//    cout << test.calculateMean();
-
-
     return 0;
 }
 

@@ -34,9 +34,9 @@ Group::Group() : mainBreeder(BREEDER) {
 
 void Group::calculateGroupSize() {
     if (mainBreederAlive) {
-        groupSize = helpers.size() + breeders.size() + 1;
+        groupSize = helpers.size() + subordinateBreeders.size() + 1;
     } else {
-        groupSize = helpers.size() + breeders.size();
+        groupSize = helpers.size() + subordinateBreeders.size();
     }
 }
 
@@ -176,14 +176,14 @@ std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters) {
 
 void Group::transferBreedersToHelpers() {
     // Move breeders to the helper vector
-    for (auto &breeder: breeders) {
+    for (auto &breeder: subordinateBreeders) {
         // Change the fish type of the breeder to helper
         breeder.setFishType(HELPER);
         // Add the breeder to the helpers vector
         helpers.emplace_back(breeder);
     }
     // Clear the breeders vector
-    breeders.clear();
+    subordinateBreeders.clear();
 
     // Move the main breeder also to the helper vector
     if (mainBreederAlive) { //TODO: This assumes that the main breeder is chosen again every round, change?
@@ -230,7 +230,7 @@ void Group::survivalGroup() {
     }
 
     //Calculate the survival for the subordinate breeders
-    for (Individual &breeder: breeders) {
+    for (Individual &breeder: subordinateBreeders) {
         breeder.calcSurvival(groupSize, 0);
     }
 
@@ -244,7 +244,7 @@ void Group::mortalityGroup(int &deaths) {
     this->mortalityGroupVector(deaths, helpers);
 
     //Mortality subordinate breeders
-    this->mortalityGroupVector(deaths, breeders);
+    this->mortalityGroupVector(deaths, subordinateBreeders);
 
     //Mortality mainBreeder
     if (mainBreederAlive && parameters->uniform(*parameters->getGenerator()) > mainBreeder.getSurvival()) {
@@ -298,7 +298,7 @@ void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, in
 
             selectedBreeder = selectBreeder(newBreederOutsider, newBreederInsider, inheritance);
             if (selectedBreeder != nullptr) {
-                breeders.emplace_back(*selectedBreeder);
+                subordinateBreeders.emplace_back(*selectedBreeder);
             }
         }
     } else {
@@ -420,7 +420,7 @@ void Group::increaseAge() {
         helper.increaseAge();
     }
 
-    for (Individual &breeder: breeders) {
+    for (Individual &breeder: subordinateBreeders) {
         breeder.increaseAge();
     }
 
@@ -441,13 +441,13 @@ void Group::calcFecundity(double mk) {
         //Calculate fecundity
         if (mk > 1 && parameters->isBetHedgingHelp()) { //TODO: Benign environment counted as 1 instead of mOff, change?
             initFecundity = mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                       parameters->getKnb() * breeders.size() / (1 + breeders.size()));
+                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
         } else if (parameters->isHelpObligatory()){
             initFecundity = mk * parameters->getK0() + mk * (parameters->getKh() * cumHelp / (1 + cumHelp)) *
-                    (1 + (parameters->getKnb() * breeders.size() / (1 + breeders.size())));
+                    (1 + (parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size())));
         } else {
             initFecundity = mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                  parameters->getKnb() * breeders.size() / (1 + breeders.size()));
+                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
         }
 
         if (initFecundity < 0) {
@@ -471,7 +471,7 @@ void Group::reproduce(int generation, double mk) { // populate offspring generat
     offspringMainBreeder = 0;
     offspringSubordinateBreeders = 0;
 
-    for (Individual &breeder: breeders) {
+    for (Individual &breeder: subordinateBreeders) {
         breedersPointers.push_back(&breeder);
     }
     if (mainBreederAlive) {
@@ -514,9 +514,9 @@ int Group::getGroupSize() const {
 
 int Group::getBreedersSize() const {
     if (mainBreederAlive) {
-        return breeders.size() + 1;
+        return subordinateBreeders.size() + 1;
     } else {
-        return breeders.size();
+        return subordinateBreeders.size();
     }
 }
 
@@ -570,7 +570,7 @@ bool Group::hasHelpers() const {
 }
 
 bool Group::hasSubordinateBreeders() const {
-    return !breeders.empty();
+    return !subordinateBreeders.empty();
 }
 
 void Group::addHelper(Individual &helper) {
@@ -583,7 +583,7 @@ const IndividualVector &Group::getHelpers() const {
 }
 
 const IndividualVector &Group::getSubordinateBreeders() const {
-    return breeders;
+    return subordinateBreeders;
 }
 
 void Group::addHelpers(vector<Individual> &helpers) {
