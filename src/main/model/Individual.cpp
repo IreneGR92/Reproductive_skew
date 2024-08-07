@@ -225,10 +225,6 @@ double Individual::getHelp() const {
     return help;
 }
 
-void Individual::setHelp(double help_) {
-    Individual::help = help_;
-}
-
 double Individual::getSurvival() const {
     return survival;
 }

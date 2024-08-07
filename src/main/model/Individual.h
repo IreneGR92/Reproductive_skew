@@ -73,8 +73,6 @@ public:
 
     double getHelp() const;
 
-    void setHelp(double help_);
-
     double getSurvival() const;
 
     FishType getFishType() const;
