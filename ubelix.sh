@@ -7,7 +7,7 @@
 #SBATCH --mail-type=end,fail
 
 # Job name
-#SBATCH --job-name="Rep"RSkew"
+#SBATCH --job-name="ReprSkew"
 
 # Runtime and memory
 #SBATCH --time=96:00:00
@@ -64,4 +64,4 @@ declare -a arr=(
 
 		)
 
-srun ./build/App "paramete"RS/${arr[$SLURM_ARRAY_TASK_ID]}"
+srun ./build/App "parameters/${arr[$SLURM_ARRAY_TASK_ID]}"
