@@ -29,7 +29,7 @@
 
 # For array jobs
 # Indicate how many input files you have
-#SBATCH --array=0-7
+#SBATCH --array=0-19
 
 #### Your shell commands below this line ####
 
@@ -44,6 +44,18 @@ declare -a arr=(
 "NoBH_m04_rate03_h0_default.yml"
 "NoBH_m04_rate03_h0_NoRelatedness.yml"
 
+"Immigration0_m1_rate0_default.yml"
+"Immigration0_m1_rate0_NoRelatedness.yml"
+"Immigration0_m1_rate03_default.yml"
+"Immigration0_m1_rate03_NoRelatedness.yml"
+"Immigration1_m1_rate0_default.yml"
+"Immigration1_m1_rate03_NoRelatedness.yml"
+"Immigration1_m1_rate03_default.yml"
+"Immigration1_m1_rate0_NoRelatedness.yml"
+"Immigration05_m1_rate0_default.yml"
+"Immigration05_m1_rate03_NoRelatedness.yml"
+"Immigration05_m1_rate03_default.yml"
+"Immigration05_m1_rate0_NoRelatedness.yml"
 
 		)
 
