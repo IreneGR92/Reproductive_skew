@@ -29,24 +29,33 @@
 
 # For array jobs
 # Indicate how many input files you have
-#SBATCH --array=0-11
+#SBATCH --array=0-19
 
 #### Your shell commands below this line ####
 
 declare -a arr=(
 
-"high_adult_mortality.yml"
-"high_adult_mortality_NoRelat.yml"
-"HelpObl_m1_rate0_default.yml"
-"HelpObl_m1_rate0_NoRelatedness.yml"
-"HelpObl_m1_rate03_default.yml"
-"HelpObl_m1_rate03_NoRelatedness.yml"
-"HelpObl_m055_rate0_default.yml"
-"HelpObl_m055_rate0_NoRelatedness.yml"
-"HelpObl_m055_rate03_default.yml"
-"HelpObl_m055_rate03_NoRelatedness.yml"
-"HelpObl_m055_rate05_default.yml"
-"HelpObl_m055_rate05_NoRelatedness.yml"
+"NoBH_m025_rate0_NoRelatedness.yml"
+"NoBH_m025_rate0_h0_default.yml"
+"NoBH_m04_rate03_NoRelatedness.yml"
+"NoBH_m025_rate0_h0_NoRelatedness.yml"
+"NoBH_m04_rate03_default.yml"
+"NoBH_m025_rate0_default.yml"
+"NoBH_m04_rate03_h0_default.yml"
+"NoBH_m04_rate03_h0_NoRelatedness.yml"
+
+"Immigration0_m1_rate0_default.yml"
+"Immigration0_m1_rate0_NoRelatedness.yml"
+"Immigration0_m1_rate03_default.yml"
+"Immigration0_m1_rate03_NoRelatedness.yml"
+"Immigration1_m1_rate0_default.yml"
+"Immigration1_m1_rate03_NoRelatedness.yml"
+"Immigration1_m1_rate03_default.yml"
+"Immigration1_m1_rate0_NoRelatedness.yml"
+"Immigration05_m1_rate0_default.yml"
+"Immigration05_m1_rate03_NoRelatedness.yml"
+"Immigration05_m1_rate03_default.yml"
+"Immigration05_m1_rate0_NoRelatedness.yml"
 
 		)
 
