@@ -8,7 +8,7 @@ HELP_OBLIGATORY: false                  # Is help obligatory for successful repr
 
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 100000
-MAX_NUM_REPLICATES: 20
+MAX_NUM_REPLICATES: 50
 SKIP: 1000   # interval between print-outs
 
 #Fix values
