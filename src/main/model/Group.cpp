@@ -443,7 +443,7 @@ void Group::calcFecundity(double mk) {
             initFecundity = mk + mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
                                   parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
         } else if (parameters->isHelpObligatory()){
-            initFecundity = mk + mk * parameters->getK0() + mk * (parameters->getKh() * cumHelp / (1 + cumHelp)) *
+            initFecundity = mk * parameters->getK0() + mk * (parameters->getKh() * cumHelp / (1 + cumHelp)) *
                     (1 + (parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size())));
         } else {
             initFecundity = mk + mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
