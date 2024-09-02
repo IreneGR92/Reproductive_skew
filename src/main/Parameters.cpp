@@ -37,6 +37,7 @@ Parameters::Parameters(const string &url) {
     this->Xh = config["Xh"].as<double>();
     this->Xn = config["Xn"].as<double>();
     this->Xe = config["Xe"].as<double>();
+    this->Xrs = config["Xrs"].as<double>();
     this->mOff = config["mOff"].as<double>();
     this->mRate = config["mRate"].as<double>();
     this->mStep = config["mStep"].as<double>();
