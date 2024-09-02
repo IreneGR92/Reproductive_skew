@@ -39,6 +39,7 @@ private:
     // Run parameters
     bool BET_HEDGING_HELP;    ///< Apply reaction norm to age for dispersal?
     bool HELP_OBLIGATORY;      ///< Help obligatory for reproduction?
+    bool NO_HELP;              ///< Does help evolve?
     bool EVOLUTION_HELP_AFTER_DISPERSAL; ///< Help evolves only after the evolution of dispersal?
     bool NO_GROUP_AUGMENTATION; ///< No group augmentation in the simulation?
     bool NO_RELATEDNESS;       ///< Apply implementation to remove the effect of relatedness?
@@ -128,6 +129,8 @@ public:
     bool isBetHedgingHelp() const;
 
     bool isHelpObligatory() const;
+
+    bool isNoHelp() const;
 
     bool isEvolutionHelpAfterDispersal() const;
 

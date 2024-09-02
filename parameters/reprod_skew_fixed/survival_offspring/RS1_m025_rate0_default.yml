@@ -5,6 +5,7 @@ NO_GROUP_AUGMENTATION: false
 NO_RELATEDNESS: false                   # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
 HELP_OBLIGATORY: false                  # Is help obligatory for successful reproduction?
+NO_HELP: false                           # Does help evolve?
 
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 100000
