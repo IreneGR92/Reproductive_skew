@@ -23,7 +23,7 @@ m: 0.1    # environmental mortality
 X0: 0.6     # base survival (between 0 and 1)
 Xh: 1    # cost of help in survival
 Xn: 3    # benefit of group size in survival
-Xe: 1    # cost of expulsion of immigrants in survival
+Xe: 0    # cost of expulsion of immigrants in survival
 Xrs: 1    # cost of reproductive suppression in survival
 
 # Modifiers in offspring mortality
@@ -37,7 +37,7 @@ Kh: 2    # benefit of cumHelp in the fecundity
 Knb: 2   # benefit of number of breeders in the group fecundity
 
 # Modifier in reproductive skew
-y: 0.9    # max proportion of reproductive share
+y: 1    # max proportion of reproductive share
 
 
 #Genetic values
