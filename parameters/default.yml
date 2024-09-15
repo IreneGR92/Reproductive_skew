@@ -9,7 +9,7 @@ NO_HELP: false                           # Does help evolve?
 
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 100000
-MAX_NUM_REPLICATES: 40
+MAX_NUM_REPLICATES: 50
 SKIP: 1000   # interval between print-outs
 
 #Fix values
@@ -37,7 +37,7 @@ Kh: 2    # benefit of cumHelp in the fecundity
 Knb: 2   # benefit of number of breeders in the group fecundity
 
 # Modifier in reproductive skew
-y: 0.9    # max proportion of reproductive share
+y: 1    # max proportion of reproductive share
 
 
 #Genetic values
@@ -58,11 +58,10 @@ MUTATION_GAMMA: 0.06         # mutation rate for the expulsion effort
 STEP_GAMMA: 0.04             # mutation step size for the expulsion effort
 
 #For reproductive concessions
-INIT_DELTA: 0.0             # bigger values lower reproductive share
-MUTATION_DELTA: 0.0        # mutation rate in delta for level of reproductive share
+INIT_DELTA: 0.5             # bigger values lower reproductive share
+MUTATION_DELTA: 0.06        # mutation rate in delta for level of reproductive share
 STEP_DELTA: 0.04            # mutation step size in delta for level of reproductive share
 
 #For relatedness
 MUTATION_DRIFT: 0.06        # mutation rate in the neutral selected value to track level of relatedness
 STEP_DRIFT: 0.04            # mutation step size in the neutral genetic value to track level of relatedness
-
