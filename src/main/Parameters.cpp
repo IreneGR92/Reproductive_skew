@@ -20,6 +20,7 @@ Parameters::Parameters(const string &url) {
     this->BET_HEDGING_HELP = config["BET_HEDGING_HELP"].as<bool>();
     this->HELP_OBLIGATORY = config["HELP_OBLIGATORY"].as<bool>();
     this->NO_HELP = config["NO_HELP"].as<bool>();
+    this->PREDICTABLE_ENVIRONMENT = config["PREDICTABLE_ENVIRONMENT"].as<bool>();
     this->EVOLUTION_HELP_AFTER_DISPERSAL = config["EVOLUTION_HELP_AFTER_DISPERSAL"].as<bool>();
     this->NO_GROUP_AUGMENTATION = config["NO_GROUP_AUGMENTATION"].as<bool>();
     this->NO_RELATEDNESS = config["NO_RELATEDNESS"].as<bool>();
@@ -88,6 +89,7 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "Bet-hedging_help?:" << "\t" << this->isBetHedgingHelp() << endl
                  << "Help_obligatory?:" << "\t" << this->isHelpObligatory() << endl
                  << "No_help?:" << "\t" << this->isNoHelp() << endl
+                 << "Predictable_environment?:" << "\t" << this->isPredictableEnvironment() << endl
                  << "Evolution_help_after_dispersal?:" << "\t" << this->isEvolutionHelpAfterDispersal() << endl
                  << "No_group_augmentation?:" << "\t" << this->isNoGroupAugmentation() << endl
                  << "No_effect_relatedness?:" << "\t" << this->isNoRelatedness() << endl
@@ -143,6 +145,10 @@ bool Parameters::isHelpObligatory() const {
 
 bool Parameters::isNoHelp() const {
     return NO_HELP;
+}
+
+bool Parameters::isPredictableEnvironment() const {
+    return PREDICTABLE_ENVIRONMENT;
 }
 
 bool Parameters::isEvolutionHelpAfterDispersal() const {
