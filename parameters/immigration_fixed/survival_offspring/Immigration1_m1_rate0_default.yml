@@ -6,6 +6,7 @@ AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits terri
 BET_HEDGING_HELP: false                 # Does help have a negative influence on fecundity when the environment is benign?
 HELP_OBLIGATORY: false                  # Is help obligatory for successful reproduction?
 NO_HELP: false                           # Does help evolve?
+PREDICTABLE_ENVIRONMENT: false          # Is the environment (change in mOff) predictable?
 
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 100000
