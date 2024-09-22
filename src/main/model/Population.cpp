@@ -178,15 +178,35 @@ void Population::increaseAgeFloaters() {
     }
 }
 
-double Population::getOffspringSurvival() const {
+double Population::getOffspringSurvival() {
+
+
+    auto rng = *parameters->getGenerator();
+    std::normal_distribution<double> NormalDist(0, parameters->getMStep());
+
 
     double offspringSurvival = parameters->getMOff();
-    auto rng = *parameters->getGenerator();
 
-    std::normal_distribution<double> NormalDist(0, parameters->getMStep());
-    if (parameters->uniform(rng) < parameters->getMRate()) {
+    //predictable environment
+    if (parameters->isPredictableEnvironment()){
+        conditionCheckCounter++;
+        int interval = static_cast<int>(1.0 / parameters->getMRate());
+        if (changeCounter < (conditionCheckCounter / interval)) {
+            double modification = abs(NormalDist(rng));
+            if (negativeModification) {
+                modification = -modification;
+            }
+            offspringSurvival += modification;
+            changeCounter++;
+            negativeModification = !negativeModification; // Toggle the flag
+        }
+
+
+    //unpredictable environment
+    } else if (parameters->uniform(rng) < parameters->getMRate()) {
         offspringSurvival += NormalDist(rng);
     }
+
     if (offspringSurvival < 0) {
         offspringSurvival = 0;
     }

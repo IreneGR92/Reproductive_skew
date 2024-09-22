@@ -29,6 +29,11 @@ private:
 
     double mk = 0; ///< variable environmental mortality of offspring.
 
+    // variables to change the predictability of the environment
+    int conditionCheckCounter = 0;
+    int changeCounter = 0;
+    bool negativeModification = false;
+
     void reassignNoRelatedHelpers();
 
     void increaseAgeFloaters();
@@ -77,7 +82,7 @@ public:
 
     int getInheritance() const;
 
-    double getOffspringSurvival() const;
+    double getOffspringSurvival();
 
     double getMk() const;
 
