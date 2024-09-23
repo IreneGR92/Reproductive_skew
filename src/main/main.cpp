@@ -23,6 +23,7 @@
 #include "stats/Statistics.h"
 
 
+
 /* MAIN PROGRAM */
 int main(int count, char **argv) {
     //goes to HEAP since we need it only once globally
@@ -35,12 +36,12 @@ int main(int count, char **argv) {
     }
 
     parameters->print();
-
     Statistics statistics;
     statistics.printHeadersToFile();
 
 
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
+
 
         std::cout << "REPLICA = " << replica << std::endl;
 
@@ -52,4 +53,5 @@ int main(int count, char **argv) {
 
     return 0;
 }
+
 

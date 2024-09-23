@@ -21,7 +21,7 @@ class Simulation {
 public:
     // Constructor for the Simulation class.
     // @param replica: The replica number for this simulation.
-    Simulation(const int replica);
+    explicit Simulation(int replica);
 
     // Runs the simulation.
     void run();

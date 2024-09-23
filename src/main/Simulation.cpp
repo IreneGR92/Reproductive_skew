@@ -5,9 +5,8 @@
 
 
 Simulation::Simulation(const int replica)
-        : replica(replica),
-          population(),
-          parameters(Parameters::instance()) {
+        : replica(replica), parameters(Parameters::instance()),
+          population(new std::default_random_engine(Parameters::instance()->getStartSeed() + replica)) {
 }
 
 

@@ -7,14 +7,15 @@
 #include "FishType.h"
 
 //Constructor for reproduction of a Breeder
-Individual::Individual(Individual &individual, FishType fishType, int &generation) {
+Individual::Individual(Individual &individual, FishType fishType, int &generation,
+                       std::default_random_engine *rng) {
 
     if (individual.fishType != BREEDER) {
         std::cout << "Error: only breeders can reproduce" << std::endl;
     }
 
     assert(individual.fishType == BREEDER);
-
+    this->rng = rng;
     this->alpha = individual.alpha;
     this->beta = individual.beta;
     this->gamma = individual.gamma;
@@ -31,15 +32,15 @@ Individual::Individual(Individual &individual, FishType fishType, int &generatio
 }
 
 //Constructor for initial creation
-Individual::Individual(FishType fishType) {
+Individual::Individual(FishType fishType, std::default_random_engine *rng) {
 
     auto param = Parameters::instance();
-
+    this->rng = rng;
     this->alpha = param->getInitAlpha();
     this->beta = param->getInitBeta();
     this->gamma = param->getInitGamma();
     this->delta = param->getInitDelta();
-    this->drift = param->driftUniform(*param->getGenerator());
+    this->drift = param->driftUniform(*rng);
     this->initializeIndividual(fishType);
 }
 
@@ -135,7 +136,7 @@ void Individual::calcSurvival(const int &groupSize, double delta) {
 
 void Individual::mutate(int generation) // mutate genome of offspring
 {
-    auto rng = *parameters->getGenerator();
+
     std::normal_distribution<double> NormalA(0, parameters->getStepAlpha());
     std::normal_distribution<double> NormalB(0, parameters->getStepBeta());
     std::normal_distribution<double> NormalG(0, parameters->getStepGamma());
@@ -153,30 +154,30 @@ void Individual::mutate(int generation) // mutate genome of offspring
         mutationAlpha = parameters->getMutationAlpha();
     }
 
-    if (parameters->uniform(rng) < mutationAlpha) {
-        alpha += NormalA(rng);
+    if (parameters->uniform(*rng) < mutationAlpha) {
+        alpha += NormalA(*rng);
     }
 
     // Beta
-    if (parameters->uniform(rng) < parameters->getMutationBeta()) {
-        beta += NormalB(rng);
+    if (parameters->uniform(*rng) < parameters->getMutationBeta()) {
+        beta += NormalB(*rng);
     }
 
     // Gamma
-    if (parameters->uniform(rng) < parameters->getMutationGamma()) {
-        gamma += NormalG(rng);
+    if (parameters->uniform(*rng) < parameters->getMutationGamma()) {
+        gamma += NormalG(*rng);
     }
 
 
     //Delta
-    if (parameters->uniform(rng) < parameters->getMutationDelta()) {
-        delta += NormalD(rng);
+    if (parameters->uniform(*rng) < parameters->getMutationDelta()) {
+        delta += NormalD(*rng);
     }
 
 
     // Drift
-    if (parameters->uniform(rng) < parameters->getMutationDrift()) {
-        drift += NormalDrift(rng);
+    if (parameters->uniform(*rng) < parameters->getMutationDrift()) {
+        drift += NormalDrift(*rng);
     }
 }
 

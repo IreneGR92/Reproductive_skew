@@ -15,7 +15,11 @@
 class Population {
 
 private:
+
+
     Parameters *parameters = Parameters::instance(); ///< A pointer to the singleton instance of Parameters class.
+
+    std::default_random_engine *rng; ///< A pointer to the random number generator.
 
     std::vector<Group> groups; ///< A vector of Group objects.
 
@@ -40,10 +44,9 @@ private:
 
 
 public:
-
+    explicit Population(std::default_random_engine *rng);
     void reset();
 
-    Population();
 
     void disperse();
 

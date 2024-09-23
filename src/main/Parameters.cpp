@@ -67,14 +67,16 @@ Parameters::Parameters(const string &url) {
     this->mainWriter = new std::ofstream("main_" + this->name + ".txt");
     this->lastGenerationWriter = new std::ofstream("last_generation_" + this->name + ".txt");
 
-    const int seed = 0;
-    this->generator = new std::default_random_engine(seed);
+
+}
+
+const int Parameters::getStartSeed() const {
+    return START_SEED;
 }
 
 Parameters::~Parameters() {
     delete mainWriter;
     delete lastGenerationWriter;
-    delete generator;
 }
 
 
@@ -327,9 +329,6 @@ ofstream *Parameters::getLastGenerationWriter() const {
     return lastGenerationWriter;
 }
 
-default_random_engine *Parameters::getGenerator() const {
-    return generator;
-}
 
 /**
  * @brief Returns the singleton instance of the Parameters class.

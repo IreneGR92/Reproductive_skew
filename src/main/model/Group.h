@@ -16,6 +16,7 @@ class Group {
 
 private:
     Parameters *parameters; ///< A pointer to the singleton instance of Parameters class.
+    std::default_random_engine *rng; ///< A pointer to the random number generator.
     double cumHelp; ///< The cumulative help provided by the group.
     bool mainBreederAlive; ///< A flag indicating if the main breeder is alive.
     int groupSize; ///< The size of the group.
@@ -50,7 +51,7 @@ private:
 
 public:
 
-    explicit Group();
+    explicit Group(std::default_random_engine *rng);
 
     void calculateGroupSize();
 
@@ -114,8 +115,6 @@ public:
     std::vector<double> get(Attribute attribute) const;
 
     std::vector<double> get(Attribute attribute, bool includeBreeder) const;
-
-
 
 
 };

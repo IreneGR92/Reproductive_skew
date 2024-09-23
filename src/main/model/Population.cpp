@@ -25,9 +25,9 @@ void Population::reset() {
     this->emigrants = 0;
 }
 
-Population::Population() {
+Population::Population(std::default_random_engine *rng) : rng(rng) {
     for (int i = 0; i < Parameters::instance()->getMaxColonies(); i++) {
-        Group group;
+        Group group(rng);
         this->groups.emplace_back(group);
     }
 }
@@ -73,7 +73,7 @@ void Population::reassignNoRelatedHelpers() {
             if (noRelatednessGroupsID.size() > 1) {
                 std::uniform_int_distribution<int> uniformIntDistribution(0, noRelatednessGroupsID.size() - 1);
                 selectGroupIndex = uniformIntDistribution(
-                        *parameters->getGenerator()); // selects a random index the noRelatednessGroupsID vector
+                        *rng); // selects a random index the noRelatednessGroupsID vector
             }
             selectGroupID = noRelatednessGroupsID[selectGroupIndex]; // translates the index to the ID of a group from the noRelatednessGroupsID vector
 
@@ -99,7 +99,7 @@ void Population::immigrate() {
 // Shuffle the group indices. This is done to ensure that the immigration process does not favor any particular group due to their position in the groups vector.
     std::vector<int> indices(groups.size());
     std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers
-    std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
+    std::shuffle(indices.begin(), indices.end(), *rng);
 
 // Loop through the groups in a random order
     if (!floaters.empty()) { // checks if there are any floaters available for immigration.
@@ -149,7 +149,7 @@ void Population::mortalityFloaters() {
     for (int count = 0; !floaters.empty() && size > count; count++) {
 
         //Mortality floaters
-        if (parameters->uniform(*parameters->getGenerator()) > floaterIt->getSurvival()) {
+        if (parameters->uniform(*rng) > floaterIt->getSurvival()) {
             *floaterIt = floaters[floaters.size() - 1];
             floaters.pop_back();
             deaths++;
@@ -181,18 +181,18 @@ void Population::increaseAgeFloaters() {
 double Population::getOffspringSurvival() {
 
 
-    auto rng = *parameters->getGenerator();
+
     std::normal_distribution<double> NormalDist(0, parameters->getMStep());
 
 
     double offspringSurvival = parameters->getMOff();
 
     //predictable environment
-    if (parameters->isPredictableEnvironment()){
+    if (parameters->isPredictableEnvironment()) {
         conditionCheckCounter++;
         int interval = static_cast<int>(1.0 / parameters->getMRate());
         if (changeCounter < (conditionCheckCounter / interval)) {
-            double modification = abs(NormalDist(rng));
+            double modification = abs(NormalDist(*rng));
             if (negativeModification) {
                 modification = -modification;
             }
@@ -202,9 +202,9 @@ double Population::getOffspringSurvival() {
         }
 
 
-    //unpredictable environment
-    } else if (parameters->uniform(rng) < parameters->getMRate()) {
-        offspringSurvival += NormalDist(rng);
+        //unpredictable environment
+    } else if (parameters->uniform(*rng) < parameters->getMRate()) {
+        offspringSurvival += NormalDist(*rng);
     }
 
     if (offspringSurvival < 0) {

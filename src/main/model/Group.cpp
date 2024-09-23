@@ -7,22 +7,22 @@
 using namespace std;
 
 
-Group::Group() : mainBreeder(BREEDER) {
+Group::Group(std::default_random_engine *rng) : mainBreeder(BREEDER, rng) {
     this->parameters = Parameters::instance();
-
-    mainBreederAlive = true;
-    cumHelp = 0;
-    acceptanceRate = Parameters::NO_VALUE;
-    acceptedFloatersSize = Parameters::NO_VALUE;
-    reproductiveShareRate = Parameters::NO_VALUE;
-    fecundityGroup = Parameters::NO_VALUE;
-    offspringMainBreeder = 0;
-    offspringSubordinateBreeders = 0;
-    totalOffspringGroup = 0;
+    this->mainBreederAlive = true;
+    this->cumHelp = 0;
+    this->acceptanceRate = Parameters::NO_VALUE;
+    this->acceptedFloatersSize = Parameters::NO_VALUE;
+    this->reproductiveShareRate = Parameters::NO_VALUE;
+    this->fecundityGroup = Parameters::NO_VALUE;
+    this->offspringMainBreeder = 0;
+    this->offspringSubordinateBreeders = 0;
+    this->totalOffspringGroup = 0;
+    this->rng = rng;
 
 
     for (int i = 0; i < parameters->getInitNumHelpers(); ++i) {
-        auto individual = Individual(HELPER);
+        auto individual = Individual(HELPER, rng);
         helpers.emplace_back(individual);
     }
 
@@ -51,7 +51,7 @@ vector<Individual> Group::disperse() {
 
         helper.calcDispersal();
 
-        if (parameters->uniform(*parameters->getGenerator()) < helper.getDispersal()) {
+        if (parameters->uniform(*rng) < helper.getDispersal()) {
             helper.setInherit(false); //the location of the individual is not the natal territory
             helper.setFishType(FLOATER);
             newFloaters.push_back(helper); //add the individual to the vector floaters in the last position
@@ -153,7 +153,7 @@ void Group::calcAcceptanceRate() {
 std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters) {
 
 // Shuffle the floaters vector
-    std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
+    std::shuffle(floaters.begin(), floaters.end(), *rng);
 
 // Take a sample of floaters based on biasFloatBreeder
     int numSampledFloaters = parameters->getFloatersSampledImmigration();
@@ -247,7 +247,7 @@ void Group::mortalityGroup(int &deaths) {
     this->mortalityGroupVector(deaths, subordinateBreeders);
 
     //Mortality mainBreeder
-    if (mainBreederAlive && parameters->uniform(*parameters->getGenerator()) > mainBreeder.getSurvival()) {
+    if (mainBreederAlive && parameters->uniform(*rng) > mainBreeder.getSurvival()) {
         mainBreederAlive = false;
         deaths++;
     }
@@ -262,7 +262,7 @@ void Group::mortalityGroupVector(int &deaths, IndividualVector &individuals) {
     while (!individuals.empty() && size > counting) {
 
         //Mortality of individuals
-        if (parameters->uniform(*parameters->getGenerator()) > individualsIt->getSurvival()) {
+        if (parameters->uniform(*rng) > individualsIt->getSurvival()) {
             *individualsIt = individuals[individuals.size() - 1];
             individuals.pop_back();
             counting++;
@@ -310,7 +310,7 @@ void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, in
 Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
     double sumRank = 0;
     double currentPosition = 0; //age of the previous ind taken from Candidates
-    double RandP = parameters->uniform(*parameters->getGenerator());
+    double RandP = parameters->uniform(*rng);
     vector<Individual *> candidates;
     vector<double> position; //vector of age to choose with higher likelihood the ind with higher age
     int anyViableCandidate = 0;
@@ -330,7 +330,7 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
         //  Check if the candidates meet the age requirements
         //If none do, take a random candidate
         if (anyViableCandidate == 0) {
-            std::shuffle(helpers.begin(), helpers.end(), *parameters->getGenerator());
+            std::shuffle(helpers.begin(), helpers.end(), *rng);
             selectedBreeder = &helpers.back(); //substitute the previous dead mainBreeder
             selectedBreeder->setAgeBecomeBreeder();
             selectedBreeder->setFishType(BREEDER); //modify the class
@@ -441,13 +441,16 @@ void Group::calcFecundity(double mk) {
         //Calculate fecundity
         if (mk > 1 && parameters->isBetHedgingHelp()) { //TODO: Benign environment counted as 1 instead of mOff, change?
             initFecundity = mk + mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
-        } else if (parameters->isHelpObligatory()){
+                                       parameters->getKnb() * subordinateBreeders.size() /
+                                       (1 + subordinateBreeders.size()));
+        } else if (parameters->isHelpObligatory()) {
             initFecundity = mk * parameters->getK0() + mk * (parameters->getKh() * cumHelp / (1 + cumHelp)) *
-                    (1 + (parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size())));
+                                                       (1 + (parameters->getKnb() * subordinateBreeders.size() /
+                                                             (1 + subordinateBreeders.size())));
         } else {
             initFecundity = mk + mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
+                                       parameters->getKnb() * subordinateBreeders.size() /
+                                       (1 + subordinateBreeders.size()));
         }
 
         if (initFecundity < 0) {
@@ -456,7 +459,7 @@ void Group::calcFecundity(double mk) {
 
         // Transform fecundity to an integer number
         std::poisson_distribution<int> PoissonFecundity(initFecundity);
-        fecundityGroup = PoissonFecundity(*parameters->getGenerator()); //integer number
+        fecundityGroup = PoissonFecundity(*rng); //integer number
     } else {
         fecundityGroup = 0;
     }
@@ -482,11 +485,11 @@ void Group::reproduce(int generation, double mk) { // populate offspring generat
     if (!breedersPointers.empty()) {
         for (int i = 0; i < fecundityGroup; i++) {
             // Generate a random index
-            randomIndex = distribution(*parameters->getGenerator());
+            randomIndex = distribution(*rng);
             // Access the random individual
             Individual *randomIndividual = breedersPointers[randomIndex];
             //Reproduction
-            Individual offspring = Individual(*randomIndividual, HELPER, generation);
+            Individual offspring = Individual(*randomIndividual, HELPER, generation, rng);
             helpers.emplace_back(offspring);
             if (randomIndex == breedersPointers.size() - 1) {
                 offspringMainBreeder++;

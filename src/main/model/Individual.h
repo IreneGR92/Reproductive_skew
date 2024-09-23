@@ -16,7 +16,10 @@
 class Individual {
 
 private:
+
+
     Parameters *parameters; ///< A pointer to the singleton instance of Parameters class.
+    std::default_random_engine *rng; ///< A pointer to the random number generator.
 
     double id; ///< The unique identifier of the individual.
     double alpha; ///< Genetic parameter alpha.
@@ -45,11 +48,12 @@ public:
 
     int getGroupIndex() const;
 
-    Individual(Individual &individual, FishType fishType, int &generation);
+    Individual(Individual &individual, FishType fishType, int &generation, std::default_random_engine *rng);
+
+    Individual(FishType fishType, std::default_random_engine *rng);
 
     bool operator==(const Individual &other) const;
 
-    explicit Individual(FishType fishType);
 
     void calcDispersal();
 

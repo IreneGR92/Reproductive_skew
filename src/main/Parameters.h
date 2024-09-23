@@ -104,7 +104,6 @@ private:
     double MUTATION_DRIFT;        ///< Mutation rate in the neutral selected value to track level of relatedness.
     double STEP_DRIFT;            ///< Mutation step size in the neutral genetic value to track level of relatedness.
 
-    std::default_random_engine *generator; ///< A pointer to the random number generator.
 
     std::string getName(std::string url); ///< Helper function to get the name of the simulation from a URL.
 
@@ -114,6 +113,9 @@ private:
     std::ofstream *lastGenerationWriter; ///< A pointer to the last generation output stream writer.
 
     double idCounter = 0;
+
+    //each replica will get "REPLICA + START_SEED" as seed in order to enable multithreading
+    const int START_SEED = 0;
 public:
 
     std::uniform_real_distribution<double> driftUniform; ///< A uniform real distribution for drift.
@@ -219,7 +221,6 @@ public:
 
     std::ofstream *getLastGenerationWriter() const;
 
-    std::default_random_engine *getGenerator() const;
 
     double nextId() {
         return idCounter++;
@@ -232,6 +233,8 @@ public:
     static Parameters *instance();
 
     static Parameters *unitTestInit();
+
+    const int getStartSeed() const;
 };
 
 
