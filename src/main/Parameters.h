@@ -39,7 +39,7 @@ private:
     // Run parameters
     bool BET_HEDGING_HELP;    ///< Apply reaction norm to age for dispersal?
     bool HELP_OBLIGATORY;      ///< Help obligatory for reproduction?
-    bool NO_HELP;              ///< Does help evolve?
+    bool NO_EVOLUTION_HELP;              ///< Does help evolve?
     bool PREDICTABLE_ENVIRONMENT;         ///< Is the environment (change in mOff) predictable?
     bool EVOLUTION_HELP_AFTER_DISPERSAL; ///< Help evolves only after the evolution of dispersal?
     bool NO_GROUP_AUGMENTATION; ///< No group augmentation in the simulation?
@@ -131,7 +131,7 @@ public:
 
     bool isHelpObligatory() const;
 
-    bool isNoHelp() const;
+    bool isNoEvolutionHelp() const;
 
     bool isPredictableEnvironment() const;
 
