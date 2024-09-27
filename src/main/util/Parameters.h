@@ -36,9 +36,9 @@ public:
 
 
     /**
-     * makes a deep copy of Parameters while incrementing replica by 1 + initializes a new rng
+     * makes a deep copy of Parameters while incrementing newReplica by 1 + initializes a new rng
      */
-    Parameters *cloneWithIncrementedReplica() const;
+    Parameters *cloneWithIncrementedReplica(int newReplica) const;
 
     int getReplica() const;
 

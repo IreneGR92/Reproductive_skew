@@ -37,13 +37,15 @@ int main(int count, char **argv) {
         parameters = new Parameters(0);
     }
 
-    std::vector<std::future<ResultCache *>> futures;
+    std::vector<std::future<ResultCache *>> threadResults;
 
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
         std::cout << "REPLICA = " << replica << std::endl;
 
-        futures.emplace_back(std::async(std::launch::async, [parameters]() {
-            auto *simulation = new Simulation(parameters->cloneWithIncrementedReplica());
+        auto *newParams = parameters->cloneWithIncrementedReplica(replica);
+
+        threadResults.emplace_back(std::async(std::launch::async, [parameters, &newParams]() {
+            auto *simulation = new Simulation(newParams);
             ResultCache *result = simulation->run();
             delete simulation;
             return result;
@@ -51,8 +53,8 @@ int main(int count, char **argv) {
     }
 
     std::vector<ResultCache *> results;
-    for (auto &future: futures) {
-        results.emplace_back(future.get());
+    for (auto &threadResult: threadResults) {
+        results.emplace_back(threadResult.get());
     }
 
     FilePrinter filePrinter(parameters);
