@@ -19,6 +19,7 @@
 /*HEADER FILES*/
 
 #include <iostream>
+#include <future>
 #include "util/Parameters.h"
 #include "stats/Statistics.h"
 #include "util/FilePrinter.h"
@@ -36,15 +37,22 @@ int main(int count, char **argv) {
         parameters = new Parameters(0);
     }
 
-    std::vector<ResultCache *> results = std::vector<ResultCache *>();
+    std::vector<std::future<ResultCache *>> futures;
 
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
-
         std::cout << "REPLICA = " << replica << std::endl;
 
-        auto *simulation = new Simulation(parameters->cloneWithIncrementedReplica());
-        results.emplace_back(simulation->run());
-        delete simulation;
+        futures.emplace_back(std::async(std::launch::async, [parameters]() {
+            auto *simulation = new Simulation(parameters->cloneWithIncrementedReplica());
+            ResultCache *result = simulation->run();
+            delete simulation;
+            return result;
+        }));
+    }
+
+    std::vector<ResultCache *> results;
+    for (auto &future: futures) {
+        results.emplace_back(future.get());
     }
 
     FilePrinter filePrinter(parameters);
