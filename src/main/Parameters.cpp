@@ -73,58 +73,6 @@ Parameters::~Parameters() {
 }
 
 
-void Parameters::print() {
-    this->print(*mainWriter);
-    this->print(*lastGenerationWriter);
-}
-
-void Parameters::print(std::ofstream &outputStream) {
-    outputStream << "PARAMETER VALUES" << endl
-
-                 << "Bet-hedging_help?:" << "\t" << this->isBetHedgingHelp() << endl
-                 << "Help_obligatory?:" << "\t" << this->isHelpObligatory() << endl
-                 << "No_evolution_help?:" << "\t" << this->isNoEvolutionHelp() << endl
-                 << "Predictable_environment?:" << "\t" << this->isPredictableEnvironment() << endl
-                 << "Evolution_help_after_dispersal?:" << "\t" << this->isEvolutionHelpAfterDispersal() << endl
-                 << "No_group_augmentation?:" << "\t" << this->isNoGroupAugmentation() << endl
-                 << "No_effect_relatedness?:" << "\t" << this->isNoRelatedness() << endl
-                 << "No_effect_age_inheritance?:" << "\t" << this->isAgeNoInfluenceInheritance() << endl
-                 << "Initial_population:" << "\t" << this->getMaxColonies() * (this->getInitNumHelpers() + 1) << endl
-                 << "Number_of_colonies:" << "\t" << this->getMaxColonies() << endl
-                 << "Number_generations:" << "\t" << this->getNumGenerations() << endl
-                 << "Number_replicates:" << "\t" << this->getMaxNumReplicates() << endl
-                 << "Min_age_become_breeder:" << "\t" << this->getMinAgeBecomeBreeder() << endl
-                 << "Fixed_group_size:" << "\t" << this->getFixedGroupSize() << endl
-                 << "ImmigrantsMax:" << "\t" << this->getFloatersSampledImmigration() << endl
-                 << "m(Overall_mortality):" << "\t" << this->getM() << endl
-                 << "X0(intercept):" << "\t" << this->getX0() << endl
-                 << "Xh(Cost_help_survival):" << "\t" << this->getXh() << endl
-                 << "Xn(Benefit_group_size_survival):" << "\t" << this->getXn() << endl
-                 << "Xe(Cost_expulsion_survival):" << "\t" << this->getXe() << endl
-                 << "Xrs(Reproductive_suppression_survival):" << "\t" << this->getXrs() << endl
-                 << "mOff(Average_mortality_offspring):" << "\t" << this->getMOff() << endl
-                 << "mRate(Change_mortality_offspring):" << "\t" << this->getMRate() << endl
-                 << "mStep(Rate_change_mortality_offspring):" << "\t" << this->getMStep() << endl
-                 << "K0(Base_fecundity):" << "\t" << this->getK0() << endl
-                 << "Kh(Benefit_help_fecundity):" << "\t" << this->getKh() << endl
-                 << "Knb(Benefit_number_breeders_fecundity):" << "\t" << this->getKnb() << endl
-                 << "y(Min_skew):" << "\t" << this->getY() << endl
-                 << "initAlpha:" << "\t" << this->getInitAlpha() << endl
-                 << "initBeta:" << "\t" << this->getInitBeta() << endl
-                 << "initGamma:" << "\t" << this->getInitGamma() << endl
-                 << "initDelta:" << "\t" << this->getInitDelta() << endl
-                 << "mutAlpha:" << "\t" << this->getMutationAlpha() << endl
-                 << "mutBeta:" << "\t" << this->getMutationBeta() << endl
-                 << "mutGamma:" << "\t" << this->getMutationGamma() << endl
-                 << "mutDelta:" << "\t" << this->getMutationDelta() << endl
-                 << "mutDrift:" << "\t" << this->getMutationDrift() << endl
-                 << "stepAlpha:" << "\t" << this->getStepAlpha() << endl
-                 << "stepBeta:" << "\t" << this->getStepBeta() << endl
-                 << "stepGamma:" << "\t" << this->getStepGamma() << endl
-                 << "stepDelta:" << "\t" << this->getStepDelta() << endl
-                 << "stepDrift:" << "\t" << this->getStepDrift() << endl << endl;
-}
-
 
 const string &Parameters::getName() const {
     return name;
@@ -329,14 +277,6 @@ default_random_engine *Parameters::getGenerator() const {
 
 int Parameters::getReplica() const {
     return replica;
-}
-
-Statistics *Parameters::getResults() const {
-    return results;
-}
-
-void Parameters::setResults(Statistics *results) {
-    Parameters::results = results;
 }
 
 Parameters *Parameters::cloneWithIncrementedReplica() const {

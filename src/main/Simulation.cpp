@@ -4,7 +4,7 @@
 #include <vector>
 
 
-void Simulation::run() {
+Statistics *Simulation::run() {
 
     // Output file
     auto *statistics = new Statistics(this->parameters);
@@ -38,7 +38,7 @@ void Simulation::run() {
                 generation == parameters->getNumGenerations() / 2 ||
                 generation == parameters->getNumGenerations()) {
 
-                statistics->printToFileLastGeneration(this, population);
+                statistics->writeToCacheLastGeneration(this, population);
             }
         }
 
@@ -56,11 +56,11 @@ void Simulation::run() {
                                     population.getNewBreederInsider(), population.getInheritance());
         }
 
-        delete statistics;
 
         population.increaseAge();
         population.reproduce(generation);
     }
+    return statistics;
 }
 
 int Simulation::getGeneration() const {

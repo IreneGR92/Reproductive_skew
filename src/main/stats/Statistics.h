@@ -7,7 +7,6 @@
 #include "StatisticalFormulas.h"
 #include "../model/container/IndividualVector.h"
 
-
 /**
  * @class Statistics
  * @brief A class that calculates and maintains various statistics related to a population simulation model.
@@ -18,14 +17,14 @@
 class Statistics {
 
 private:
-    Parameters *parameters; ///< A pointer to the singleton instance of Parameters class.
-
+    Parameters *parameters;
+    std::vector<std::string> lastGenerationCache; ///< stores the text output before written to file.
+    std::vector<std::string> mainCache; ///< stores the text output before written to file.
     // Population parameters and Statistics
-    int population, totalFloaters, totalHelpers, totalMainBreeders, totalSubordinateBreeders; // Counters
+    int population{}, totalFloaters{}, totalHelpers{}, totalMainBreeders{}, totalSubordinateBreeders{}; // Counters
 
-    double relatednessHelpers, relatednessBreeders; ///< The relatedness in the population.
-
-    double mk; // variable environmental mortality of offspring.
+    double relatednessHelpers{}, relatednessBreeders{}; ///< The relatedness in the population.
+    double mk{}; // variable environmental mortality of offspring.
 
     // StatisticalFormulas objects for various statistics
     StatisticalFormulas groupSize, numOfSubBreeders;
@@ -44,7 +43,7 @@ private:
      * @param groupID The ID of the group the individual belongs to.
      * @param replica The current replica of the simulation.
      */
-    void printIndividual(Individual individual, int generation, int groupID, int replica);
+    void writeToCacheIndividual(Individual individual, int generation, int groupID, int replica);
 
 public:
     /**
@@ -67,6 +66,9 @@ public:
 
     double calculateRelatednessBreeders(const std::vector<Group> &groups);
 
+    void storeResults(int replica, int generation, int deaths, int newBreederOutsider,
+                      int newBreederInsider, int inheritance);
+
     /**
      * @brief Prints the headers for the statistics to the console.
      */
@@ -75,7 +77,7 @@ public:
     /**
      * @brief Prints the headers for the statistics to a file.
      */
-    void printHeadersToFile();
+    void printResultFiles();
 
     /**
      * @brief Prints the statistics to the console.
@@ -101,7 +103,7 @@ public:
      * @param simulation The simulation to print statistics for.
      * @param populationObj The population to print statistics for.
      */
-    void printToFileLastGeneration(Simulation *simulation, const Population &populationObj);
+    void writeToCacheLastGeneration(Simulation *simulation, const Population &populationObj);
 
 };
 

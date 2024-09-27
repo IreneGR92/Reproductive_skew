@@ -23,7 +23,7 @@ public:
     }
 
     // Runs the simulation.
-    void run();
+    Statistics *run();
 
     // Returns the current generation number in the simulation.
     // @return The generation number.

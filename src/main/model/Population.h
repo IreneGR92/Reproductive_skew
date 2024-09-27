@@ -6,7 +6,7 @@
 #include "Group.h"
 
 
-class Parameters; // Forward declaration
+
 /**
  * @class Population
  * @brief A class that represents a population in a simulation model.

@@ -41,7 +41,9 @@ set(SOURCE_FILES
         src/main/stats/StatisticalFormulas.h
         src/main/stats/StatisticalFormulas.cpp
         src/main/model/container/IndividualVector.h
-        src/main/model/container/IndividualVector.cpp)
+        src/main/model/container/IndividualVector.cpp
+        src/main/FilePrinter.h
+        src/main/FilePrinter.cpp)
 
 # Define the App executable and link the yaml-cpp library
 add_executable(App src/main/main.cpp ${SOURCE_FILES})

@@ -21,6 +21,7 @@
 #include <iostream>
 #include "Parameters.h"
 #include "stats/Statistics.h"
+#include "FilePrinter.h"
 
 
 /* MAIN PROGRAM */
@@ -34,22 +35,23 @@ int main(int count, char **argv) {
     } else {
         parameters = new Parameters(0);
     }
-//    parameters->print();
-//    Statistics statistics;
-//    statistics.printHeadersToFile();
-//    delete parameters;
 
+    std::vector<Statistics *> results = std::vector<Statistics *>();
 
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
 
         std::cout << "REPLICA = " << replica << std::endl;
 
         auto *simulation = new Simulation(parameters->cloneWithIncrementedReplica());
-        simulation->run();
+        results.emplace_back(simulation->run());
         delete simulation;
     }
 
+    FilePrinter filePrinter(parameters);
+    filePrinter.writeLastGenerationFile();
+    filePrinter.writeMainFile();
 
+    std::cout << "reading file " << argv[1] << "\n";
     return 0;
 }
 

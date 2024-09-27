@@ -11,7 +11,6 @@ class Statistics;   // Forward declaration
 
 /**
  * @class Parameters
- * @brief A singleton class that holds the parameters for a population simulation model.
  *
  * This class maintains various parameters related to the simulation such as the number of generations, mutation rates, and other genetic parameters.
  * It provides methods to access these parameters.
@@ -35,6 +34,10 @@ public:
      */
     explicit Parameters(const std::string &url, int replica);
 
+
+    /**
+     * makes a deep copy of Parameters while incrementing replica by 1 + initializes a new rng
+     */
     Parameters *cloneWithIncrementedReplica() const;
 
     int getReplica() const;
@@ -229,10 +232,6 @@ public:
     std::ofstream *getLastGenerationWriter() const;
 
     std::default_random_engine *getGenerator() const;
-
-    Statistics *getResults() const;
-
-    void setResults(Statistics *results);
 
     double nextId() {
         return idCounter++;

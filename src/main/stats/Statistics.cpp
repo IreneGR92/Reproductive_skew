@@ -18,7 +18,6 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     relatednessHelpers = 0.0, relatednessBreeders = 0.0;
 
 
-
     IndividualVector mainBreeders;
     IndividualVector subordinateBreeders;
     IndividualVector allBreeders;
@@ -133,7 +132,8 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 
 }
 
-double Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) { //TODO: generalize relatedness calculation
+double
+Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) { //TODO: generalize relatedness calculation
 
     //Relatedness
     double correlation;
@@ -210,7 +210,8 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
 
     for (const Group &group: groups) {
         for (const Individual &breeder: group.getSubordinateBreeders()) {
-            if (!std::isnan(breeder.getDispersal()) || !std::isnan(breeder.getHelp())) {  //TODO: check if this is correct or needed
+            if (!std::isnan(breeder.getDispersal()) ||
+                !std::isnan(breeder.getHelp())) {  //TODO: check if this is correct or needed
                 double X = (breeder.getDrift() - meanX);
                 double Y = (group.getMainBreeder().getDrift() - meanY);
 
@@ -242,13 +243,14 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
 void Statistics::printHeadersToConsole() {
     // column headings on screen
     cout << setw(6) << "gen" << setw(9) << "pop" << setw(9) << "deaths" << setw(9)
-         << "emig" << setw(9) << "float" << setw(9) << "group" << setw(9) << "maxGroup" << setw(9) << "subBreed" << setw(9)
+         << "emig" << setw(9) << "float" << setw(9) << "group" << setw(9) << "maxGroup" << setw(9) << "subBreed"
+         << setw(9)
          << "age" << setw(9)
          << "alpha" << setw(9) << "beta" << setw(9) << "gamma" << setw(9) << "delta" << setw(9)
          << "disper" << setw(9) << "immRate" << setw(9)
          << "help" << setw(9) << "surv" << setw(9) << "survOff" << setw(9)
          << "skew" << setw(9) << "offpr" << setw(9) << "offsDom" << setw(9) << "offsSub" << setw(9)
-         << "relatH" << setw(9) << "relatB"<< endl;
+         << "relatH" << setw(9) << "relatB" << endl;
 }
 
 
@@ -283,113 +285,97 @@ void Statistics::printToConsole(int generation, int deaths, int emigrants) {
 }
 
 
-/* PRINT STATISTICS TO FILE */
-
-void Statistics::printHeadersToFile() {
-    // column headings in output file main
-    *parameters->getMainWriter() << "Replica" << "\t" << "Generation" << "\t" << "Population" << "\t"
-                                 << "Deaths" << "\t" << "Floaters" << "\t" << "Group_size" << "\t" << "Sub_Breeders" << "\t"
-                                 << "Age_H" << "\t" << "Age_F" << "\t" << "Age_DomB" << "\t" << "Age_SubB" << "\t" << "Age_New_Breeder" << "\t"
-                                 << "Alpha" << "\t" << "Beta" << "\t" << "Gamma" << "\t" << "Delta" << "\t"
-                                 << "Dispersal" << "\t" << "AcceptRate" << "\t"
-                                 << "Help" << "\t" << "CumHelp" << "\t"
-                                 << "Survival_H" << "\t" << "Survival_F" << "\t"<< "Survival_DomB" << "\t"<< "Survival_SubB" << "\t"
-                                 << "mk" << "\t" << "ReprodShareRate" << "\t" << "FecundityGroup" << "\t" << "FecundityGroupSD" << "\t"
-                                 << "OffspringDomBreeder" << "\t" << "OffspringSubBreeders" << "\t"
-                                 << "Relatedness_H" << "\t" << "Relatedness_B" << "\t"
-                                 << "newBreederOutsider" << "\t" << "newBreederInsider" << "\t"
-                                 << endl;
-
-    // column headings in output file last generation
-    *parameters->getLastGenerationWriter() << "replica" << "\t" << "generation" << "\t" << "groupID"
-                                           << "\t" << "type" << "\t" << "age" << "\t"
-                                           << "alpha" << "\t" << "beta" << "\t"
-                                           << "gamma" << "\t" << "delta" << "\t" << "drift"<< "\t"
-                                           << "dispersal" << "\t" << "help" << "\t" << "survival" << "\t"
-                                           << "inherit" << endl;
-}
 
 void Statistics::printToFile(int replica, int generation, int deaths, int newBreederOutsider,
                              int newBreederInsider, int inheritance) {
-
-    *parameters->getMainWriter() << fixed << showpoint
-                                 << replica
-                                 << "\t" << generation
-                                 << "\t" << population
-                                 << "\t" << deaths
-                                 << "\t" << totalFloaters
-                                 << "\t" << setprecision(4) << groupSize.calculateMean()
-                                 << "\t" << setprecision(4) << numOfSubBreeders.calculateMean()
-                                 << "\t" << setprecision(4) << ageHelpers.calculateMean()
-                                 << "\t" << setprecision(4) << ageFloaters.calculateMean()
-                                 << "\t" << setprecision(4) << ageDomBreeders.calculateMean()
-                                 << "\t" << setprecision(4) << ageSubBreeders.calculateMean()
-                                 << "\t" << setprecision(4) << ageBecomeBreeder.calculateMean()
-                                 << "\t" << setprecision(4) << alpha.calculateMean()
-                                 << "\t" << setprecision(4) << beta.calculateMean()
-                                 << "\t" << setprecision(4) << gamma.calculateMean()
-                                 << "\t" << setprecision(4) << delta.calculateMean()
-                                 << "\t" << setprecision(4) << dispersal.calculateMean()
-                                 << "\t" << setprecision(4) << acceptanceRate.calculateMean()
-                                 << "\t" << setprecision(4) << help.calculateMean()
-                                 << "\t" << setprecision(4) << cumulativeHelp.calculateMean()
-                                 << "\t" << setprecision(4) << survivalHelpers.calculateMean()
-                                 << "\t" << setprecision(4) << survivalFloaters.calculateMean()
-                                 << "\t" << setprecision(4) << survivalDomBreeders.calculateMean()
-                                 << "\t" << setprecision(4) << survivalSubBreeders.calculateMean()
-                                 << "\t" << setprecision(4) << mk
-                                 << "\t" << setprecision(4) << reproductiveShareRate.calculateMean()
-                                 << "\t" << setprecision(4) << fecundityGroup.calculateMean()
-                                 << "\t" << setprecision(4) << fecundityGroup.calculateSD()
-                                 << "\t" << setprecision(4) << offspringMainBreeder.calculateMean()
-                                 << "\t" << setprecision(4) << offspringOfSubordinateBreeders.calculateMean()
-                                 << "\t" << setprecision(4) << relatednessHelpers
-                                 << "\t" << setprecision(4) << relatednessBreeders
-                                 << "\t" << newBreederOutsider
-                                 << "\t" << newBreederInsider
-                                 << endl;
+    std::ostringstream oss;
+    oss << fixed << showpoint
+        << replica
+        << "\t" << generation
+        << "\t" << population
+        << "\t" << deaths
+        << "\t" << totalFloaters
+        << "\t" << setprecision(4) << groupSize.calculateMean()
+        << "\t" << setprecision(4) << numOfSubBreeders.calculateMean()
+        << "\t" << setprecision(4) << ageHelpers.calculateMean()
+        << "\t" << setprecision(4) << ageFloaters.calculateMean()
+        << "\t" << setprecision(4) << ageDomBreeders.calculateMean()
+        << "\t" << setprecision(4) << ageSubBreeders.calculateMean()
+        << "\t" << setprecision(4) << ageBecomeBreeder.calculateMean()
+        << "\t" << setprecision(4) << alpha.calculateMean()
+        << "\t" << setprecision(4) << beta.calculateMean()
+        << "\t" << setprecision(4) << gamma.calculateMean()
+        << "\t" << setprecision(4) << delta.calculateMean()
+        << "\t" << setprecision(4) << dispersal.calculateMean()
+        << "\t" << setprecision(4) << acceptanceRate.calculateMean()
+        << "\t" << setprecision(4) << help.calculateMean()
+        << "\t" << setprecision(4) << cumulativeHelp.calculateMean()
+        << "\t" << setprecision(4) << survivalHelpers.calculateMean()
+        << "\t" << setprecision(4) << survivalFloaters.calculateMean()
+        << "\t" << setprecision(4) << survivalDomBreeders.calculateMean()
+        << "\t" << setprecision(4) << survivalSubBreeders.calculateMean()
+        << "\t" << setprecision(4) << mk
+        << "\t" << setprecision(4) << reproductiveShareRate.calculateMean()
+        << "\t" << setprecision(4) << fecundityGroup.calculateMean()
+        << "\t" << setprecision(4) << fecundityGroup.calculateSD()
+        << "\t" << setprecision(4) << offspringMainBreeder.calculateMean()
+        << "\t" << setprecision(4) << offspringOfSubordinateBreeders.calculateMean()
+        << "\t" << setprecision(4) << relatednessHelpers
+        << "\t" << setprecision(4) << relatednessBreeders
+        << "\t" << newBreederOutsider
+        << "\t" << newBreederInsider
+        << endl;
+    this->mainCache.push_back(oss.str());
 }
 
 
-void Statistics::printToFileLastGeneration(Simulation *simulation, const Population &populationObj) {
+void Statistics::writeToCacheLastGeneration(Simulation *simulation, const Population &populationObj) {
 
     int groupID = 0;
     int counter = 0;
 
     for (auto const &group: populationObj.getGroups()) {
         if (counter < 100) {
-            this->printIndividual(group.getMainBreeder(), simulation->getGeneration(), groupID, parameters->getReplica());
+            this->writeToCacheIndividual(group.getMainBreeder(), simulation->getGeneration(), groupID,
+                                         parameters->getReplica());
 
             for (auto const &helper: group.getHelpers()) {
-                this->printIndividual(helper, simulation->getGeneration(), groupID, parameters->getReplica());
+                this->writeToCacheIndividual(helper, simulation->getGeneration(), groupID, parameters->getReplica());
             }
             counter++;
         }
         groupID++;
     }
     for (auto const &floater: populationObj.getFloaters()) {
-        this->printIndividual(floater, simulation->getGeneration(), groupID, parameters->getReplica());
+        this->writeToCacheIndividual(floater, simulation->getGeneration(), groupID, parameters->getReplica());
     }
 
 
 }
 
 
-void Statistics::printIndividual(Individual individual, int generation, int groupID, int replica) {
-    *parameters->getLastGenerationWriter() << fixed << showpoint
-                                           << replica + 1
-                                           << "\t" << generation
-                                           << "\t" << groupID
-                                           << "\t" << individual.getFishType()
-                                           << "\t" << setprecision(4) << individual.getAge()
-                                           << "\t" << setprecision(4) << individual.getAlpha()
-                                           << "\t" << setprecision(4) << individual.getBeta()
-                                           << "\t" << setprecision(4) << individual.getGamma()
-                                           << "\t" << setprecision(4) << individual.getDelta()
-                                           << "\t" << setprecision(4) << individual.getDrift()
-                                           << "\t" << setprecision(4) << individual.getDispersal()
-                                           << "\t" << setprecision(4) << individual.getHelp()
-                                           << "\t" << setprecision(4) << individual.getSurvival()
-                                           << "\t" << setprecision(4) << individual.isInherit()
-                                           << endl;
+void Statistics::writeToCacheIndividual(Individual individual, int generation, int groupID, int replica) {
+    std::ostringstream oss;
+    oss << fixed << showpoint
+        << replica + 1
+        << "\t" << generation
+        << "\t" << groupID
+        << "\t" << individual.getFishType()
+        << "\t" << setprecision(4) << individual.getAge()
+        << "\t" << setprecision(4) << individual.getAlpha()
+        << "\t" << setprecision(4) << individual.getBeta()
+        << "\t" << setprecision(4) << individual.getGamma()
+        << "\t" << setprecision(4) << individual.getDelta()
+        << "\t" << setprecision(4) << individual.getDrift()
+        << "\t" << setprecision(4) << individual.getDispersal()
+        << "\t" << setprecision(4) << individual.getHelp()
+        << "\t" << setprecision(4) << individual.getSurvival()
+        << "\t" << setprecision(4) << individual.isInherit()
+        << endl;
+    this->lastGenerationCache.push_back(oss.str());
+}
+
+void Statistics::storeResults(int replica, int generation, int deaths, int newBreederOutsider,
+                              int newBreederInsider, int inheritance) {
+
 }
