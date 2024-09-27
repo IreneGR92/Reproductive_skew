@@ -19,9 +19,9 @@
 /*HEADER FILES*/
 
 #include <iostream>
-#include "Parameters.h"
+#include "util/Parameters.h"
 #include "stats/Statistics.h"
-#include "FilePrinter.h"
+#include "util/FilePrinter.h"
 
 
 /* MAIN PROGRAM */
@@ -36,7 +36,7 @@ int main(int count, char **argv) {
         parameters = new Parameters(0);
     }
 
-    std::vector<Statistics *> results = std::vector<Statistics *>();
+    std::vector<ResultCache *> results = std::vector<ResultCache *>();
 
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
 

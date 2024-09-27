@@ -4,11 +4,11 @@
 #include <vector>
 
 
-Statistics *Simulation::run() {
+ResultCache *Simulation::run() {
 
     // Output file
-    auto *statistics = new Statistics(this->parameters);
-
+    auto *statistics = new Statistics(parameters);
+    auto *results = new ResultCache(parameters);
     statistics->calculateStatistics(population);
     statistics->printHeadersToConsole();
     statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
@@ -38,7 +38,7 @@ Statistics *Simulation::run() {
                 generation == parameters->getNumGenerations() / 2 ||
                 generation == parameters->getNumGenerations()) {
 
-                statistics->writeToCacheLastGeneration(this, population);
+                results->writeToCacheLastGeneration(this, population);
             }
         }
 
@@ -51,16 +51,18 @@ Statistics *Simulation::run() {
         // Print main file (separately since we need values of deaths, newBreederFloater, newBreederHelper and inheritance to be calculated)
         if (generation % parameters->getSkip() == 0) {
             statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
-            statistics->writeToCacheMain(parameters->getReplica(), generation, population.getDeaths(),
-                                         population.getNewBreederOutsider(),
-                                         population.getNewBreederInsider(), population.getInheritance());
+            results->writeToCacheMain(
+                    statistics->generateMainResultLine(generation, population.getDeaths(),
+                                                       population.getNewBreederOutsider(),
+                                                       population.getNewBreederInsider(),
+                                                       population.getInheritance()));
         }
 
 
         population.increaseAge();
         population.reproduce(generation);
     }
-    return statistics;
+    return results;
 }
 
 int Simulation::getGeneration() const {

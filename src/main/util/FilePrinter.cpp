@@ -1,11 +1,11 @@
 
 
 #include "FilePrinter.h"
-#include "stats/Statistics.h"
+
 
 using namespace std;
 
-void FilePrinter::writeMainFile(std::vector<Statistics *> &results) {
+void FilePrinter::writeMainFile(std::vector<ResultCache *> &results) {
     auto writer = parameters->getMainWriter();
     //print header
     this->printHeader(*writer);
@@ -35,7 +35,7 @@ void FilePrinter::writeMainFile(std::vector<Statistics *> &results) {
 
 }
 
-void FilePrinter::writeLastGenerationFile(std::vector<Statistics *> &results) {
+void FilePrinter::writeLastGenerationFile(std::vector<ResultCache *> &results) {
     auto writer = parameters->getLastGenerationWriter();
 
     //print header

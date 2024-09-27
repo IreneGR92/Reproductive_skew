@@ -2,7 +2,7 @@
 #define GROUP_AUGMENTATION_GROUP_H
 
 #include "Individual.h"
-#include "../Parameters.h"
+#include "../util/Parameters.h"
 #include "container/IndividualVector.h"
 
 /**

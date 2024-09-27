@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 #include <iterator>
-#include "../../Parameters.h"
+#include "../../util/Parameters.h"
 
 template<class T>
 

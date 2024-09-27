@@ -1,6 +1,6 @@
 
 #include "StatisticalFormulas.h"
-#include "../Parameters.h"
+#include "../util/Parameters.h"
 #include <cmath>
 #include <numeric>
 #include <algorithm>

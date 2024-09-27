@@ -5,6 +5,7 @@
 
 #include <string>
 #include "Parameters.h"
+#include "ResultCache.h"
 
 class FilePrinter {
 private:
@@ -17,9 +18,9 @@ private:
 public:
     explicit FilePrinter(Parameters *parameters) : parameters(parameters) {}
 
-    void writeMainFile(std::vector<Statistics *> &results);
+    void writeMainFile(std::vector<ResultCache *> &results);
 
-    void writeLastGenerationFile(std::vector<Statistics *> &results);
+    void writeLastGenerationFile(std::vector<ResultCache *> &results);
 };
 
 

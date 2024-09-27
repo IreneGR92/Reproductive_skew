@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 #include "FishType.h"
-#include "../Parameters.h"
+#include "../util/Parameters.h"
 #include "Attribute.h"
 
 /**

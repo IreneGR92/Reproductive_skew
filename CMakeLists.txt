@@ -26,14 +26,16 @@ endif ()
 set(SOURCE_FILES
         src/main/model/Attribute.h
         src/main/model/FishType.h
-        src/main/Parameters.h
-        src/main/Parameters.cpp
+        src/main/util/Parameters.h
+        src/main/util/Parameters.cpp
         src/main/model/Individual.h
         src/main/model/Individual.cpp
         src/main/model/Group.h
         src/main/model/Group.cpp
         src/main/Simulation.cpp
         src/main/Simulation.h
+        src/main/util/ResultCache.h
+        src/main/util/ResultCache.cpp
         src/main/model/Population.cpp
         src/main/model/Population.h
         src/main/stats/Statistics.h
@@ -42,8 +44,9 @@ set(SOURCE_FILES
         src/main/stats/StatisticalFormulas.cpp
         src/main/model/container/IndividualVector.h
         src/main/model/container/IndividualVector.cpp
-        src/main/FilePrinter.h
-        src/main/FilePrinter.cpp)
+        src/main/util/FilePrinter.h
+        src/main/util/FilePrinter.cpp
+)
 
 # Define the App executable and link the yaml-cpp library
 add_executable(App src/main/main.cpp ${SOURCE_FILES})

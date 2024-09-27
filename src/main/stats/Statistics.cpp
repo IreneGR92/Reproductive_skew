@@ -2,9 +2,7 @@
 #include <iostream>
 #include <cassert>
 #include "Statistics.h"
-#include "../model/Population.h"
-#include "../model/Group.h"
-#include "../model/Individual.h"
+
 
 using namespace std;
 
@@ -284,12 +282,12 @@ void Statistics::printToConsole(int generation, int deaths, int emigrants) {
               << endl;
 }
 
-
-void Statistics::writeToCacheMain(int replica, int generation, int deaths, int newBreederOutsider,
-                                  int newBreederInsider, int inheritance) {
+std::string
+Statistics::generateMainResultLine(int generation, int deaths, int newBreederOutsider, int newBreederInsider,
+                                   int inheritance) {
     std::ostringstream oss;
     oss << fixed << showpoint
-        << replica
+        << parameters->getReplica()
         << "\t" << generation
         << "\t" << population
         << "\t" << deaths
@@ -323,64 +321,8 @@ void Statistics::writeToCacheMain(int replica, int generation, int deaths, int n
         << "\t" << setprecision(4) << relatednessBreeders
         << "\t" << newBreederOutsider
         << "\t" << newBreederInsider;
-    this->mainCache.push_back(oss.str());
+    return oss.str();
 }
 
 
-void Statistics::writeToCacheLastGeneration(Simulation *simulation, const Population &populationObj) {
 
-    int groupID = 0;
-    int counter = 0;
-
-    for (auto const &group: populationObj.getGroups()) {
-        if (counter < 100) {
-            this->writeToCacheIndividual(group.getMainBreeder(), simulation->getGeneration(), groupID,
-                                         parameters->getReplica());
-
-            for (auto const &helper: group.getHelpers()) {
-                this->writeToCacheIndividual(helper, simulation->getGeneration(), groupID, parameters->getReplica());
-            }
-            counter++;
-        }
-        groupID++;
-    }
-    for (auto const &floater: populationObj.getFloaters()) {
-        this->writeToCacheIndividual(floater, simulation->getGeneration(), groupID, parameters->getReplica());
-    }
-
-
-}
-
-
-void Statistics::writeToCacheIndividual(Individual individual, int generation, int groupID, int replica) {
-    std::ostringstream oss;
-    oss << fixed << showpoint
-        << replica + 1
-        << "\t" << generation
-        << "\t" << groupID
-        << "\t" << individual.getFishType()
-        << "\t" << setprecision(4) << individual.getAge()
-        << "\t" << setprecision(4) << individual.getAlpha()
-        << "\t" << setprecision(4) << individual.getBeta()
-        << "\t" << setprecision(4) << individual.getGamma()
-        << "\t" << setprecision(4) << individual.getDelta()
-        << "\t" << setprecision(4) << individual.getDrift()
-        << "\t" << setprecision(4) << individual.getDispersal()
-        << "\t" << setprecision(4) << individual.getHelp()
-        << "\t" << setprecision(4) << individual.getSurvival()
-        << "\t" << setprecision(4) << individual.isInherit();
-    this->lastGenerationCache.push_back(oss.str());
-}
-
-void Statistics::storeResults(int replica, int generation, int deaths, int newBreederOutsider,
-                              int newBreederInsider, int inheritance) {
-
-}
-
-const vector<std::string> &Statistics::getLastGenerationCache() const {
-    return lastGenerationCache;
-}
-
-const vector<std::string> &Statistics::getMainCache() const {
-    return mainCache;
-}

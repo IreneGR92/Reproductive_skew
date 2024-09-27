@@ -1,8 +1,11 @@
 #ifndef GROUP_AUGMENTATION_SIMULATION_H
 #define GROUP_AUGMENTATION_SIMULATION_H
 
-#include "Parameters.h"
+#include "util/Parameters.h"
 #include "model/Population.h"
+#include "util/ResultCache.h"
+
+class ResultCache; // Forward declaration of the ResultCache class.
 
 // The Simulation class represents a single simulation run.
 class Simulation {
@@ -23,7 +26,7 @@ public:
     }
 
     // Runs the simulation.
-    Statistics *run();
+    ResultCache *run();
 
     // Returns the current generation number in the simulation.
     // @return The generation number.
