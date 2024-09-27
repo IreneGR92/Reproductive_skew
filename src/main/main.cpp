@@ -33,7 +33,11 @@ void runSimulation(Simulation *simulation, ResultCache **result) {
 /* MAIN PROGRAM */
 int main(int count, char **argv) {
     // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
-    spdlog::set_level(spdlog::level::debug);
+#ifdef NDEBUG
+    spdlog::set_level(spdlog::level::info); // Release build
+#else
+    spdlog::set_level(spdlog::level::debug); // Debug build
+#endif
 
     Parameters *parameters;
     if (count > 1) {
