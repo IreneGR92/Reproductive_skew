@@ -16,10 +16,18 @@
  */
 class Statistics {
 
+
+public:
+    const std::vector<std::string> &getLastGenerationCache() const;
+
+    const std::vector<std::string> &getMainCache() const;
+
 private:
-    Parameters *parameters;
-    std::vector<std::string> lastGenerationCache; ///< stores the text output before written to file.
-    std::vector<std::string> mainCache; ///< stores the text output before written to file.
+    Parameters *parameters; ///< The parameters of the simulation.
+
+    ///< stores the text output before written to file.
+    std::vector<std::string> lastGenerationCache;
+    std::vector<std::string> mainCache;
     // Population parameters and Statistics
     int population{}, totalFloaters{}, totalHelpers{}, totalMainBreeders{}, totalSubordinateBreeders{}; // Counters
 
@@ -74,10 +82,6 @@ public:
      */
     void printHeadersToConsole();
 
-    /**
-     * @brief Prints the headers for the statistics to a file.
-     */
-    void printResultFiles();
 
     /**
      * @brief Prints the statistics to the console.
@@ -91,12 +95,12 @@ public:
      * @param replica The current replica of the simulation.
      * @param generation The current generation of the simulation.
      * @param deaths The number of deaths in the population.
-     * @param newBreederFloater The number of new breeders that were floaters.
-     * @param newBreederHelper The number of new breeders that were helpers.
+     * @param newBreederOutsider The number of new breeders that were floaters.
+     * @param newBreederInsider The number of new breeders that were helpers.
      * @param inheritance The number of inheritance events.
      */
-    void printToFile(int replica, int generation, int deaths, int newBreederFloater,
-                     int newBreederHelper, int inheritance);
+    void writeToCacheMain(int replica, int generation, int deaths, int newBreederFloater,
+                          int newBreederHelper, int inheritance);
 
     /**
      * @brief Prints the statistics of the last generation to a file.

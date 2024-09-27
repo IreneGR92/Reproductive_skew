@@ -48,10 +48,10 @@ int main(int count, char **argv) {
     }
 
     FilePrinter filePrinter(parameters);
-    filePrinter.writeLastGenerationFile();
-    filePrinter.writeMainFile();
 
-    std::cout << "reading file " << argv[1] << "\n";
+    filePrinter.writeMainFile(results);
+    filePrinter.writeLastGenerationFile(results);
+
     return 0;
 }
 

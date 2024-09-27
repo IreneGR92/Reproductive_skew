@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 #include "Statistics.h"
 #include "../model/Population.h"
 #include "../model/Group.h"
@@ -285,9 +285,8 @@ void Statistics::printToConsole(int generation, int deaths, int emigrants) {
 }
 
 
-
-void Statistics::printToFile(int replica, int generation, int deaths, int newBreederOutsider,
-                             int newBreederInsider, int inheritance) {
+void Statistics::writeToCacheMain(int replica, int generation, int deaths, int newBreederOutsider,
+                                  int newBreederInsider, int inheritance) {
     std::ostringstream oss;
     oss << fixed << showpoint
         << replica
@@ -323,8 +322,7 @@ void Statistics::printToFile(int replica, int generation, int deaths, int newBre
         << "\t" << setprecision(4) << relatednessHelpers
         << "\t" << setprecision(4) << relatednessBreeders
         << "\t" << newBreederOutsider
-        << "\t" << newBreederInsider
-        << endl;
+        << "\t" << newBreederInsider;
     this->mainCache.push_back(oss.str());
 }
 
@@ -370,12 +368,19 @@ void Statistics::writeToCacheIndividual(Individual individual, int generation, i
         << "\t" << setprecision(4) << individual.getDispersal()
         << "\t" << setprecision(4) << individual.getHelp()
         << "\t" << setprecision(4) << individual.getSurvival()
-        << "\t" << setprecision(4) << individual.isInherit()
-        << endl;
+        << "\t" << setprecision(4) << individual.isInherit();
     this->lastGenerationCache.push_back(oss.str());
 }
 
 void Statistics::storeResults(int replica, int generation, int deaths, int newBreederOutsider,
                               int newBreederInsider, int inheritance) {
 
+}
+
+const vector<std::string> &Statistics::getLastGenerationCache() const {
+    return lastGenerationCache;
+}
+
+const vector<std::string> &Statistics::getMainCache() const {
+    return mainCache;
 }

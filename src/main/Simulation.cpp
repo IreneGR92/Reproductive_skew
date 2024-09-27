@@ -12,7 +12,7 @@ Statistics *Simulation::run() {
     statistics->calculateStatistics(population);
     statistics->printHeadersToConsole();
     statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
-//    statistics->printToFile(replica, generation, population.getDeaths(), newBreederOutsider, newBreederInsider, inheritance);
+//    statistics->writeToCacheMain(replica, generation, population.getDeaths(), newBreederOutsider, newBreederInsider, inheritance);
 
     delete statistics;
 
@@ -51,9 +51,9 @@ Statistics *Simulation::run() {
         // Print main file (separately since we need values of deaths, newBreederFloater, newBreederHelper and inheritance to be calculated)
         if (generation % parameters->getSkip() == 0) {
             statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
-            statistics->printToFile(parameters->getReplica(), generation, population.getDeaths(),
-                                    population.getNewBreederOutsider(),
-                                    population.getNewBreederInsider(), population.getInheritance());
+            statistics->writeToCacheMain(parameters->getReplica(), generation, population.getDeaths(),
+                                         population.getNewBreederOutsider(),
+                                         population.getNewBreederInsider(), population.getInheritance());
         }
 
 
