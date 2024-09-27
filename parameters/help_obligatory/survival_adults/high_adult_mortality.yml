@@ -32,7 +32,7 @@ mRate: 0.3   # rate of change in survival of offspring
 mStep: 4   # step size in survival of offspring
 
 #Modifiers in fecundity
-K0: 0    # baseline fecundity when no other factors influence it
+K0: 1    # baseline fecundity when no other factors influence it
 Kh: 2    # benefit of cumHelp in the fecundity
 Knb: 3   # benefit of number of breeders in the group fecundity
 
