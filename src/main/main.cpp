@@ -19,12 +19,15 @@
 /*HEADER FILES*/
 
 #include <iostream>
-#include <future>
+#include <thread>
 #include "util/Parameters.h"
 #include "stats/Statistics.h"
 #include "util/FilePrinter.h"
 
-
+void runSimulation(Simulation *simulation, ResultCache **result) {
+    *result = simulation->run();
+    delete simulation;
+}
 /* MAIN PROGRAM */
 int main(int count, char **argv) {
 
@@ -37,31 +40,27 @@ int main(int count, char **argv) {
         parameters = new Parameters(0);
     }
 
-    std::vector<std::future<ResultCache *>> threadResults;
+    std::vector<std::thread> threads;
+    std::vector<ResultCache *> results(parameters->getMaxNumReplicates());
 
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
         std::cout << "REPLICA = " << replica << std::endl;
 
         auto *newParams = parameters->cloneWithIncrementedReplica(replica);
+        auto *simulation = new Simulation(newParams);
 
-        threadResults.emplace_back(std::async(std::launch::async, [parameters, &newParams]() {
-            auto *simulation = new Simulation(newParams);
-            ResultCache *result = simulation->run();
-            delete simulation;
-            return result;
-        }));
+        threads.emplace_back(runSimulation, simulation, &results[replica]);
     }
 
-    std::vector<ResultCache *> results;
-    for (auto &threadResult: threadResults) {
-        results.emplace_back(threadResult.get());
+    for (auto &thread : threads) {
+        thread.join();
     }
 
     FilePrinter filePrinter(parameters);
-
     filePrinter.writeMainFile(results);
     filePrinter.writeLastGenerationFile(results);
 
     return 0;
 }
+
 
