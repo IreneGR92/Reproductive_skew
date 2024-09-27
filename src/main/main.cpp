@@ -33,14 +33,20 @@ void runSimulation(Simulation *simulation, ResultCache **result) {
 
 /* MAIN PROGRAM */
 int main(int count, char **argv) {
+    // Define the log pattern
+
     // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
 #ifdef NDEBUG
+    std::string log_pattern_file = "[%Y-%m-%d %H:%M:%S.%e] [%l] %v";
     auto file_logger = spdlog::basic_logger_mt("file_logger", "reproductive_skew.log");
     spdlog::set_default_logger(file_logger);
+    file_logger->set_pattern(log_pattern_file);
     spdlog::set_level(spdlog::level::info); // Release build
 #else
+    std::string log_pattern_console = "[%l] %v";
     auto console_logger = spdlog::stdout_color_mt("console_logger");
     spdlog::set_default_logger(console_logger);
+    console_logger->set_pattern(log_pattern_console);
     spdlog::set_level(spdlog::level::debug); // Debug build
 #endif
 
