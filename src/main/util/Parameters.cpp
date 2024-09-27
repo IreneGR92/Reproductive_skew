@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "yaml-cpp/yaml.h"
 #include "Parameters.h"
+#include "spdlog/spdlog.h"
 
 using namespace std;
 
@@ -10,8 +11,9 @@ using namespace std;
 Parameters::Parameters(const int replica) : Parameters("../parameters/default.yml", replica) {}
 
 Parameters::Parameters(const string &url, const int replica) : replica(replica) {
-    YAML::Node config = YAML::LoadFile(url);
 
+    spdlog::info("Loading parameters from file: {}", url);
+    YAML::Node config = YAML::LoadFile(url);
     this->name = this->getName(url);
     this->BET_HEDGING_HELP = config["BET_HEDGING_HELP"].as<bool>();
     this->HELP_OBLIGATORY = config["HELP_OBLIGATORY"].as<bool>();
@@ -64,6 +66,7 @@ Parameters::Parameters(const string &url, const int replica) : replica(replica) 
     this->lastGenerationWriter = new std::ofstream("last_generation_" + this->name + ".txt");
 
     this->generator = new std::default_random_engine(SEED + replica);
+    spdlog::info("starting replica {} of {} with SEED {}", replica, name, SEED + replica);
 }
 
 Parameters::~Parameters() {
@@ -282,6 +285,7 @@ Parameters *Parameters::cloneWithIncrementedReplica(int newReplica) const {
     auto *deepCopy = new Parameters(*this); // Use copy constructor
     deepCopy->replica = newReplica; // Increment newReplica
     deepCopy->generator = new std::default_random_engine(SEED + newReplica);
+    spdlog::info("starting replica {} of {} with SEED {}", replica, name, SEED + replica);
     return deepCopy;
 }
 

@@ -18,12 +18,12 @@
 
 /*HEADER FILES*/
 
-#include <iostream>
 #include <thread>
 #include "util/Parameters.h"
 #include "stats/Statistics.h"
 #include "util/FilePrinter.h"
 #include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 
 void runSimulation(Simulation *simulation, ResultCache **result) {
     *result = simulation->run();
@@ -34,14 +34,17 @@ void runSimulation(Simulation *simulation, ResultCache **result) {
 int main(int count, char **argv) {
     // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
 #ifdef NDEBUG
+    auto file_logger = spdlog::basic_logger_mt("file_logger", "reproductive_skew.log");
+    spdlog::set_default_logger(file_logger);
     spdlog::set_level(spdlog::level::info); // Release build
 #else
+    auto console_logger = spdlog::stdout_color_mt("console_logger");
+    spdlog::set_default_logger(console_logger);
     spdlog::set_level(spdlog::level::debug); // Debug build
 #endif
 
     Parameters *parameters;
     if (count > 1) {
-        spdlog::info("reading file {}", argv[1]);
         parameters = new Parameters(argv[1], 0);
     } else {
         parameters = new Parameters(0);
@@ -51,7 +54,6 @@ int main(int count, char **argv) {
     std::vector<ResultCache *> results(parameters->getMaxNumReplicates());
 
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
-        spdlog::info("REPLICA = {}", replica);
 
         auto *newParams = parameters->cloneWithIncrementedReplica(replica);
         auto *simulation = new Simulation(newParams);
