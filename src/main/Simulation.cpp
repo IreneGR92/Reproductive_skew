@@ -1,6 +1,7 @@
 
 #include "Simulation.h"
 #include "stats/Statistics.h"
+#include "spdlog/spdlog.h"
 #include <vector>
 
 
@@ -28,6 +29,14 @@ ResultCache *Simulation::run() {
         population.help();
         population.survivalGroup();
 
+        if (generation % 20000 == 0) {
+            // Calculate and log progress
+            spdlog::info("[{}] [REPLICA={}] Progress: {:.2f}%", parameters->getName(), parameters->getReplica(),
+                         calculateProgress(generation));
+        }
+
+
+
         //Calculate stats
         if (generation % parameters->getSkip() == 0) {
             statistics->calculateStatistics(population);
@@ -37,7 +46,6 @@ ResultCache *Simulation::run() {
                 generation == 25000 ||
                 generation == parameters->getNumGenerations() / 2 ||
                 generation == parameters->getNumGenerations()) {
-
                 results->writeToCacheLastGeneration(this, population);
             }
         }
@@ -62,11 +70,17 @@ ResultCache *Simulation::run() {
         population.increaseAge();
         population.reproduce(generation);
     }
+    spdlog::info("[{}] [REPLICA={}] completed!", parameters->getName(), parameters->getReplica(),
+                 calculateProgress(generation));
     return results;
 }
 
 int Simulation::getGeneration() const {
     return generation;
+}
+
+double Simulation::calculateProgress(double cuurentGeneration) {
+    return cuurentGeneration / parameters->getNumGenerations() * 100;
 }
 
 
