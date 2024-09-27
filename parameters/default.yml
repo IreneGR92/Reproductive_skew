@@ -10,7 +10,7 @@ PREDICTABLE_ENVIRONMENT: false          # Is the environment (change in mOff) pr
 
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 10000
-MAX_NUM_REPLICATES: 1
+MAX_NUM_REPLICATES: 10
 SKIP: 100   # interval between print-outs
 
 #Fix values
