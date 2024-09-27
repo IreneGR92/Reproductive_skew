@@ -25,9 +25,9 @@ void Population::reset() {
     this->emigrants = 0;
 }
 
-Population::Population() {
-    for (int i = 0; i < Parameters::instance()->getMaxColonies(); i++) {
-        Group group;
+Population::Population(Parameters *parameters) : parameters(parameters) {
+    for (int i = 0; i < parameters->getMaxColonies(); i++) {
+        Group group(parameters);
         this->groups.emplace_back(group);
     }
 }
@@ -188,7 +188,7 @@ double Population::getOffspringSurvival() {
     double offspringSurvival = parameters->getMOff();
 
     //predictable environment
-    if (parameters->isPredictableEnvironment()){
+    if (parameters->isPredictableEnvironment()) {
         conditionCheckCounter++;
         int interval = static_cast<int>(1.0 / parameters->getMRate());
         if (changeCounter < (conditionCheckCounter / interval)) {
@@ -202,7 +202,7 @@ double Population::getOffspringSurvival() {
         }
 
 
-    //unpredictable environment
+        //unpredictable environment
     } else if (parameters->uniform(rng) < parameters->getMRate()) {
         offspringSurvival += NormalDist(rng);
     }

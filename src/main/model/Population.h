@@ -5,6 +5,8 @@
 #include "Individual.h"
 #include "Group.h"
 
+
+class Parameters; // Forward declaration
 /**
  * @class Population
  * @brief A class that represents a population in a simulation model.
@@ -15,7 +17,7 @@
 class Population {
 
 private:
-    Parameters *parameters = Parameters::instance(); ///< A pointer to the singleton instance of Parameters class.
+    Parameters *parameters;
 
     std::vector<Group> groups; ///< A vector of Group objects.
 
@@ -40,10 +42,9 @@ private:
 
 
 public:
+    explicit Population(Parameters *parameters);
 
     void reset();
-
-    Population();
 
     void disperse();
 

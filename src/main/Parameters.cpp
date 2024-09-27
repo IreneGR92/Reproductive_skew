@@ -6,14 +6,10 @@
 using namespace std;
 
 
-static Parameters *singletonInstance;
-
 //default value if not provided
-Parameters::Parameters() : Parameters("../parameters/default.yml") {}
+Parameters::Parameters(const int replica) : Parameters("../parameters/default.yml", replica) {}
 
-Parameters::Parameters(const string &url) {
-    singletonInstance = this;
-
+Parameters::Parameters(const string &url, const int replica) : replica(replica) {
     YAML::Node config = YAML::LoadFile(url);
 
     this->name = this->getName(url);
@@ -67,8 +63,7 @@ Parameters::Parameters(const string &url) {
     this->mainWriter = new std::ofstream("main_" + this->name + ".txt");
     this->lastGenerationWriter = new std::ofstream("last_generation_" + this->name + ".txt");
 
-    const int seed = 0;
-    this->generator = new std::default_random_engine(seed);
+    this->generator = new std::default_random_engine(SEED + replica);
 }
 
 Parameters::~Parameters() {
@@ -331,25 +326,24 @@ default_random_engine *Parameters::getGenerator() const {
     return generator;
 }
 
-/**
- * @brief Returns the singleton instance of the Parameters class.
- * @return
- */
-Parameters *Parameters::instance() {
-    if (singletonInstance == nullptr) {
-        singletonInstance = new Parameters;
-    }
-    return singletonInstance;
+
+int Parameters::getReplica() const {
+    return replica;
 }
 
-/**
- * @brief Initializes the singleton instance of the Parameters class for unit testing.
- * @return
- */
-Parameters *Parameters::unitTestInit() {
-    singletonInstance = new Parameters("../parameters/unit_tests.yml");
-    std::cout << "Unit test parameters initialized" << std::endl;
-    return singletonInstance;
+Statistics *Parameters::getResults() const {
+    return results;
+}
+
+void Parameters::setResults(Statistics *results) {
+    Parameters::results = results;
+}
+
+Parameters *Parameters::cloneWithIncrementedReplica() const {
+    auto *deepCopy = new Parameters(*this); // Use copy constructor
+    deepCopy->replica += 1; // Increment replica
+    deepCopy->generator = new std::default_random_engine(SEED + replica);
+    return deepCopy;
 }
 
 

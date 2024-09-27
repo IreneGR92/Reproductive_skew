@@ -1,5 +1,4 @@
 
-#include <algorithm>
 #include <iostream>
 #include <cassert>
 
@@ -7,7 +6,7 @@
 #include "FishType.h"
 
 //Constructor for reproduction of a Breeder
-Individual::Individual(Individual &individual, FishType fishType, int &generation) {
+Individual::Individual(Individual &individual, FishType fishType, int &generation) : parameters(individual.parameters) {
 
     if (individual.fishType != BREEDER) {
         std::cout << "Error: only breeders can reproduce" << std::endl;
@@ -31,20 +30,18 @@ Individual::Individual(Individual &individual, FishType fishType, int &generatio
 }
 
 //Constructor for initial creation
-Individual::Individual(FishType fishType) {
+Individual::Individual(FishType fishType, Parameters *parameters) : parameters(parameters) {
 
-    auto param = Parameters::instance();
 
-    this->alpha = param->getInitAlpha();
-    this->beta = param->getInitBeta();
-    this->gamma = param->getInitGamma();
-    this->delta = param->getInitDelta();
-    this->drift = param->driftUniform(*param->getGenerator());
+    this->alpha = parameters->getInitAlpha();
+    this->beta = parameters->getInitBeta();
+    this->gamma = parameters->getInitGamma();
+    this->delta = parameters->getInitDelta();
+    this->drift = parameters->driftUniform(*parameters->getGenerator());
     this->initializeIndividual(fishType);
 }
 
 void Individual::initializeIndividual(FishType type) {
-    this->parameters = Parameters::instance();
     this->dispersal = Parameters::NO_VALUE;
     this->help = 0;
     this->survival = Parameters::NO_VALUE;
@@ -52,12 +49,12 @@ void Individual::initializeIndividual(FishType type) {
     this->inherit = true;
     this->age = 1;
     this->ageBecomeBreeder = Parameters::NO_VALUE;
-    this->id = Parameters::instance()->nextId();
+    this->id = parameters->nextId();
 
 }
 
 void Individual::setGroupIndex(int groupIndex) {
-    Individual::groupIndex = groupIndex;
+    this->groupIndex = groupIndex;
 }
 
 

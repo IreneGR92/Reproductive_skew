@@ -6,6 +6,9 @@
 #include <fstream>
 #include <random>
 
+
+class Statistics;   // Forward declaration
+
 /**
  * @class Parameters
  * @brief A singleton class that holds the parameters for a population simulation model.
@@ -19,9 +22,9 @@ public:
     /**
      * @brief Default constructor for the Parameters class.
      */
-    Parameters();
+    explicit Parameters(int replica);
 
-    /**
+/**
      * @brief Destructor for the Parameters class.
      */
     virtual ~Parameters();
@@ -30,13 +33,17 @@ public:
      * @brief Constructor for the Parameters class that takes a URL.
      * @param url The URL to load parameters from.
      */
-    explicit Parameters(const std::string &url);
+    explicit Parameters(const std::string &url, int replica);
+
+    Parameters *cloneWithIncrementedReplica() const;
+
+    int getReplica() const;
 
 private:
-
     std::string name; ///< The name of the simulation.
-
+    int replica; ///< The replica number.
     // Run parameters
+    const int SEED = 0; ///< The seed for the random number generator.
     bool BET_HEDGING_HELP;    ///< Apply reaction norm to age for dispersal?
     bool HELP_OBLIGATORY;      ///< Help obligatory for reproduction?
     bool NO_EVOLUTION_HELP;              ///< Does help evolve?
@@ -114,6 +121,8 @@ private:
     std::ofstream *lastGenerationWriter; ///< A pointer to the last generation output stream writer.
 
     double idCounter = 0;
+    Statistics *results;
+
 public:
 
     std::uniform_real_distribution<double> driftUniform; ///< A uniform real distribution for drift.
@@ -221,17 +230,14 @@ public:
 
     std::default_random_engine *getGenerator() const;
 
+    Statistics *getResults() const;
+
+    void setResults(Statistics *results);
+
     double nextId() {
         return idCounter++;
     }
 
-    /**
-     * @brief Returns the singleton instance of the Parameters class.
-     * @return The singleton instance of the Parameters class.
-     */
-    static Parameters *instance();
-
-    static Parameters *unitTestInit();
 };
 
 

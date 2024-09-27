@@ -7,9 +7,7 @@
 using namespace std;
 
 
-Group::Group() : mainBreeder(BREEDER) {
-    this->parameters = Parameters::instance();
-
+Group::Group(Parameters *parameters) : mainBreeder(BREEDER, parameters), parameters(parameters) {
     mainBreederAlive = true;
     cumHelp = 0;
     acceptanceRate = Parameters::NO_VALUE;
@@ -19,14 +17,14 @@ Group::Group() : mainBreeder(BREEDER) {
     offspringMainBreeder = 0;
     offspringSubordinateBreeders = 0;
     totalOffspringGroup = 0;
-
+    groupSize = 0;
 
     for (int i = 0; i < parameters->getInitNumHelpers(); ++i) {
-        auto individual = Individual(HELPER);
+        auto individual = Individual(HELPER, parameters);
         helpers.emplace_back(individual);
     }
 
-    calculateGroupSize();
+    this->calculateGroupSize();
 }
 
 
@@ -441,13 +439,16 @@ void Group::calcFecundity(double mk) {
         //Calculate fecundity
         if (mk > 1 && parameters->isBetHedgingHelp()) { //TODO: Benign environment counted as 1 instead of mOff, change?
             initFecundity = mk + mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
-        } else if (parameters->isHelpObligatory()){
+                                       parameters->getKnb() * subordinateBreeders.size() /
+                                       (1 + subordinateBreeders.size()));
+        } else if (parameters->isHelpObligatory()) {
             initFecundity = mk * parameters->getK0() + mk * (parameters->getKh() * cumHelp / (1 + cumHelp)) *
-                    (1 + (parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size())));
+                                                       (1 + (parameters->getKnb() * subordinateBreeders.size() /
+                                                             (1 + subordinateBreeders.size())));
         } else {
             initFecundity = mk + mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
+                                       parameters->getKnb() * subordinateBreeders.size() /
+                                       (1 + subordinateBreeders.size()));
         }
 
         if (initFecundity < 0) {

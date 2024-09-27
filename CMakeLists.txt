@@ -24,15 +24,16 @@ endif ()
 
 # Define the source files for the App executable
 set(SOURCE_FILES
+        src/main/model/Attribute.h
+        src/main/model/FishType.h
         src/main/Parameters.h
         src/main/Parameters.cpp
-        src/main/Simulation.cpp
-        src/main/Simulation.h
-        src/main/model/Attribute.h
         src/main/model/Individual.h
         src/main/model/Individual.cpp
         src/main/model/Group.h
         src/main/model/Group.cpp
+        src/main/Simulation.cpp
+        src/main/Simulation.h
         src/main/model/Population.cpp
         src/main/model/Population.h
         src/main/stats/Statistics.h

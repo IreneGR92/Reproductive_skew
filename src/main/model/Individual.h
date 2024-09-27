@@ -16,8 +16,7 @@
 class Individual {
 
 private:
-    Parameters *parameters; ///< A pointer to the singleton instance of Parameters class.
-
+    Parameters *parameters;
     double id; ///< The unique identifier of the individual.
     double alpha; ///< Genetic parameter alpha.
     double beta; ///< Genetic parameter beta.
@@ -37,19 +36,20 @@ private:
     int groupIndex; ///< The index of the group the individual belongs to.
 
 
+
     void mutate(int generation);
 
     void initializeIndividual(FishType type);
 
 public:
 
-    int getGroupIndex() const;
+    Individual(FishType fishType, Parameters *parameters);
 
     Individual(Individual &individual, FishType fishType, int &generation);
 
     bool operator==(const Individual &other) const;
 
-    explicit Individual(FishType fishType);
+    int getGroupIndex() const;
 
     void calcDispersal();
 
@@ -96,6 +96,7 @@ public:
     bool isViableBreeder();
 
     double getFecundity() const; //TODO: remove all individual fecundities
+
 };
 
 

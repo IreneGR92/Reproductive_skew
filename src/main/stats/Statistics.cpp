@@ -358,26 +358,22 @@ void Statistics::printToFileLastGeneration(Simulation *simulation, const Populat
 
     for (auto const &group: populationObj.getGroups()) {
         if (counter < 100) {
-            this->printIndividual(group.getMainBreeder(), simulation->getGeneration(), groupID, simulation->getReplica());
+            this->printIndividual(group.getMainBreeder(), simulation->getGeneration(), groupID, parameters->getReplica());
 
             for (auto const &helper: group.getHelpers()) {
-                this->printIndividual(helper, simulation->getGeneration(), groupID, simulation->getReplica());
+                this->printIndividual(helper, simulation->getGeneration(), groupID, parameters->getReplica());
             }
             counter++;
         }
         groupID++;
     }
     for (auto const &floater: populationObj.getFloaters()) {
-        this->printIndividual(floater, simulation->getGeneration(), groupID, simulation->getReplica());
+        this->printIndividual(floater, simulation->getGeneration(), groupID, parameters->getReplica());
     }
 
 
 }
 
-Statistics::Statistics() {
-    this->parameters = Parameters::instance();
-
-}
 
 void Statistics::printIndividual(Individual individual, int generation, int groupID, int replica) {
     *parameters->getLastGenerationWriter() << fixed << showpoint

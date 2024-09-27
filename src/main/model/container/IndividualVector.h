@@ -4,7 +4,9 @@
 #include <vector>
 #include <algorithm>
 #include "../Individual.h"
+#include "../Attribute.h"
 
+class Individual; // Forward declaration
 /**
  * @class IndividualVector
  * @brief A class that represents a vector of Individual objects.

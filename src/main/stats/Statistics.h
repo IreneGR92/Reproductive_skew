@@ -7,6 +7,7 @@
 #include "StatisticalFormulas.h"
 #include "../model/container/IndividualVector.h"
 
+
 /**
  * @class Statistics
  * @brief A class that calculates and maintains various statistics related to a population simulation model.
@@ -32,7 +33,7 @@ private:
     StatisticalFormulas alpha, beta, gamma, delta; //genetic parameters
     StatisticalFormulas help, cumulativeHelp;
     StatisticalFormulas dispersal, acceptanceRate;
-    StatisticalFormulas survival, survivalDomBreeders,survivalSubBreeders, survivalFloaters, survivalHelpers;
+    StatisticalFormulas survival, survivalDomBreeders, survivalSubBreeders, survivalFloaters, survivalHelpers;
     StatisticalFormulas fecundityGroup, reproductiveShareRate, offspringMainBreeder, offspringOfSubordinateBreeders, totalOffspringGroup;
     StatisticalFormulas driftB, driftH, driftBB, driftHB; // Relatedness
 
@@ -49,7 +50,7 @@ public:
     /**
      * @brief Default constructor for the Statistics class.
      */
-    Statistics();
+    explicit Statistics(Parameters *parameters) : parameters(parameters) {};
 
     /**
      * @brief Calculates various statistics for the population.

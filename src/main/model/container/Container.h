@@ -11,12 +11,17 @@
 template<class T>
 
 class Container {
+private:
+    explicit Container(std::default_random_engine *generator);
+
+    std::default_random_engine generator;
 
 protected:
     std::vector<T> vector;
 
+
 public:
-    Container();
+
 
     const unsigned int size() const;
 
@@ -90,9 +95,8 @@ void Container<T>::merge(const Container<T> &container) {
 
 template<class T>
 T Container<T>::getRandomElement() const {
-    Parameters *parameters = Parameters::instance();
     std::uniform_int_distribution<int> uniform(0, vector.size() - 1);
-    int index = uniform(*parameters->getGenerator()); // selects a random index the noRelatednessGroupsID vector
+    int index = uniform(generator); // selects a random index the noRelatednessGroupsID vector
     return this->vector[index];
 }
 
@@ -122,7 +126,7 @@ void Container<T>::removeLast() {
 }
 
 template<class T>
-Container<T>::Container() {}
+Container<T>::Container(std::default_random_engine *generator): generator(*generator) {}
 
 template<class T>
 void Container<T>::shuffle() {

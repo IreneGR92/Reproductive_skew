@@ -1,20 +1,13 @@
-#include <iostream>
+
 #include "Simulation.h"
 #include "stats/Statistics.h"
 #include <vector>
 
 
-Simulation::Simulation(const int replica)
-        : replica(replica),
-          population(),
-          parameters(Parameters::instance()) {
-}
-
-
 void Simulation::run() {
 
     // Output file
-    auto *statistics = new Statistics();
+    auto *statistics = new Statistics(this->parameters);
 
     statistics->calculateStatistics(population);
     statistics->printHeadersToConsole();
@@ -23,8 +16,8 @@ void Simulation::run() {
 
     delete statistics;
 
-    for (generation = 1; generation <= Parameters::instance()->getNumGenerations(); generation++) {
-        statistics = new Statistics();
+    for (generation = 1; generation <= parameters->getNumGenerations(); generation++) {
+        statistics = new Statistics(this->parameters);
         population.reset();
 
         population.disperse();
@@ -58,7 +51,8 @@ void Simulation::run() {
         // Print main file (separately since we need values of deaths, newBreederFloater, newBreederHelper and inheritance to be calculated)
         if (generation % parameters->getSkip() == 0) {
             statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
-            statistics->printToFile(replica, generation, population.getDeaths(), population.getNewBreederOutsider(),
+            statistics->printToFile(parameters->getReplica(), generation, population.getDeaths(),
+                                    population.getNewBreederOutsider(),
                                     population.getNewBreederInsider(), population.getInheritance());
         }
 
@@ -67,10 +61,6 @@ void Simulation::run() {
         population.increaseAge();
         population.reproduce(generation);
     }
-}
-
-int Simulation::getReplica() const {
-    return replica;
 }
 
 int Simulation::getGeneration() const {

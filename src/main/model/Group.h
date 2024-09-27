@@ -15,7 +15,7 @@
 class Group {
 
 private:
-    Parameters *parameters; ///< A pointer to the singleton instance of Parameters class.
+    Parameters *parameters;
     double cumHelp; ///< The cumulative help provided by the group.
     bool mainBreederAlive; ///< A flag indicating if the main breeder is alive.
     int groupSize; ///< The size of the group.
@@ -50,7 +50,7 @@ private:
 
 public:
 
-    explicit Group();
+    explicit Group(Parameters *parameters);
 
     void calculateGroupSize();
 
@@ -114,8 +114,6 @@ public:
     std::vector<double> get(Attribute attribute) const;
 
     std::vector<double> get(Attribute attribute, bool includeBreeder) const;
-
-
 
 
 };

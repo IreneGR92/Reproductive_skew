@@ -25,26 +25,26 @@
 
 /* MAIN PROGRAM */
 int main(int count, char **argv) {
-    //goes to HEAP since we need it only once globally
+
+    //TODO will be done at the end
     Parameters *parameters;
     if (count > 1) {
         std::cout << "reading file " << argv[1] << "\n";
-        parameters = new Parameters(argv[1]);
+        parameters = new Parameters(argv[1], 0);
     } else {
-        parameters = new Parameters;
+        parameters = new Parameters(0);
     }
-
-    parameters->print();
-
-    Statistics statistics;
-    statistics.printHeadersToFile();
+//    parameters->print();
+//    Statistics statistics;
+//    statistics.printHeadersToFile();
+//    delete parameters;
 
 
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
 
         std::cout << "REPLICA = " << replica << std::endl;
 
-        auto *simulation = new Simulation(replica);
+        auto *simulation = new Simulation(parameters->cloneWithIncrementedReplica());
         simulation->run();
         delete simulation;
     }
