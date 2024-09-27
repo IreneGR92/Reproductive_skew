@@ -4,12 +4,13 @@
 
 #include "Individual.h"
 #include "FishType.h"
+#include "spdlog/spdlog.h"
 
 //Constructor for reproduction of a Breeder
 Individual::Individual(Individual &individual, FishType fishType, int &generation) : parameters(individual.parameters) {
 
     if (individual.fishType != BREEDER) {
-        std::cout << "Error: only breeders can reproduce" << std::endl;
+        spdlog::error("only breeders can reproduce");
     }
 
     assert(individual.fishType == BREEDER);
@@ -78,7 +79,7 @@ void Individual::calcHelp() {
         if (help < 0) { help = 0; }
     } else {
         help = Parameters::NO_VALUE;
-        std::cout << "Error: floaters get a help value" << std::endl;
+        spdlog::error("floaters get a help value");
     }
 }
 

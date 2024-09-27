@@ -14,6 +14,14 @@ FetchContent_Declare(
         GIT_TAG yaml-cpp-0.6.3  # replace with the desired version
 )
 
+# fetch the spdlog library
+FetchContent_Declare(
+        spdlog
+        GIT_REPOSITORY https://github.com/gabime/spdlog.git
+        GIT_TAG v1.9.2  # replace with the desired version
+)
+FetchContent_MakeAvailable(spdlog)
+
 # Fetch the yaml-cpp library
 FetchContent_GetProperties(yaml-cpp)
 if (NOT yaml-cpp_POPULATED)
@@ -50,7 +58,7 @@ set(SOURCE_FILES
 
 # Define the App executable and link the yaml-cpp library
 add_executable(App src/main/main.cpp ${SOURCE_FILES})
-target_link_libraries(App PUBLIC yaml-cpp)
+target_link_libraries(App PUBLIC yaml-cpp spdlog::spdlog)
 
 
 # Testing
@@ -75,6 +83,6 @@ set(TEST_FILES
 
 # Define the Test executable and link the yaml-cpp library
 add_executable(UNIT_TESTS ${TEST_FILES} ${SOURCE_FILES})
-target_link_libraries(UNIT_TESTS PUBLIC gtest yaml-cpp)
+target_link_libraries(UNIT_TESTS PUBLIC gtest yaml-cpp spdlog::spdlog)
 include(GoogleTest)
 gtest_discover_tests(UNIT_TESTS)

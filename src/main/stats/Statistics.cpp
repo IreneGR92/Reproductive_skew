@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cassert>
 #include "Statistics.h"
+#include "spdlog/spdlog.h"
 
 
 using namespace std;
@@ -34,19 +35,19 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 
     for (const Individual &helper: helpers) {
         if (helper.getFishType() != HELPER) {
-            cout << "helper wrong class";
+            spdlog::warn("helper wrong class");
         }
     }
 
     for (const Individual &floater: populationObj.getFloaters()) {
         if (floater.getFishType() != FLOATER) {
-            cout << "floater wrong class";
+            spdlog::warn("floater wrong class");
         }
     }
 
     for (const Individual &breeder: allBreeders) {
         if (breeder.getFishType() != BREEDER) {
-            cout << "breeder wrong class";
+            spdlog::warn("breeder wrong class");
         }
     }
 
@@ -240,46 +241,19 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
 
 void Statistics::printHeadersToConsole() {
     // column headings on screen
-    cout << setw(6) << "gen" << setw(9) << "pop" << setw(9) << "deaths" << setw(9)
-         << "emig" << setw(9) << "float" << setw(9) << "group" << setw(9) << "maxGroup" << setw(9) << "subBreed"
-         << setw(9)
-         << "age" << setw(9)
-         << "alpha" << setw(9) << "beta" << setw(9) << "gamma" << setw(9) << "delta" << setw(9)
-         << "disper" << setw(9) << "immRate" << setw(9)
-         << "help" << setw(9) << "surv" << setw(9) << "survOff" << setw(9)
-         << "skew" << setw(9) << "offpr" << setw(9) << "offsDom" << setw(9) << "offsSub" << setw(9)
-         << "relatH" << setw(9) << "relatB" << endl;
+    spdlog::debug("{:<6} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9}",
+                  "gen", "pop", "deaths", "emig", "float", "group", "maxGroup", "subBreed", "age", "alpha", "beta", "gamma", "delta", "disper", "immRate", "help", "surv", "survOff", "skew", "offpr", "offsDom", "offsSub", "relatH", "relatB");
 }
-
 
 void Statistics::printToConsole(int generation, int deaths, int emigrants) {
     // show values on screen
-    std::cout << fixed << showpoint
-              << setw(6) << generation
-              << setw(9) << population
-              << setw(9) << deaths
-              << setw(9) << emigrants
-              << setw(9) << totalFloaters
-              << setw(9) << setprecision(2) << groupSize.calculateMean()
-              << setw(9) << groupSize.getMaxValue()
-              << setw(9) << numOfSubBreeders.calculateMean()
-              << setw(9) << setprecision(2) << age.calculateMean()
-              << setw(9) << setprecision(4) << alpha.calculateMean()
-              << setw(9) << setprecision(4) << beta.calculateMean()
-              << setw(9) << setprecision(4) << gamma.calculateMean()
-              << setw(9) << setprecision(4) << delta.calculateMean()
-              << setw(9) << setprecision(2) << dispersal.calculateMean()
-              << setw(9) << setprecision(2) << acceptanceRate.calculateMean()
-              << setw(9) << setprecision(2) << help.calculateMean()
-              << setw(9) << setprecision(2) << survival.calculateMean()
-              << setw(9) << setprecision(2) << mk
-              << setw(9) << setprecision(2) << reproductiveShareRate.calculateMean()
-              << setw(9) << setprecision(2) << fecundityGroup.calculateMean()
-              << setw(9) << setprecision(2) << offspringMainBreeder.calculateMean()
-              << setw(9) << setprecision(2) << offspringOfSubordinateBreeders.calculateMean()
-              << setw(9) << setprecision(2) << relatednessHelpers
-              << setw(9) << setprecision(2) << relatednessBreeders
-              << endl;
+    spdlog::debug("{:<6} {:<9} {:<9} {:<9} {:<9} {:<9.2f} {:<9} {:<9.2f} {:<9.2f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f}",
+                  generation, population, deaths, emigrants, totalFloaters, groupSize.calculateMean(), groupSize.getMaxValue(),
+                  numOfSubBreeders.calculateMean(), age.calculateMean(), alpha.calculateMean(), beta.calculateMean(),
+                  gamma.calculateMean(), delta.calculateMean(), dispersal.calculateMean(), acceptanceRate.calculateMean(),
+                  help.calculateMean(), survival.calculateMean(), mk, reproductiveShareRate.calculateMean(),
+                  fecundityGroup.calculateMean(), offspringMainBreeder.calculateMean(), offspringOfSubordinateBreeders.calculateMean(),
+                  relatednessHelpers, relatednessBreeders);
 }
 
 std::string

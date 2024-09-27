@@ -23,18 +23,21 @@
 #include "util/Parameters.h"
 #include "stats/Statistics.h"
 #include "util/FilePrinter.h"
+#include "spdlog/spdlog.h"
 
 void runSimulation(Simulation *simulation, ResultCache **result) {
     *result = simulation->run();
     delete simulation;
 }
+
 /* MAIN PROGRAM */
 int main(int count, char **argv) {
+    // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
+    spdlog::set_level(spdlog::level::debug);
 
-    //TODO will be done at the end
     Parameters *parameters;
     if (count > 1) {
-        std::cout << "reading file " << argv[1] << "\n";
+        spdlog::info("reading file {}", argv[1]);
         parameters = new Parameters(argv[1], 0);
     } else {
         parameters = new Parameters(0);
@@ -44,7 +47,7 @@ int main(int count, char **argv) {
     std::vector<ResultCache *> results(parameters->getMaxNumReplicates());
 
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
-        std::cout << "REPLICA = " << replica << std::endl;
+        spdlog::info("REPLICA = {}", replica);
 
         auto *newParams = parameters->cloneWithIncrementedReplica(replica);
         auto *simulation = new Simulation(newParams);
@@ -52,7 +55,7 @@ int main(int count, char **argv) {
         threads.emplace_back(runSimulation, simulation, &results[replica]);
     }
 
-    for (auto &thread : threads) {
+    for (auto &thread: threads) {
         thread.join();
     }
 
