@@ -262,7 +262,7 @@ Statistics::generateMainResultLine(int generation, int deaths, int newBreederOut
                                    int inheritance) {
     std::ostringstream oss;
     oss << fixed << showpoint
-        << parameters->getReplica()
+        << parameters->getReplica() + 1
         << "\t" << generation
         << "\t" << population
         << "\t" << deaths
