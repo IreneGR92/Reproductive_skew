@@ -32,6 +32,7 @@ Parameters::Parameters(const string &url) {
     this->FLOATERS_SAMPLED_IMMIGRATION = config["FLOATERS_SAMPLED_IMMIGRATION"].as<int>();
     this->MIN_AGE_BECOME_BREEDER = config["MIN_AGE_BECOME_BREEDER"].as<int>();
     this->FIXED_GROUP_SIZE = config["FIXED_GROUP_SIZE"].as<double>();
+    this->REDUCED_RELATEDNESS = config["REDUCED_RELATEDNESS"].as<int>();
     this->m = config["m"].as<double>();
     this->X0 = config["X0"].as<double>();
     this->Xh = config["Xh"].as<double>();
@@ -98,6 +99,7 @@ void Parameters::print(std::ofstream &outputStream) {
                  << "Number_replicates:" << "\t" << this->getMaxNumReplicates() << endl
                  << "Min_age_become_breeder:" << "\t" << this->getMinAgeBecomeBreeder() << endl
                  << "Fixed_group_size:" << "\t" << this->getFixedGroupSize() << endl
+                 << "Reduced_relatedness:" << "\t" << this->getReducedRelatedness() << endl
                  << "ImmigrantsMax:" << "\t" << this->getFloatersSampledImmigration() << endl
                  << "m(Overall_mortality):" << "\t" << this->getM() << endl
                  << "X0(intercept):" << "\t" << this->getX0() << endl
@@ -191,6 +193,10 @@ int Parameters::getMinAgeBecomeBreeder() const {
 
 double Parameters::getFixedGroupSize() const {
     return FIXED_GROUP_SIZE;
+}
+
+int Parameters::getReducedRelatedness() const {
+    return REDUCED_RELATEDNESS;
 }
 
 double Parameters::getM() const {

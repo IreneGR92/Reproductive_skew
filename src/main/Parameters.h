@@ -55,6 +55,7 @@ private:
     int FLOATERS_SAMPLED_IMMIGRATION; ///< Floaters sampled to try to join a group.
     int MIN_AGE_BECOME_BREEDER; ///< Minimum age for individuals to be able to become breeders.
     double FIXED_GROUP_SIZE;       ///< In the implementation of no group augmentation, virtual group size for survival for breeder and helpers.
+    int REDUCED_RELATEDNESS; ///< proportion of philopatric offspring reallocated to reduce within group relatedness in an asexual population.
 
     // Modifiers in survival.
     double m;      ///< Base mortality.
@@ -152,9 +153,11 @@ public:
 
     int getFloatersSampledImmigration() const;
 
+    int getMinAgeBecomeBreeder() const;
+
     double getFixedGroupSize() const;
 
-    int getMinAgeBecomeBreeder() const;
+    int getReducedRelatedness() const;
 
     double getM() const;
 
