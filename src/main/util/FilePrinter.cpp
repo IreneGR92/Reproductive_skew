@@ -61,19 +61,18 @@ void FilePrinter::printHeader(std::ofstream &writer) {
 
            << "Bet-hedging_help?:" << "\t" << parameters->isBetHedgingHelp() << endl
            << "Help_obligatory?:" << "\t" << parameters->isHelpObligatory() << endl
-           << "No_evolution_help?:" << "\t" << parameters->isNoEvolutionHelp() << endl
            << "Predictable_environment?:" << "\t" << parameters->isPredictableEnvironment() << endl
            << "Evolution_help_after_dispersal?:" << "\t" << parameters->isEvolutionHelpAfterDispersal() << endl
            << "No_group_augmentation?:" << "\t" << parameters->isNoGroupAugmentation() << endl
            << "No_effect_relatedness?:" << "\t" << parameters->isNoRelatedness() << endl
            << "No_effect_age_inheritance?:" << "\t" << parameters->isAgeNoInfluenceInheritance() << endl
-           << "Initial_population:" << "\t"
-           << parameters->getMaxColonies() * (parameters->getInitNumHelpers() + 1) << endl
+           << "Initial_population:" << "\t"<< parameters->getMaxColonies() * (parameters->getInitNumHelpers() + 1) << endl
            << "Number_of_colonies:" << "\t" << parameters->getMaxColonies() << endl
            << "Number_generations:" << "\t" << parameters->getNumGenerations() << endl
            << "Number_replicates:" << "\t" << parameters->getMaxNumReplicates() << endl
            << "Min_age_become_breeder:" << "\t" << parameters->getMinAgeBecomeBreeder() << endl
            << "Fixed_group_size:" << "\t" << parameters->getFixedGroupSize() << endl
+           << "Reduced_relatedness:" << "\t" << parameters->getReducedRelatedness() << endl
            << "ImmigrantsMax:" << "\t" << parameters->getFloatersSampledImmigration() << endl
            << "m(Overall_mortality):" << "\t" << parameters->getM() << endl
            << "X0(intercept):" << "\t" << parameters->getX0() << endl
