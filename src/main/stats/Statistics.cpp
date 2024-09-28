@@ -242,13 +242,13 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
 
 void Statistics::printHeadersToConsole() {
     // column headings on screen
-    spdlog::debug("{:<6} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9}",
+    spdlog::debug("{:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9}",
                   "gen", "pop", "deaths", "emig", "float", "group", "maxGroup", "subBreed", "age", "alpha", "beta", "gamma", "delta", "disper", "immRate", "help", "surv", "survOff", "skew", "offpr", "offsDom", "offsSub", "relatH", "relatB");
 }
 
 void Statistics::printToConsole(int generation, int deaths, int emigrants) {
     // show values on screen
-    spdlog::debug("{:<6} {:<9} {:<9} {:<9} {:<9} {:<9.2f} {:<9} {:<9.2f} {:<9.2f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f}",
+    spdlog::debug("{:<9} {:<9} {:<9} {:<9} {:<9} {:<9.2f} {:<9} {:<9.2f} {:<9.2f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f}",
                   generation, population, deaths, emigrants, totalFloaters, groupSize.calculateMean(), groupSize.getMaxValue(),
                   numOfSubBreeders.calculateMean(), age.calculateMean(), alpha.calculateMean(), beta.calculateMean(),
                   gamma.calculateMean(), delta.calculateMean(), dispersal.calculateMean(), acceptanceRate.calculateMean(),
