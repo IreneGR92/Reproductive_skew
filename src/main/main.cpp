@@ -106,6 +106,8 @@ int main(int count, char **argv) {
     filePrinter.writeMainFile(results);
     filePrinter.writeLastGenerationFile(results);
 
+    delete parameters;
+
     return 0;
 }
 
