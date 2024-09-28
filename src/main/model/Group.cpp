@@ -85,7 +85,7 @@ int Group::calculateHelpersToReassign() {
 
         helpersToReassign = round(countHelpersAgeOne() / 3);
 
-    } else if (parameters->getReducedRelatedness() == 2){
+    } else if (parameters->getReducedRelatedness() == 2) {
         double value = static_cast<double>(countHelpersAgeOne()) / 2;
         if (value != floor(value)) { // Check if the value is not an integer
             if (parameters->uniform(*parameters->getGenerator()) < 0.5) {
@@ -96,6 +96,8 @@ int Group::calculateHelpersToReassign() {
         } else {
             helpersToReassign = value;// If the value is an integer, just assign it normally
         }
+    } else {
+        helpersToReassign = 0; // Any other value than 2 or 3 of reduced relatedness will not reassign helpers
     }
     return helpersToReassign;
 }
