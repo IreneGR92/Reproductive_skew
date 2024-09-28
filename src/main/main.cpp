@@ -27,8 +27,42 @@
 #include "spdlog/sinks/basic_file_sink.h"
 
 void runSimulation(Simulation *simulation, ResultCache **result) {
+    // Run the simulation and store the result in the provided ResultCache pointer
     *result = simulation->run();
+    // Clean up the simulation object
     delete simulation;
+}
+
+void runMultithreaded(Parameters &parameters, std::vector<ResultCache *> &results) {
+    spdlog::info("Running multi-threaded mode");
+    std::vector<std::thread> threads;
+    // Create and start a thread for each replica
+    for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
+        // Clone parameters for the current replica
+        auto *newParams = parameters.cloneWithIncrementedReplica(replica);
+        // Create a new simulation instance with the cloned parameters
+        auto *simulation = new Simulation(newParams);
+        // Start the simulation in a new thread
+        threads.emplace_back(runSimulation, simulation, &results[replica]);
+    }
+
+    // Wait for all threads to finish
+    for (auto &thread: threads) {
+        thread.join();
+    }
+}
+
+void runSinglethreaded(Parameters &parameters, std::vector<ResultCache *> &results) {
+    spdlog::info("Running single-threaded mode");
+    // Run each replica sequentially
+    for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
+        // Clone parameters for the current replica
+        auto *newParams = parameters.cloneWithIncrementedReplica(replica);
+        // Create a new simulation instance with the cloned parameters
+        auto *simulation = new Simulation(newParams);
+        // Run the simulation and store the result
+        results.emplace_back(simulation->run());
+    }
 }
 
 /* MAIN PROGRAM */
@@ -52,26 +86,22 @@ int main(int count, char **argv) {
 
     Parameters *parameters;
     if (count > 1) {
+        // Initialize parameters from the provided file
         parameters = new Parameters(argv[1], 0);
     } else {
+        // Initialize parameters with default values
         parameters = new Parameters(0);
     }
-
-    std::vector<std::thread> threads;
     std::vector<ResultCache *> results(parameters->getMaxNumReplicates());
+#ifdef NDEBUG
+    // Run the simulation in multi-threaded mode
+    runMultithreaded(*parameters, results);
+#else
+    // Run the simulation in single-threaded mode
+    runSinglethreaded(*parameters, results);
+#endif
 
-    for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
-
-        auto *newParams = parameters->cloneWithIncrementedReplica(replica);
-        auto *simulation = new Simulation(newParams);
-
-        threads.emplace_back(runSimulation, simulation, &results[replica]);
-    }
-
-    for (auto &thread: threads) {
-        thread.join();
-    }
-
+    // Print the results to files
     FilePrinter filePrinter(parameters);
     filePrinter.writeMainFile(results);
     filePrinter.writeLastGenerationFile(results);

@@ -67,7 +67,6 @@ Parameters::Parameters(const string &url, const int replica) : replica(replica) 
     this->lastGenerationWriter = new std::ofstream("last_generation_" + this->name + ".txt");
 
     this->generator = new std::default_random_engine(SEED + replica);
-    spdlog::info("starting replica {} of {} with SEED {}", replica, name, SEED + replica);
 }
 
 Parameters::~Parameters() {
