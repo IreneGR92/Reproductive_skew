@@ -14,10 +14,10 @@ Parameters::Parameters(const string &url, const int replica) : replica(replica) 
 
     spdlog::info("Loading parameters from file: {}", url);
     YAML::Node config = YAML::LoadFile(url);
+
     this->name = this->getName(url);
     this->BET_HEDGING_HELP = config["BET_HEDGING_HELP"].as<bool>();
     this->HELP_OBLIGATORY = config["HELP_OBLIGATORY"].as<bool>();
-    this->NO_EVOLUTION_HELP = config["NO_EVOLUTION_HELP"].as<bool>();
     this->PREDICTABLE_ENVIRONMENT = config["PREDICTABLE_ENVIRONMENT"].as<bool>();
     this->EVOLUTION_HELP_AFTER_DISPERSAL = config["EVOLUTION_HELP_AFTER_DISPERSAL"].as<bool>();
     this->NO_GROUP_AUGMENTATION = config["NO_GROUP_AUGMENTATION"].as<bool>();
@@ -31,6 +31,7 @@ Parameters::Parameters(const string &url, const int replica) : replica(replica) 
     this->FLOATERS_SAMPLED_IMMIGRATION = config["FLOATERS_SAMPLED_IMMIGRATION"].as<int>();
     this->MIN_AGE_BECOME_BREEDER = config["MIN_AGE_BECOME_BREEDER"].as<int>();
     this->FIXED_GROUP_SIZE = config["FIXED_GROUP_SIZE"].as<double>();
+    this->REDUCED_RELATEDNESS = config["REDUCED_RELATEDNESS"].as<int>();
     this->m = config["m"].as<double>();
     this->X0 = config["X0"].as<double>();
     this->Xh = config["Xh"].as<double>();
@@ -88,10 +89,6 @@ bool Parameters::isHelpObligatory() const {
     return HELP_OBLIGATORY;
 }
 
-bool Parameters::isNoEvolutionHelp() const {
-    return NO_EVOLUTION_HELP;
-}
-
 bool Parameters::isPredictableEnvironment() const {
     return PREDICTABLE_ENVIRONMENT;
 }
@@ -142,6 +139,10 @@ int Parameters::getMinAgeBecomeBreeder() const {
 
 double Parameters::getFixedGroupSize() const {
     return FIXED_GROUP_SIZE;
+}
+
+int Parameters::getReducedRelatedness() const {
+    return REDUCED_RELATEDNESS;
 }
 
 double Parameters::getM() const {

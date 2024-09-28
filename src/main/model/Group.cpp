@@ -78,19 +78,24 @@ int Group::calculateHelpersToReassign() {
     int helpersToReassign;
     if (parameters->isNoRelatedness()) {
         helpersToReassign = countHelpersAgeOne();
-    } else {
-        helpersToReassign = round(countHelpersAgeOne() / 3); //TODO: change to 2?
 
-//        double value = static_cast<double>(countHelpersAgeOne()) / 2;
-//        if (value != floor(value)) { // Check if the value is not an integer
-//            if (parameters->uniform(*parameters->getGenerator()) < 0.5) {
-//                helpersToReassign = floor(value);
-//            } else {
-//                helpersToReassign = ceil(value);
-//            }
-//        } else {
-//            helpersToReassign = value;// If the value is an integer, just assign it normally
-//        }
+    } else if (parameters->getReducedRelatedness() == 3) {
+
+        helpersToReassign = round(countHelpersAgeOne() / 3);
+
+    } else if (parameters->getReducedRelatedness() == 2) {
+        double value = static_cast<double>(countHelpersAgeOne()) / 2;
+        if (value != floor(value)) { // Check if the value is not an integer
+            if (parameters->uniform(*parameters->getGenerator()) < 0.5) {
+                helpersToReassign = floor(value);
+            } else {
+                helpersToReassign = ceil(value);
+            }
+        } else {
+            helpersToReassign = value;// If the value is an integer, just assign it normally
+        }
+    } else {
+        helpersToReassign = 0; // Any other value than 2 or 3 of reduced relatedness will not reassign helpers
     }
     return helpersToReassign;
 }
@@ -438,17 +443,14 @@ void Group::calcFecundity(double mk) {
     if (getBreedersSize() > 0) {
         //Calculate fecundity
         if (mk > 1 && parameters->isBetHedgingHelp()) { //TODO: Benign environment counted as 1 instead of mOff, change?
-            initFecundity = mk + mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                       parameters->getKnb() * subordinateBreeders.size() /
-                                       (1 + subordinateBreeders.size()));
-        } else if (parameters->isHelpObligatory()) {
+            initFecundity = mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
+                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
+        } else if (parameters->isHelpObligatory()){
             initFecundity = mk * parameters->getK0() + mk * (parameters->getKh() * cumHelp / (1 + cumHelp)) *
-                                                       (1 + (parameters->getKnb() * subordinateBreeders.size() /
-                                                             (1 + subordinateBreeders.size())));
+                    (1 + (parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size())));
         } else {
-            initFecundity = mk + mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                       parameters->getKnb() * subordinateBreeders.size() /
-                                       (1 + subordinateBreeders.size()));
+            initFecundity = mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
+                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
         }
 
         if (initFecundity < 0) {

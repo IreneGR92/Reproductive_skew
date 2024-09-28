@@ -49,7 +49,6 @@ private:
     const int SEED = 0; ///< The seed for the random number generator.
     bool BET_HEDGING_HELP;    ///< Apply reaction norm to age for dispersal?
     bool HELP_OBLIGATORY;      ///< Help obligatory for reproduction?
-    bool NO_EVOLUTION_HELP;              ///< Does help evolve?
     bool PREDICTABLE_ENVIRONMENT;         ///< Is the environment (change in mOff) predictable?
     bool EVOLUTION_HELP_AFTER_DISPERSAL; ///< Help evolves only after the evolution of dispersal?
     bool NO_GROUP_AUGMENTATION; ///< No group augmentation in the simulation?
@@ -66,6 +65,7 @@ private:
     int FLOATERS_SAMPLED_IMMIGRATION; ///< Floaters sampled to try to join a group.
     int MIN_AGE_BECOME_BREEDER; ///< Minimum age for individuals to be able to become breeders.
     double FIXED_GROUP_SIZE;       ///< In the implementation of no group augmentation, virtual group size for survival for breeder and helpers.
+    int REDUCED_RELATEDNESS; ///< proportion of philopatric offspring reallocated to reduce within group relatedness in an asexual population.
 
     // Modifiers in survival.
     double m;      ///< Base mortality.
@@ -143,8 +143,6 @@ public:
 
     bool isHelpObligatory() const;
 
-    bool isNoEvolutionHelp() const;
-
     bool isPredictableEnvironment() const;
 
     bool isEvolutionHelpAfterDispersal() const;
@@ -167,9 +165,11 @@ public:
 
     int getFloatersSampledImmigration() const;
 
+    int getMinAgeBecomeBreeder() const;
+
     double getFixedGroupSize() const;
 
-    int getMinAgeBecomeBreeder() const;
+    int getReducedRelatedness() const;
 
     double getM() const;
 

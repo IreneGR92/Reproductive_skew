@@ -5,7 +5,6 @@ NO_RELATEDNESS: false                   # Apply implementation to remove the eff
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
 BET_HEDGING_HELP: false                 # Does help have a negative influence on fecundity when the environment is benign?
 HELP_OBLIGATORY: false                  # Is help obligatory for successful reproduction?
-NO_EVOLUTION_HELP: false                           # Does help evolve?
 PREDICTABLE_ENVIRONMENT: true          # Is the environment (change in mOff) predictable?
 
 MAX_COLONIES: 500     # max number of groups or colonies
@@ -18,6 +17,7 @@ INIT_NUM_HELPERS: 10     # initial number of helpers per group
 FLOATERS_SAMPLED_IMMIGRATION: 3  # floaters sampled to try to join a group
 MIN_AGE_BECOME_BREEDER: 1 # minimum age for individuals to be able to become breeders, 1 is no restriction
 FIXED_GROUP_SIZE: 3		# in implementation "no group augmentation", virtual group size used on survival formula
+REDUCED_RELATEDNESS: 3  # proportion of philopatric offspring reallocated to reduce within group relatedness in an asexual population (ONLY VALUES 2 OR 3)
 
 # Modifiers in overall survival
 m: 0.1    # environmental mortality
@@ -33,7 +33,7 @@ mRate: 0.2   # rate of change in survival of offspring
 mStep: 4   # step size in survival of offspring
 
 #Modifiers in fecundity
-K0: 0    # baseline fecundity when no other factors influence it
+K0: 1    # baseline fecundity when no other factors influence it
 Kh: 2    # benefit of cumHelp in the fecundity
 Knb: 2   # benefit of number of breeders in the group fecundity
 
