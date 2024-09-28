@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <sstream>
 #include "Statistics.h"
 #include "spdlog/spdlog.h"
 
