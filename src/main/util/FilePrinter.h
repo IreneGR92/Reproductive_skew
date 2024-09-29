@@ -15,8 +15,11 @@ private:
 
     static void writeResults(std::ofstream &writer, const std::vector<std::string>& cache);
 
+    std::ofstream *mainWriter; ///< A pointer to the main output stream writer.
+    std::ofstream *lastGenerationWriter; ///< A pointer to the last generation output stream writer.
+
 public:
-    explicit FilePrinter(Parameters *parameters) : parameters(parameters) {}
+    explicit FilePrinter(Parameters *parameters);
 
     void writeMainFile(std::vector<ResultCache *> &results);
 

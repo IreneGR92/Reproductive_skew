@@ -120,8 +120,7 @@ private:
 
     void print(std::ofstream &outputStream); ///< Helper function to print the parameters to an output stream.
 
-    std::ofstream *mainWriter; ///< A pointer to the main output stream writer.
-    std::ofstream *lastGenerationWriter; ///< A pointer to the last generation output stream writer.
+
 
     double idCounter = 0;
     Statistics *results;
@@ -226,10 +225,6 @@ public:
     double getStepDrift() const;
 
     static const int NO_VALUE = -1; ///< A constant representing no value.
-
-    std::ofstream *getMainWriter() const;
-
-    std::ofstream *getLastGenerationWriter() const;
 
     std::default_random_engine *getGenerator() const;
 

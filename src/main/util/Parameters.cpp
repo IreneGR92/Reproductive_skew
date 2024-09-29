@@ -68,15 +68,12 @@ Parameters::Parameters(const string &url, const int replica) : replica(replica) 
     this->driftUniform = uniform_real_distribution<double>(100, 200);
     this->uniform = uniform_real_distribution<double>(0, 1);
 
-    this->mainWriter = new std::ofstream("main_" + this->name + ".txt");
-    this->lastGenerationWriter = new std::ofstream("last_generation_" + this->name + ".txt");
+
 
     this->generator = new std::default_random_engine(SEED + replica);
 }
 
 Parameters::~Parameters() {
-    delete mainWriter;
-    delete lastGenerationWriter;
     delete generator;
 }
 
@@ -269,13 +266,6 @@ std::string Parameters::getName(std::string url) {
     return name;
 }
 
-ofstream *Parameters::getMainWriter() const {
-    return mainWriter;
-}
-
-ofstream *Parameters::getLastGenerationWriter() const {
-    return lastGenerationWriter;
-}
 
 default_random_engine *Parameters::getGenerator() const {
     return generator;
