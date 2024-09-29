@@ -29,12 +29,6 @@ ResultCache *Simulation::run() {
         population.help();
         population.survivalGroup();
 
-        if (generation % 20000 == 0) {
-            // Calculate and log progress
-            spdlog::info("[{}] [REPLICA={}] Progress: {:.2f}%", parameters->getName(), parameters->getReplica(),
-                         calculateProgress(generation));
-        }
-
 
 
         //Calculate stats
@@ -70,19 +64,13 @@ ResultCache *Simulation::run() {
         population.increaseAge();
         population.reproduce(generation);
     }
-    spdlog::info("[{}] [REPLICA={}] completed!", parameters->getName(), parameters->getReplica(),
-                 calculateProgress(generation));
+
     return results;
 }
 
 int Simulation::getGeneration() const {
     return generation;
 }
-
-double Simulation::calculateProgress(double cuurentGeneration) {
-    return cuurentGeneration / parameters->getNumGenerations() * 100;
-}
-
 
 
 

@@ -57,7 +57,9 @@ set(SOURCE_FILES
 )
 
 # Define the App executable and link the yaml-cpp library
-add_executable(App src/main/main.cpp ${SOURCE_FILES})
+add_executable(App src/main/main.cpp ${SOURCE_FILES}
+        src/main/SimulationRunner.cpp
+        src/main/SimulationRunner.h)
 target_link_libraries(App PUBLIC yaml-cpp spdlog::spdlog)
 
 

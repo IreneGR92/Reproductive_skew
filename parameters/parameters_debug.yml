@@ -1,0 +1,2 @@
+# write down the configuration file names that will be run in the simulation if built as debug
+default.yml

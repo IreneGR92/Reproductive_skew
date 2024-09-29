@@ -18,9 +18,6 @@ class Simulation {
     // The current generation number in the simulation.
     int generation = 0;
 
-    // Calculates the progress of the current replica used for logging.
-    double calculateProgress(double generation);
-
 public:
     // Constructor for the Simulation class.
     // @param replica: The replica number for this simulation.

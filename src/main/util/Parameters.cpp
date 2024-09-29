@@ -285,7 +285,6 @@ Parameters *Parameters::cloneWithIncrementedReplica(int newReplica) const {
     auto *deepCopy = new Parameters(*this); // Use copy constructor
     deepCopy->replica = newReplica; // Increment newReplica
     deepCopy->generator = new std::default_random_engine(SEED + newReplica);
-    spdlog::info("starting replica {} of {} with SEED {}", newReplica, name, SEED + newReplica);
     return deepCopy;
 }
 
