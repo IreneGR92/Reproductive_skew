@@ -8,8 +8,8 @@ AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits terri
 PREDICTABLE_ENVIRONMENT: true          # Is the environment (change in mOff) predictable?
 
 MAX_COLONIES: 3     # max number of groups or colonies
-NUM_GENERATIONS: 50
-MAX_NUM_REPLICATES: 2
+NUM_GENERATIONS: 1
+MAX_NUM_REPLICATES: 1
 SKIP: 1   # interval between print-outs
 
 #Fix values

@@ -13,7 +13,7 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
         parameters = new Parameters(0);
     }
     spdlog::debug("Starting: {}", parameters->getName());
-    std::vector<ResultCache *> results(0);
+    std::vector<ResultCache *> results(parameters->getMaxNumReplicates());
 #ifdef NDEBUG
     // Run the simulation in multi-threaded mode
     runMultithreaded(*parameters, results);
