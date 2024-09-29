@@ -12,7 +12,7 @@ Parameters::Parameters(const int replica) : Parameters("../parameters/default.ym
 
 Parameters::Parameters(const string &url, const int replica) : replica(replica) {
 
-    spdlog::info("Loading parameters from file: {}", url);
+    spdlog::debug("Loading parameters from file: {}", url);
     YAML::Node config;
     try {
         config = YAML::LoadFile(url);

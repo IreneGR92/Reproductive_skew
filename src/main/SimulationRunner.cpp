@@ -12,7 +12,7 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
         // Initialize parameters with default values
         parameters = new Parameters(0);
     }
-    spdlog::info("Starting: {}", parameters->getName());
+    spdlog::debug("Starting: {}", parameters->getName());
     std::vector<ResultCache *> results(0);
 #ifdef NDEBUG
     // Run the simulation in multi-threaded mode
@@ -38,7 +38,7 @@ void SimulationRunner::runSimulation(Simulation *simulation, ResultCache **resul
 }
 
 void SimulationRunner::runMultithreaded(Parameters &parameters, std::vector<ResultCache *> &results) {
-    spdlog::info("Running multi-threaded mode");
+    spdlog::debug("Running multi-threaded mode");
     std::vector<std::thread> threads;
     // Create and start a thread for each replica
     for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
@@ -59,7 +59,7 @@ void SimulationRunner::runMultithreaded(Parameters &parameters, std::vector<Resu
 
 void SimulationRunner::runSinglethreaded(Parameters &parameters, std::vector<ResultCache *> &results) {
 
-    spdlog::info("Running single-threaded mode");
+    spdlog::debug("Running single-threaded mode");
     // Run each replica sequentially
     for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
         // Clone parameters for the current replica

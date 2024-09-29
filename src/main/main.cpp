@@ -37,8 +37,10 @@ int main() {
     // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
 #ifdef NDEBUG
     // Release build: log to file with detailed timestamp and log level
-    std::string log_pattern_file = "[%Y-%m-%d %H:%M:%S.%e] [%l] %v";
+
+    std::string log_pattern_file = "[%Y-%m-%d %H:%M] [%l] %v";
     auto file_logger = spdlog::basic_logger_mt("file_logger", "reproductive_skew.log");
+    file_logger->flush_on(spdlog::level::debug);
     spdlog::set_default_logger(file_logger);
     file_logger->set_pattern(log_pattern_file);
     spdlog::set_level(spdlog::level::info); // Release build
@@ -62,18 +64,20 @@ int main() {
     std::vector<std::thread> threads;
 
     // Loop through each parameter file
-    for (const auto &parameterFilename: parameters) {
+    for (size_t i = 0; i < parameters.size(); ++i) {
+        const std::string &parameterFilename = parameters[i];
 
         // Wait if the number of concurrent executions reaches the maximum limit
-        while (MAX_NUMBER_OF_CONCURRENT_EXECUTIONS <= executionCount) {
+        while (executionCount >= MAX_NUMBER_OF_CONCURRENT_EXECUTIONS) {
             std::this_thread::sleep_for(std::chrono::minutes(1));
         }
-
+        spdlog::info("Processing parameter file {}: {} of {}", parameterFilename, i + 1, parameters.size());
         // Create a new thread to run the simulation
         threads.emplace_back([parameterFilename, &executionCount]() {
             SimulationRunner simulationRunner;
             simulationRunner.run(parameterFilename);
             executionCount--; // Decrease the execution count after the thread finishes
+            spdlog::info("Finished {}", parameterFilename);
         });
         executionCount++; // Increase the execution count
     }
@@ -84,6 +88,7 @@ int main() {
     }
     return 0;
 }
+
 
 // Function to load parameter files from a specified path
 static std::vector<std::string> loadParameterFiles() {
