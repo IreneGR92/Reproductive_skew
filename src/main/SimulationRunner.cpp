@@ -19,7 +19,7 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
     runMultithreaded(*parameters, results);
 #else
     // Run the simulation in single-threaded mode
-    runSinglethreaded(*parameters, results);
+    runMultithreaded(*parameters, results);
 #endif
 
     // Print the results to files

@@ -13,8 +13,13 @@ Parameters::Parameters(const int replica) : Parameters("../parameters/default.ym
 Parameters::Parameters(const string &url, const int replica) : replica(replica) {
 
     spdlog::info("Loading parameters from file: {}", url);
-    YAML::Node config = YAML::LoadFile(url);
-
+    YAML::Node config;
+    try {
+        config = YAML::LoadFile(url);
+    } catch (YAML::BadFile &e) {
+        spdlog::error("Error loading parameters from file: {}", url);
+        throw e;
+    }
     this->name = this->getName(url);
     this->BET_HEDGING_HELP = config["BET_HEDGING_HELP"].as<bool>();
     this->HELP_OBLIGATORY = config["HELP_OBLIGATORY"].as<bool>();
