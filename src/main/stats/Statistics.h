@@ -6,6 +6,7 @@
 #include "../Simulation.h"
 #include "StatisticalFormulas.h"
 #include "../model/container/IndividualVector.h"
+#include "../util/MainCacheElement.h"
 
 /**
  * @class Statistics
@@ -73,8 +74,8 @@ public:
      */
     void printToConsole(int generation, int deaths, int emigrants);
 
-    std::string generateMainResultLine(int generation, int deaths, int newBreederOutsider,
-                                       int newBreederInsider, int inheritance);
+    MainCacheElement generateMainCacheElement(int generation, int deaths, int newBreederOutsider,
+                                       int newBreederInsider);
 };
 
 

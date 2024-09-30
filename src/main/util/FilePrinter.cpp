@@ -29,7 +29,45 @@ void FilePrinter::writeMainFile(std::vector<ResultCache *> &results) {
     //print results
     for (auto &result: results) {
         const auto &cache = result->getMainCache();
-        writeResults(*this->mainWriter, cache);
+        for (auto &cacheElement: cache) {
+            std::ostringstream oss;
+            oss << fixed << showpoint
+                    << parameters->getReplica() + 1
+                    << "\t" << cacheElement.generation
+                    << "\t" << cacheElement.population
+                    << "\t" << cacheElement.deaths
+                    << "\t" << cacheElement.totalFloaters
+                    << "\t" << setprecision(4) << cacheElement.groupSize
+                    << "\t" << setprecision(4) << cacheElement.numOfSubBreeders
+                    << "\t" << setprecision(4) << cacheElement.ageHelpers
+                    << "\t" << setprecision(4) << cacheElement.ageFloaters
+                    << "\t" << setprecision(4) << cacheElement.ageDomBreeders
+                    << "\t" << setprecision(4) << cacheElement.ageSubBreeders
+                    << "\t" << setprecision(4) << cacheElement.ageBecomeBreeder
+                    << "\t" << setprecision(4) << cacheElement.alpha
+                    << "\t" << setprecision(4) << cacheElement.beta
+                    << "\t" << setprecision(4) << cacheElement.gamma
+                    << "\t" << setprecision(4) << cacheElement.delta
+                    << "\t" << setprecision(4) << cacheElement.dispersal
+                    << "\t" << setprecision(4) << cacheElement.acceptanceRate
+                    << "\t" << setprecision(4) << cacheElement.help
+                    << "\t" << setprecision(4) << cacheElement.cumulativeHelp
+                    << "\t" << setprecision(4) << cacheElement.survivalHelpers
+                    << "\t" << setprecision(4) << cacheElement.survivalFloaters
+                    << "\t" << setprecision(4) << cacheElement.survivalDomBreeders
+                    << "\t" << setprecision(4) << cacheElement.survivalSubBreeders
+                    << "\t" << setprecision(4) << cacheElement.mk
+                    << "\t" << setprecision(4) << cacheElement.reproductiveShareRate
+                    << "\t" << setprecision(4) << cacheElement.fecundityGroupMean
+                    << "\t" << setprecision(4) << cacheElement.fecundityGroupSD
+                    << "\t" << setprecision(4) << cacheElement.offspringMainBreeder
+                    << "\t" << setprecision(4) << cacheElement.offspringOfSubordinateBreeders
+                    << "\t" << setprecision(4) << cacheElement.relatednessHelpers
+                    << "\t" << setprecision(4) << cacheElement.relatednessBreeders
+                    << "\t" << cacheElement.newBreederOutsider
+                    << "\t" << cacheElement.newBreederInsider;
+            *this->mainWriter << oss.str() << endl;
+        }
     }
 }
 

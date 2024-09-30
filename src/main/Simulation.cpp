@@ -1,4 +1,3 @@
-
 #include "Simulation.h"
 #include "stats/Statistics.h"
 #include "spdlog/spdlog.h"
@@ -6,14 +5,13 @@
 
 
 ResultCache *Simulation::run() {
-
     // Output file
     auto *statistics = new Statistics(parameters);
     auto *results = new ResultCache(parameters);
     statistics->calculateStatistics(population);
     statistics->printHeadersToConsole();
     statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
-//    statistics->writeToCacheMain(replica, generation, population.getDeaths(), newBreederOutsider, newBreederInsider, inheritance);
+    //    statistics->writeToCacheMain(replica, generation, population.getDeaths(), newBreederOutsider, newBreederInsider, inheritance);
 
     delete statistics;
 
@@ -30,7 +28,6 @@ ResultCache *Simulation::run() {
         population.survivalGroup();
 
 
-
         //Calculate stats
         if (generation % parameters->getSkip() == 0) {
             statistics->calculateStatistics(population);
@@ -44,9 +41,9 @@ ResultCache *Simulation::run() {
             }
         }
 
-//        if (replica == 0 && generation == 20000){
-//            std::cout << "HERE" << std::endl; //TODO: Stopper for debugging
-//        }
+        //        if (replica == 0 && generation == 20000){
+        //            std::cout << "HERE" << std::endl; //TODO: Stopper for debugging
+        //        }
 
         population.mortalityGroup();
 
@@ -54,10 +51,9 @@ ResultCache *Simulation::run() {
         if (generation % parameters->getSkip() == 0) {
             statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
             results->writeToCacheMain(
-                    statistics->generateMainResultLine(generation, population.getDeaths(),
-                                                       population.getNewBreederOutsider(),
-                                                       population.getNewBreederInsider(),
-                                                       population.getInheritance()));
+                statistics->generateMainCacheElement(generation, population.getDeaths(),
+                                                     population.getNewBreederOutsider(),
+                                                     population.getNewBreederInsider()));
         }
 
 
@@ -71,12 +67,3 @@ ResultCache *Simulation::run() {
 int Simulation::getGeneration() const {
     return generation;
 }
-
-
-
-
-
-
-
-
-

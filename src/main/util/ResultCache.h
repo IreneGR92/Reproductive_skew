@@ -6,18 +6,18 @@
 #include <string>
 
 #include "LastGenerationCacheElement.h"
+#include "MainCacheElement.h"
 #include "../model/Individual.h"
 #include "../Simulation.h"
 
 class Simulation; // Forward declaration of the Simulation class.
 
 class ResultCache {
-private:
     Parameters *parameters; ///< The parameters of the simulation.
 
     ///< stores the text output before written to file.
     std::vector<LastGenerationCacheElement> lastGenerationCache;
-    std::vector<std::string> mainCache;
+    std::vector<MainCacheElement> mainCache;
 
 public:
     explicit ResultCache(Parameters *parameters) : parameters(parameters) {
@@ -33,9 +33,11 @@ public:
  */
     void writeToCacheIndividual(Individual individual, int generation, int groupID);
 
+    void writeToCacheMain(MainCacheElement element);
+
     const std::vector<LastGenerationCacheElement> &getLastGenerationCache() const;
 
-    const std::vector<std::string> &getMainCache() const;
+    const std::vector<MainCacheElement> &getMainCache() const;
 
     /**
  * @brief Prints the statistics to a file.
@@ -46,7 +48,7 @@ public:
  * @param newBreederInsider The number of new breeders that were helpers.
  * @param inheritance The number of inheritance events.
  */
-    void writeToCacheMain(const std::string &textLine);
+    void writeToCacheMain(int generation, const Population &population, const Statistics &statistics);
 
     /**
      * @brief Prints the statistics of the last generation to a file.

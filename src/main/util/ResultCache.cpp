@@ -1,15 +1,10 @@
 #include "ResultCache.h"
-#include <iostream>
 #include <sstream>
 
 #include "LastGenerationCacheElement.h"
+#include "MainCacheElement.h"
 
 using namespace std;
-
-
-void ResultCache::writeToCacheMain(const string &textLine) {
-    this->mainCache.push_back(textLine);
-}
 
 
 void ResultCache::writeToCacheLastGeneration(Simulation *simulation, const Population &populationObj) {
@@ -38,13 +33,18 @@ void ResultCache::writeToCacheIndividual(Individual individual, int generation, 
     this->lastGenerationCache.push_back(element);
 }
 
+void ResultCache::writeToCacheMain(MainCacheElement element) {
+    this->mainCache.push_back(element);
+}
+
 
 const vector<LastGenerationCacheElement> &ResultCache::getLastGenerationCache() const {
     return lastGenerationCache;
 }
 
-const vector<string> &ResultCache::getMainCache() const {
+const vector<MainCacheElement> &ResultCache::getMainCache() const {
     return mainCache;
 }
 
-#include "ResultCache.h"
+void ResultCache::writeToCacheMain(int generation, const Population &population, const Statistics &statistics) {
+}

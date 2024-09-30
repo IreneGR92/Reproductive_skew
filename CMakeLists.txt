@@ -43,6 +43,7 @@ set(SOURCE_FILES
         src/main/Simulation.cpp
         src/main/Simulation.h
         src/main/util/LastGenerationCacheElement.h
+        src/main/util/MainCacheElement.h
         src/main/util/ResultCache.h
         src/main/util/ResultCache.cpp
         src/main/model/Population.cpp
@@ -55,13 +56,13 @@ set(SOURCE_FILES
         src/main/model/container/IndividualVector.cpp
         src/main/util/FilePrinter.h
         src/main/util/FilePrinter.cpp
+        src/main/SimulationRunner.h
+        src/main/SimulationRunner.cpp
 
 )
 
 # Define the App executable and link the yaml-cpp library
-add_executable(App src/main/main.cpp ${SOURCE_FILES}
-        src/main/SimulationRunner.cpp
-        src/main/SimulationRunner.h)
+add_executable(App src/main/main.cpp ${SOURCE_FILES})
 target_link_libraries(App PUBLIC yaml-cpp spdlog::spdlog)
 
 
