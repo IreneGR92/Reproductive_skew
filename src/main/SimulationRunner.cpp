@@ -60,6 +60,7 @@ void SimulationRunner::runMultithreaded(Parameters &parameters, std::vector<Resu
 
 void SimulationRunner::runSinglethreaded(Parameters &parameters, std::vector<ResultCache *> &results) {
     spdlog::debug("Running single-threaded mode");
+    results.clear();
     // Run each replica sequentially
     for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
         // Clone parameters for the current replica

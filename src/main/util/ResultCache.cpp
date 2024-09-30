@@ -1,8 +1,8 @@
-
-
 #include "ResultCache.h"
 #include <iostream>
 #include <sstream>
+
+#include "LastGenerationCacheElement.h"
 
 using namespace std;
 
@@ -13,7 +13,6 @@ void ResultCache::writeToCacheMain(const string &textLine) {
 
 
 void ResultCache::writeToCacheLastGeneration(Simulation *simulation, const Population &populationObj) {
-
     int groupID = 0;
     int counter = 0;
 
@@ -31,33 +30,16 @@ void ResultCache::writeToCacheLastGeneration(Simulation *simulation, const Popul
     for (auto const &floater: populationObj.getFloaters()) {
         this->writeToCacheIndividual(floater, simulation->getGeneration(), groupID);
     }
-
-
 }
 
 
 void ResultCache::writeToCacheIndividual(Individual individual, int generation, int groupID) {
-    std::ostringstream oss;
-    oss << fixed << showpoint
-        << parameters->getReplica() + 1
-        << "\t" << generation
-        << "\t" << groupID
-        << "\t" << individual.getFishType()
-        << "\t" << setprecision(4) << individual.getAge()
-        << "\t" << setprecision(4) << individual.getAlpha()
-        << "\t" << setprecision(4) << individual.getBeta()
-        << "\t" << setprecision(4) << individual.getGamma()
-        << "\t" << setprecision(4) << individual.getDelta()
-        << "\t" << setprecision(4) << individual.getDrift()
-        << "\t" << setprecision(4) << individual.getDispersal()
-        << "\t" << setprecision(4) << individual.getHelp()
-        << "\t" << setprecision(4) << individual.getSurvival()
-        << "\t" << setprecision(4) << individual.isInherit();
-    this->lastGenerationCache.push_back(oss.str());
+    auto element = LastGenerationCacheElement(groupID, generation, individual);
+    this->lastGenerationCache.push_back(element);
 }
 
 
-const vector<string> &ResultCache::getLastGenerationCache() const {
+const vector<LastGenerationCacheElement> &ResultCache::getLastGenerationCache() const {
     return lastGenerationCache;
 }
 

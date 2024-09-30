@@ -1,10 +1,11 @@
-
 #ifndef REPRODUCTIVE_SKEW_RESULTCACHE_H
 #define REPRODUCTIVE_SKEW_RESULTCACHE_H
 
 
 #include <vector>
 #include <string>
+
+#include "LastGenerationCacheElement.h"
 #include "../model/Individual.h"
 #include "../Simulation.h"
 
@@ -15,10 +16,12 @@ private:
     Parameters *parameters; ///< The parameters of the simulation.
 
     ///< stores the text output before written to file.
-    std::vector<std::string> lastGenerationCache;
+    std::vector<LastGenerationCacheElement> lastGenerationCache;
     std::vector<std::string> mainCache;
+
 public:
-    explicit ResultCache(Parameters *parameters) : parameters(parameters) {};
+    explicit ResultCache(Parameters *parameters) : parameters(parameters) {
+    };
 
 
     /**
@@ -30,7 +33,7 @@ public:
  */
     void writeToCacheIndividual(Individual individual, int generation, int groupID);
 
-    const std::vector<std::string> &getLastGenerationCache() const;
+    const std::vector<LastGenerationCacheElement> &getLastGenerationCache() const;
 
     const std::vector<std::string> &getMainCache() const;
 
@@ -51,8 +54,6 @@ public:
      * @param populationObj The population to print statistics for.
      */
     void writeToCacheLastGeneration(Simulation *simulation, const Population &populationObj);
-
-
 };
 
 

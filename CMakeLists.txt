@@ -42,6 +42,7 @@ set(SOURCE_FILES
         src/main/model/Group.cpp
         src/main/Simulation.cpp
         src/main/Simulation.h
+        src/main/util/LastGenerationCacheElement.h
         src/main/util/ResultCache.h
         src/main/util/ResultCache.cpp
         src/main/model/Population.cpp
@@ -54,6 +55,7 @@ set(SOURCE_FILES
         src/main/model/container/IndividualVector.cpp
         src/main/util/FilePrinter.h
         src/main/util/FilePrinter.cpp
+
 )
 
 # Define the App executable and link the yaml-cpp library
