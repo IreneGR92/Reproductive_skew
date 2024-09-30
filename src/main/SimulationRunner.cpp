@@ -4,7 +4,6 @@
 #include "spdlog/spdlog.h"
 
 void SimulationRunner::run(const std::string &parameterFilePath) {
-
     if (!parameterFilePath.empty()) {
         // Initialize parameters from the provided file
         parameters = new Parameters(parameterFilePath, 0);
@@ -27,6 +26,9 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
     filePrinter.writeMainFile(results);
     filePrinter.writeLastGenerationFile(results);
     spdlog::info("Finished: {}", parameters->getName());
+    // attempt to free memory-> to solve non releasing stack memory after use
+    // --> https://stackoverflow.com/questions/13944886/is-stdvector-memory-freed-upon-a-clear
+    results.shrink_to_fit();
     delete parameters;
 }
 
@@ -54,11 +56,9 @@ void SimulationRunner::runMultithreaded(Parameters &parameters, std::vector<Resu
     for (auto &thread: threads) {
         thread.join();
     }
-
 }
 
 void SimulationRunner::runSinglethreaded(Parameters &parameters, std::vector<ResultCache *> &results) {
-
     spdlog::debug("Running single-threaded mode");
     // Run each replica sequentially
     for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
@@ -69,5 +69,4 @@ void SimulationRunner::runSinglethreaded(Parameters &parameters, std::vector<Res
         // Run the simulation and store the result
         results.emplace_back(simulation->run());
     }
-
 }
