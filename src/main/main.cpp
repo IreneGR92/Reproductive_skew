@@ -71,13 +71,13 @@ int main() {
         while (executionCount >= MAX_NUMBER_OF_CONCURRENT_EXECUTIONS) {
             std::this_thread::sleep_for(std::chrono::minutes(1));
         }
-        spdlog::info("Processing parameter file {}: {} of {}", parameterFilename, i + 1, parameters.size());
+        spdlog::info("start {}: {} of {}", parameterFilename, i + 1, parameters.size());
         // Create a new thread to run the simulation
         threads.emplace_back([parameterFilename, &executionCount]() {
             SimulationRunner simulationRunner;
             simulationRunner.run(parameterFilename);
             executionCount--; // Decrease the execution count after the thread finishes
-            spdlog::info("Finished {}", parameterFilename);
+            spdlog::info("finish {}", parameterFilename);
         });
         executionCount++; // Increase the execution count
     }

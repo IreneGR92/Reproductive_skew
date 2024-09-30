@@ -25,9 +25,9 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
     FilePrinter filePrinter(parameters);
     filePrinter.writeMainFile(results);
     filePrinter.writeLastGenerationFile(results);
-    spdlog::info("Finished: {}", parameters->getName());
     // attempt to free memory-> to solve non releasing stack memory after use
     // --> https://stackoverflow.com/questions/13944886/is-stdvector-memory-freed-upon-a-clear
+    results.clear();
     results.shrink_to_fit();
     delete parameters;
 }
