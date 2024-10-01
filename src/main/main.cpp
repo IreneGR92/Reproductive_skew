@@ -74,10 +74,11 @@ int main() {
         spdlog::info("start {}: {} of {}", parameterFilename, i + 1, parameters.size());
         // Create a new thread to run the simulation
         threads.emplace_back([parameterFilename, &executionCount]() {
-            SimulationRunner simulationRunner;
-            simulationRunner.run(parameterFilename);
+            auto simulationRunner = new SimulationRunner();
+            simulationRunner->run(parameterFilename);
             executionCount--; // Decrease the execution count after the thread finishes
             spdlog::info("finish {}", parameterFilename);
+            delete simulationRunner;
         });
         executionCount++; // Increase the execution count
     }

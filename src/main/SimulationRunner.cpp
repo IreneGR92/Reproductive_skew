@@ -60,6 +60,8 @@ void SimulationRunner::runMultithreaded(Parameters &parameters, std::vector<Resu
     for (auto &thread: threads) {
         thread.join();
     }
+    threads.clear();
+    threads.shrink_to_fit();
 }
 
 void SimulationRunner::runSinglethreaded(Parameters &parameters, std::vector<ResultCache *> &results) {
