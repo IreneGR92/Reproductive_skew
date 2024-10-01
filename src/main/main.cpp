@@ -57,7 +57,7 @@ int main() {
     auto parameters = loadParameterFiles();
 
     // Define the maximum number of concurrent executions
-    const int MAX_NUMBER_OF_CONCURRENT_EXECUTIONS = 4;
+    const int MAX_NUMBER_OF_CONCURRENT_EXECUTIONS = 1;
     int executionCount = 0;
 
     // Vector to hold the threads
@@ -119,7 +119,4 @@ static std::vector<std::string> loadDefaultParameters() {
     std::vector<std::string> parameterFiles;
     parameterFiles.emplace_back("../parameters/default_parameters.txt");
     return parameterFiles;
-
 }
-
-
