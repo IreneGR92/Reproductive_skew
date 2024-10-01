@@ -8,7 +8,7 @@ AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits terri
 PREDICTABLE_ENVIRONMENT: true          # Is the environment (change in mOff) predictable?
 
 MAX_COLONIES: 3     # max number of groups or colonies
-NUM_GENERATIONS: 2000
+NUM_GENERATIONS: 1
 MAX_NUM_REPLICATES: 1
 SKIP: 1   # interval between print-outs
 
@@ -20,7 +20,7 @@ FIXED_GROUP_SIZE: 3		# in implementation "no group augmentation", virtual group 
 REDUCED_RELATEDNESS: 3  # proportion of philopatric offspring reallocated to reduce within group relatedness in an asexual population (ONLY VALUES 2 OR 3)
 
 # Modifiers in overall survival
-m: 0.1    # environmental mortality
+m: 1   # environmental mortality
 X0: 0.6     # base survival (between 0 and 1)
 Xh: 1    # cost of help in survival
 Xn: 3    # benefit of group size in survival

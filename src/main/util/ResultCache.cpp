@@ -34,6 +34,7 @@ void ResultCache::clear() {
 
     this->lastGenerationCache.shrink_to_fit();
     this->mainCache.shrink_to_fit();
+
 }
 
 void ResultCache::writeToCacheIndividual(Individual individual, int generation, int groupID) {

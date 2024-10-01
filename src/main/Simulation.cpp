@@ -1,7 +1,5 @@
 #include "Simulation.h"
 #include "stats/Statistics.h"
-#include "spdlog/spdlog.h"
-#include <vector>
 
 
 ResultCache *Simulation::run() {
