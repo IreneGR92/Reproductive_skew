@@ -2,7 +2,7 @@
 #define REPRODUCTIVE_SKEW_RESULTCACHE_H
 
 
-#include <vector>
+
 #include <string>
 #include <queue>
 
@@ -17,7 +17,7 @@ class ResultCache {
     Parameters *parameters; ///< The parameters of the simulation.
 
     ///< stores the text output before written to file.
-    std::vector<LastGenerationCacheElement> lastGenerationCache;
+    std::queue<LastGenerationCacheElement> lastGenerationCache;
     std::queue<MainCacheElement> mainCache;
 
 public:
@@ -26,7 +26,6 @@ public:
         // lastGenerationCache.reserve();
     };
 
-    void clear();
 
     /**
  * @brief Prints the attributes of an individual to a file.
@@ -39,7 +38,7 @@ public:
 
     void writeToCacheMain(MainCacheElement element);
 
-    const std::vector<LastGenerationCacheElement> &getLastGenerationCache() const;
+    const std::queue<LastGenerationCacheElement> &getLastGenerationCache() const;
 
     const std::queue<MainCacheElement> &getMainCache() const;
 

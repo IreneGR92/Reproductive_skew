@@ -28,9 +28,6 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
     // attempt to free memory-> to solve non releasing stack memory after use
     // --> https://stackoverflow.com/questions/13944886/is-stdvector-memory-freed-upon-a-clear
 
-    for (auto &result: results) {
-        result->clear();
-    }
     results.clear();
     results.shrink_to_fit();
     delete parameters;

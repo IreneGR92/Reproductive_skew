@@ -28,17 +28,9 @@ void ResultCache::writeToCacheLastGeneration(Simulation *simulation, const Popul
 }
 
 
-void ResultCache::clear() {
-    this->lastGenerationCache.clear();
-
-    this->lastGenerationCache.shrink_to_fit();
-
-
-}
-
 void ResultCache::writeToCacheIndividual(Individual individual, int generation, int groupID) {
     auto element = LastGenerationCacheElement(groupID, generation, individual);
-    this->lastGenerationCache.push_back(element);
+    this->lastGenerationCache.push(element);
 }
 
 void ResultCache::writeToCacheMain(MainCacheElement element) {
@@ -46,7 +38,7 @@ void ResultCache::writeToCacheMain(MainCacheElement element) {
 }
 
 
-const vector<LastGenerationCacheElement> &ResultCache::getLastGenerationCache() const {
+const queue<LastGenerationCacheElement> &ResultCache::getLastGenerationCache() const {
     return lastGenerationCache;
 }
 

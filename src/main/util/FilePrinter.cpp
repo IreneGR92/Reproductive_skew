@@ -88,9 +88,10 @@ void FilePrinter::writeLastGenerationFile(std::vector<ResultCache *> &results) {
     //print results
 
     for (auto &result: results) {
-        const auto &cache = result->getLastGenerationCache();
+        auto cache = result->getLastGenerationCache();
 
-        for (auto &cacheElement: cache) {
+        while (!cache.empty()) {
+            auto cacheElement = cache.front();
             std::ostringstream oss;
             oss << fixed << showpoint
                 << parameters->getReplica() + 1
@@ -108,6 +109,7 @@ void FilePrinter::writeLastGenerationFile(std::vector<ResultCache *> &results) {
                 << "\t" << setprecision(4) << cacheElement.individual.getSurvival()
                 << "\t" << setprecision(4) << cacheElement.individual.isInherit();
             *writer << oss.str() << endl;
+            cache.pop();
         }
     }
 }
@@ -158,12 +160,6 @@ void FilePrinter::printHeader(std::ofstream &writer) {
            << "stepGamma:" << "\t" << parameters->getStepGamma() << endl
            << "stepDelta:" << "\t" << parameters->getStepDelta() << endl
            << "stepDrift:" << "\t" << parameters->getStepDrift() << endl << endl;
-}
-
-void FilePrinter::writeResults(ofstream &writer, const std::vector<std::string> &cache) {
-    for (auto &line: cache) {
-        writer << line << endl;
-    }
 }
 
 FilePrinter::FilePrinter(Parameters *parameters) : parameters(parameters) {
