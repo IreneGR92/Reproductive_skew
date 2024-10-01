@@ -2,7 +2,6 @@
 #define REPRODUCTIVE_SKEW_RESULTCACHE_H
 
 
-
 #include <string>
 #include <queue>
 
@@ -14,6 +13,8 @@
 class Simulation; // Forward declaration of the Simulation class.
 
 class ResultCache {
+    const int replica;    ///< The replica number for this simulation.
+
     Parameters *parameters; ///< The parameters of the simulation.
 
     ///< stores the text output before written to file.
@@ -21,9 +22,7 @@ class ResultCache {
     std::queue<MainCacheElement> mainCache;
 
 public:
-    explicit ResultCache(Parameters *parameters) : parameters(parameters) {
-//        mainCache.reserve(parameters->getNumGenerations() / parameters->getSkip());
-        // lastGenerationCache.reserve();
+    explicit ResultCache(Parameters *parameters, int replica) : parameters(parameters), replica(replica) {
     };
 
 
@@ -59,6 +58,8 @@ public:
      * @param populationObj The population to print statistics for.
      */
     void writeToCacheLastGeneration(Simulation *simulation, const Population &populationObj);
+
+    const int getReplica() const;
 };
 
 

@@ -33,7 +33,7 @@ void FilePrinter::writeMainFile(std::vector<ResultCache *> &results) {
             auto cacheElement = cache.front();
             std::ostringstream oss;
             oss << fixed << showpoint
-                << parameters->getReplica() + 1
+                << result->getReplica() + 1
                 << "\t" << cacheElement.generation
                 << "\t" << cacheElement.population
                 << "\t" << cacheElement.deaths
@@ -94,7 +94,7 @@ void FilePrinter::writeLastGenerationFile(std::vector<ResultCache *> &results) {
             auto cacheElement = cache.front();
             std::ostringstream oss;
             oss << fixed << showpoint
-                << parameters->getReplica() + 1
+                << result->getReplica() + 1
                 << "\t" << cacheElement.generation
                 << "\t" << cacheElement.groupID
                 << "\t" << cacheElement.individual.getFishType()

@@ -48,3 +48,7 @@ const queue<MainCacheElement> &ResultCache::getMainCache() const {
 
 void ResultCache::writeToCacheMain(int generation, const Population &population, const Statistics &statistics) {
 }
+
+const int ResultCache::getReplica() const {
+    return replica;
+}

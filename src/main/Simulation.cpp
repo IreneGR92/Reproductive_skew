@@ -5,7 +5,7 @@
 ResultCache *Simulation::run() {
     // Output file
     auto *statistics = new Statistics(parameters);
-    auto *results = new ResultCache(parameters);
+    auto *results = new ResultCache(parameters, parameters->getReplica());
     statistics->calculateStatistics(population);
     statistics->printHeadersToConsole();
     statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
@@ -49,9 +49,9 @@ ResultCache *Simulation::run() {
         if (generation % parameters->getSkip() == 0) {
             statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
             results->writeToCacheMain(
-                statistics->generateMainCacheElement(generation, population.getDeaths(),
-                                                     population.getNewBreederOutsider(),
-                                                     population.getNewBreederInsider()));
+                    statistics->generateMainCacheElement(generation, population.getDeaths(),
+                                                         population.getNewBreederOutsider(),
+                                                         population.getNewBreederInsider()));
         }
 
 
