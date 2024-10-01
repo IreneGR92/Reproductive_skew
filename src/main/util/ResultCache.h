@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <queue>
 
 #include "LastGenerationCacheElement.h"
 #include "MainCacheElement.h"
@@ -17,11 +18,11 @@ class ResultCache {
 
     ///< stores the text output before written to file.
     std::vector<LastGenerationCacheElement> lastGenerationCache;
-    std::vector<MainCacheElement> mainCache;
+    std::queue<MainCacheElement> mainCache;
 
 public:
     explicit ResultCache(Parameters *parameters) : parameters(parameters) {
-        mainCache.reserve(parameters->getNumGenerations() / parameters->getSkip());
+//        mainCache.reserve(parameters->getNumGenerations() / parameters->getSkip());
         // lastGenerationCache.reserve();
     };
 
@@ -40,7 +41,7 @@ public:
 
     const std::vector<LastGenerationCacheElement> &getLastGenerationCache() const;
 
-    const std::vector<MainCacheElement> &getMainCache() const;
+    const std::queue<MainCacheElement> &getMainCache() const;
 
     /**
  * @brief Prints the statistics to a file.

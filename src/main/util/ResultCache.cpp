@@ -30,10 +30,9 @@ void ResultCache::writeToCacheLastGeneration(Simulation *simulation, const Popul
 
 void ResultCache::clear() {
     this->lastGenerationCache.clear();
-    this->mainCache.clear();
 
     this->lastGenerationCache.shrink_to_fit();
-    this->mainCache.shrink_to_fit();
+
 
 }
 
@@ -43,7 +42,7 @@ void ResultCache::writeToCacheIndividual(Individual individual, int generation, 
 }
 
 void ResultCache::writeToCacheMain(MainCacheElement element) {
-    this->mainCache.push_back(element);
+    this->mainCache.push(element);
 }
 
 
@@ -51,7 +50,7 @@ const vector<LastGenerationCacheElement> &ResultCache::getLastGenerationCache() 
     return lastGenerationCache;
 }
 
-const vector<MainCacheElement> &ResultCache::getMainCache() const {
+const queue<MainCacheElement> &ResultCache::getMainCache() const {
     return mainCache;
 }
 
