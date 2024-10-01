@@ -28,6 +28,14 @@ void ResultCache::writeToCacheLastGeneration(Simulation *simulation, const Popul
 }
 
 
+void ResultCache::clear() {
+    this->lastGenerationCache.clear();
+    this->mainCache.clear();
+
+    this->lastGenerationCache.shrink_to_fit();
+    this->mainCache.shrink_to_fit();
+}
+
 void ResultCache::writeToCacheIndividual(Individual individual, int generation, int groupID) {
     auto element = LastGenerationCacheElement(groupID, generation, individual);
     this->lastGenerationCache.push_back(element);

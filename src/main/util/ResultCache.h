@@ -23,7 +23,7 @@ public:
     explicit ResultCache(Parameters *parameters) : parameters(parameters) {
     };
 
-
+    void clear();
     /**
  * @brief Prints the attributes of an individual to a file.
  * @param individual The individual to print.
