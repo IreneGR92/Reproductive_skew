@@ -26,67 +26,62 @@
 #include "SimulationRunner.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
+void setupLogging() {
+#ifdef NDEBUG
+    std::string log_pattern_file = "[%Y-%m-%d %H:%M] [%l] %v";
+    auto file_logger = spdlog::basic_logger_mt("file_logger", "reproductive_skew.log");
+    file_logger->flush_on(spdlog::level::debug);
+    spdlog::set_default_logger(file_logger);
+    file_logger->set_pattern(log_pattern_file);
+    spdlog::set_level(spdlog::level::info);
+#else
+    std::string log_pattern_console = "[%l] %v";
+    auto console_logger = spdlog::stdout_color_mt("console_logger");
+    spdlog::set_default_logger(console_logger);
+    console_logger->set_pattern(log_pattern_console);
+    spdlog::set_level(spdlog::level::debug);
+#endif
+}
+
+
+void runSimulations(const std::vector<std::string> &parameters) {
+    const int MAX_NUMBER_OF_CONCURRENT_EXECUTIONS = 1;
+    int executionCount = 0;
+    std::vector<std::thread> threads;
+
+    for (size_t i = 0; i < parameters.size(); ++i) {
+        const std::string &parameterFilename = parameters[i];
+        while (executionCount >= MAX_NUMBER_OF_CONCURRENT_EXECUTIONS) {
+            std::this_thread::sleep_for(std::chrono::minutes(1));
+        }
+        spdlog::info("start {}: {} of {}", parameterFilename, i + 1, parameters.size());
+        threads.emplace_back([parameterFilename, &executionCount]() {
+            auto simulationRunner = std::make_unique<SimulationRunner>();
+            simulationRunner->run(parameterFilename);
+            executionCount--;
+            spdlog::info("finish {}", parameterFilename);
+        });
+        executionCount++;
+    }
+
+    for (auto &thread: threads) {
+        thread.join();
+    }
+}
 
 static std::vector<std::string> loadParameterFiles();
 
 
 /* MAIN PROGRAM */
 int main() {
-    // Define the log pattern
-
     // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
-#ifdef NDEBUG
-    // Release build: log to file with detailed timestamp and log level
-
-    std::string log_pattern_file = "[%Y-%m-%d %H:%M] [%l] %v";
-    auto file_logger = spdlog::basic_logger_mt("file_logger", "reproductive_skew.log");
-    file_logger->flush_on(spdlog::level::debug);
-    spdlog::set_default_logger(file_logger);
-    file_logger->set_pattern(log_pattern_file);
-    spdlog::set_level(spdlog::level::info); // Release build
-#else
-    // Debug build: log to console with log level and message
-    std::string log_pattern_console = "[%l] %v";
-    auto console_logger = spdlog::stdout_color_mt("console_logger");
-    spdlog::set_default_logger(console_logger);
-    console_logger->set_pattern(log_pattern_console);
-    spdlog::set_level(spdlog::level::debug); // Debug build
-#endif
+    setupLogging();
 
     // Load parameter files
     auto parameters = loadParameterFiles();
 
-    // Define the maximum number of concurrent executions
-    const int MAX_NUMBER_OF_CONCURRENT_EXECUTIONS = 1;
-    int executionCount = 0;
-
-    // Vector to hold the threads
-    std::vector<std::thread> threads;
-
-    // Loop through each parameter file
-    for (size_t i = 0; i < parameters.size(); ++i) {
-        const std::string &parameterFilename = parameters[i];
-
-        // Wait if the number of concurrent executions reaches the maximum limit
-        while (executionCount >= MAX_NUMBER_OF_CONCURRENT_EXECUTIONS) {
-            std::this_thread::sleep_for(std::chrono::minutes(1));
-        }
-        spdlog::info("start {}: {} of {}", parameterFilename, i + 1, parameters.size());
-        // Create a new thread to run the simulation
-        threads.emplace_back([parameterFilename, &executionCount]() {
-            auto simulationRunner = new SimulationRunner();
-            simulationRunner->run(parameterFilename);
-            executionCount--; // Decrease the execution count after the thread finishes
-            spdlog::info("finish {}", parameterFilename);
-            delete simulationRunner;
-        });
-        executionCount++; // Increase the execution count
-    }
-
-    // Wait for all threads to finish
-    for (auto &thread: threads) {
-        thread.join();
-    }
+    // Run the simulations
+    runSimulations(parameters);
     return 0;
 }
 
