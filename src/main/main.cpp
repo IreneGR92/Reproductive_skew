@@ -26,6 +26,52 @@
 #include "SimulationRunner.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
+
+static std::vector<std::string> loadParameterFiles();
+
+void runSimulations(const std::vector<std::string> &parameters);
+
+void setupLogging();
+
+/* MAIN PROGRAM */
+int main() {
+    // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
+    setupLogging();
+
+    // Load parameter files
+    auto parameters = loadParameterFiles();
+
+    // Run the simulations
+    runSimulations(parameters);
+    return 0;
+}
+
+
+// Function to load parameter files from a specified path
+static std::vector<std::string> loadParameterFiles() {
+#ifdef NDEBUG
+    std::string filePath = "../parameters/parameters.yml";
+#else
+    std::string filePath = "../parameters/parameters_debug.yml";
+#endif
+    std::vector<std::string> parameterFiles;
+    std::ifstream file(filePath);
+    std::string line;
+
+    // Read each line from the file and add to the parameter files vector
+    if (file.is_open()) {
+        while (std::getline(file, line)) {
+            if (line.empty()) continue; //ignore empty lines
+            if (line[0] == '#') continue; //ignore comments
+            parameterFiles.push_back("../parameters/" + line);
+        }
+        file.close();
+    } else {
+        spdlog::error("Unable to open file: {} ", filePath);
+    }
+    return parameterFiles;
+}
+
 void setupLogging() {
 #ifdef NDEBUG
     std::string log_pattern_file = "[%Y-%m-%d %H:%M] [%l] %v";
@@ -67,52 +113,4 @@ void runSimulations(const std::vector<std::string> &parameters) {
     for (auto &thread: threads) {
         thread.join();
     }
-}
-
-static std::vector<std::string> loadParameterFiles();
-
-
-/* MAIN PROGRAM */
-int main() {
-    // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
-    setupLogging();
-
-    // Load parameter files
-    auto parameters = loadParameterFiles();
-
-    // Run the simulations
-    runSimulations(parameters);
-    return 0;
-}
-
-
-// Function to load parameter files from a specified path
-static std::vector<std::string> loadParameterFiles() {
-#ifdef NDEBUG
-    std::string filePath = "../parameters/parameters.yml";
-#else
-    std::string filePath = "../parameters/parameters_debug.yml";
-#endif
-    std::vector<std::string> parameterFiles;
-    std::ifstream file(filePath);
-    std::string line;
-
-    // Read each line from the file and add to the parameter files vector
-    if (file.is_open()) {
-        while (std::getline(file, line)) {
-            if (line.empty()) continue; //ignore empty lines
-            if (line[0] == '#') continue; //ignore comments
-            parameterFiles.push_back("../parameters/" + line);
-        }
-        file.close();
-    } else {
-        spdlog::error("Unable to open file: {} ", filePath);
-    }
-    return parameterFiles;
-}
-
-static std::vector<std::string> loadDefaultParameters() {
-    std::vector<std::string> parameterFiles;
-    parameterFiles.emplace_back("../parameters/default_parameters.txt");
-    return parameterFiles;
 }
