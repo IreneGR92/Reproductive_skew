@@ -1,9 +1,4 @@
-#include <iostream>
-#include <cassert>
-#include <sstream>
 #include "Statistics.h"
-
-#include "../util/MainCacheElement.h"
 #include "spdlog/spdlog.h"
 
 
@@ -240,60 +235,61 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
 void Statistics::printHeadersToConsole() {
     // column headings on screen
     spdlog::debug(
-        "{:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9}",
-        "gen", "pop", "deaths", "emig", "float", "group", "maxGroup", "subBreed", "age", "alpha", "beta", "gamma",
-        "delta", "disper", "immRate", "help", "surv", "survOff", "skew", "offpr", "offsDom", "offsSub", "relatH",
-        "relatB");
+            "{:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9}",
+            "gen", "pop", "deaths", "emig", "float", "group", "maxGroup", "subBreed", "age", "alpha", "beta", "gamma",
+            "delta", "disper", "immRate", "help", "surv", "survOff", "skew", "offpr", "offsDom", "offsSub", "relatH",
+            "relatB");
 }
 
 void Statistics::printToConsole(int generation, int deaths, int emigrants) {
     // show values on screen
     spdlog::debug(
-        "{:<9} {:<9} {:<9} {:<9} {:<9} {:<9.2f} {:<9} {:<9.2f} {:<9.2f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f}",
-        generation, population, deaths, emigrants, totalFloaters, groupSize.calculateMean(), groupSize.getMaxValue(),
-        numOfSubBreeders.calculateMean(), age.calculateMean(), alpha.calculateMean(), beta.calculateMean(),
-        gamma.calculateMean(), delta.calculateMean(), dispersal.calculateMean(), acceptanceRate.calculateMean(),
-        help.calculateMean(), survival.calculateMean(), mk, reproductiveShareRate.calculateMean(),
-        fecundityGroup.calculateMean(), offspringMainBreeder.calculateMean(),
-        offspringOfSubordinateBreeders.calculateMean(),
-        relatednessHelpers, relatednessBreeders);
+            "{:<9} {:<9} {:<9} {:<9} {:<9} {:<9.2f} {:<9} {:<9.2f} {:<9.2f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f}",
+            generation, population, deaths, emigrants, totalFloaters, groupSize.calculateMean(),
+            groupSize.getMaxValue(),
+            numOfSubBreeders.calculateMean(), age.calculateMean(), alpha.calculateMean(), beta.calculateMean(),
+            gamma.calculateMean(), delta.calculateMean(), dispersal.calculateMean(), acceptanceRate.calculateMean(),
+            help.calculateMean(), survival.calculateMean(), mk, reproductiveShareRate.calculateMean(),
+            fecundityGroup.calculateMean(), offspringMainBreeder.calculateMean(),
+            offspringOfSubordinateBreeders.calculateMean(),
+            relatednessHelpers, relatednessBreeders);
 }
 
 MainCacheElement Statistics::generateMainCacheElement(int generation, int deaths, int newBreederOutsider,
                                                       int newBreederInsider) {
     return {
-        generation,
-        population,
-        deaths,
-        totalFloaters,
-        groupSize.calculateMean(),
-        numOfSubBreeders.calculateMean(),
-        ageHelpers.calculateMean(),
-        ageFloaters.calculateMean(),
-        ageDomBreeders.calculateMean(),
-        ageSubBreeders.calculateMean(),
-        ageBecomeBreeder.calculateMean(),
-        alpha.calculateMean(),
-        beta.calculateMean(),
-        gamma.calculateMean(),
-        delta.calculateMean(),
-        dispersal.calculateMean(),
-        acceptanceRate.calculateMean(),
-        help.calculateMean(),
-        cumulativeHelp.calculateMean(),
-        survivalHelpers.calculateMean(),
-        survivalFloaters.calculateMean(),
-        survivalDomBreeders.calculateMean(),
-        survivalSubBreeders.calculateMean(),
-        mk,
-        reproductiveShareRate.calculateMean(),
-        fecundityGroup.calculateMean(),
-        fecundityGroup.calculateSD(),
-        offspringMainBreeder.calculateMean(),
-        offspringOfSubordinateBreeders.calculateMean(),
-        relatednessHelpers,
-        relatednessBreeders,
-        newBreederOutsider,
-        newBreederInsider
+            generation,
+            population,
+            deaths,
+            totalFloaters,
+            groupSize.calculateMean(),
+            numOfSubBreeders.calculateMean(),
+            ageHelpers.calculateMean(),
+            ageFloaters.calculateMean(),
+            ageDomBreeders.calculateMean(),
+            ageSubBreeders.calculateMean(),
+            ageBecomeBreeder.calculateMean(),
+            alpha.calculateMean(),
+            beta.calculateMean(),
+            gamma.calculateMean(),
+            delta.calculateMean(),
+            dispersal.calculateMean(),
+            acceptanceRate.calculateMean(),
+            help.calculateMean(),
+            cumulativeHelp.calculateMean(),
+            survivalHelpers.calculateMean(),
+            survivalFloaters.calculateMean(),
+            survivalDomBreeders.calculateMean(),
+            survivalSubBreeders.calculateMean(),
+            mk,
+            reproductiveShareRate.calculateMean(),
+            fecundityGroup.calculateMean(),
+            fecundityGroup.calculateSD(),
+            offspringMainBreeder.calculateMean(),
+            offspringOfSubordinateBreeders.calculateMean(),
+            relatednessHelpers,
+            relatednessBreeders,
+            newBreederOutsider,
+            newBreederInsider
     };
 }

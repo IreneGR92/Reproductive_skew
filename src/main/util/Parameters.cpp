@@ -69,7 +69,6 @@ Parameters::Parameters(const string &url, const int replica) : replica(replica) 
     this->uniform = uniform_real_distribution<double>(0, 1);
 
 
-
     this->generator = new std::default_random_engine(SEED + replica);
 }
 
@@ -276,8 +275,8 @@ int Parameters::getReplica() const {
     return replica;
 }
 
-Parameters *Parameters::cloneWithIncrementedReplica(int newReplica) const {
-    auto *deepCopy = new Parameters(*this); // Use copy constructor
+shared_ptr<Parameters> Parameters::cloneWithIncrementedReplica(int newReplica) {
+    auto deepCopy = std::make_shared<Parameters>(*this); // Use copy constructor
     deepCopy->replica = newReplica; // Increment newReplica
     deepCopy->generator = new std::default_random_engine(SEED + newReplica);
     return deepCopy;

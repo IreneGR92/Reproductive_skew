@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <random>
+#include <memory>
 
 
 class Statistics;   // Forward declaration
@@ -38,7 +39,7 @@ public:
     /**
      * makes a deep copy of Parameters while incrementing newReplica by 1 + initializes a new rng
      */
-    Parameters *cloneWithIncrementedReplica(int newReplica) const;
+    std::shared_ptr<Parameters> cloneWithIncrementedReplica(int newReplica);
 
     int getReplica() const;
 

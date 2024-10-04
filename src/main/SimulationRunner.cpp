@@ -6,10 +6,10 @@
 void SimulationRunner::run(const std::string &parameterFilePath) {
     if (!parameterFilePath.empty()) {
         // Initialize parameters from the provided file
-        parameters = new Parameters(parameterFilePath, 0);
+        parameters = std::make_shared<Parameters>(parameterFilePath, 0);
     } else {
         // Initialize parameters with default values
-        parameters = new Parameters(0);
+        parameters = std::make_shared<Parameters>(0);
     }
     spdlog::debug("Starting: {}", parameters->getName());
     std::vector<ResultCache *> results(parameters->getMaxNumReplicates());
@@ -30,7 +30,7 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
 
     results.clear();
     results.shrink_to_fit();
-    delete parameters;
+
 }
 
 void SimulationRunner::runSimulation(Simulation *simulation, ResultCache **result) {
@@ -46,7 +46,7 @@ void SimulationRunner::runMultithreaded(Parameters &parameters, std::vector<Resu
     // Create and start a thread for each replica
     for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
         // Clone parameters for the current replica
-        auto *newParams = parameters.cloneWithIncrementedReplica(replica);
+        auto newParams = parameters.cloneWithIncrementedReplica(replica);
         // Create a new simulation instance with the cloned parameters
         auto *simulation = new Simulation(newParams);
         // Start the simulation in a new thread
@@ -67,7 +67,7 @@ void SimulationRunner::runSinglethreaded(Parameters &parameters, std::vector<Res
     // Run each replica sequentially
     for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
         // Clone parameters for the current replica
-        auto *newParams = parameters.cloneWithIncrementedReplica(replica);
+        auto newParams = parameters.cloneWithIncrementedReplica(replica);
         // Create a new simulation instance with the cloned parameters
         auto *simulation = new Simulation(newParams);
         // Run the simulation and store the result

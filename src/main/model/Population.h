@@ -1,10 +1,10 @@
 #ifndef GROUP_AUGMENTATION_DATAMODEL_H
 #define GROUP_AUGMENTATION_DATAMODEL_H
 
+#include <memory>
 #include "container/IndividualVector.h"
 #include "Individual.h"
 #include "Group.h"
-
 
 
 /**
@@ -16,8 +16,7 @@
  */
 class Population {
 
-private:
-    Parameters *parameters;
+    std::shared_ptr<Parameters> parameters;
 
     std::vector<Group> groups; ///< A vector of Group objects.
 
@@ -42,7 +41,7 @@ private:
 
 
 public:
-    explicit Population(Parameters *parameters);
+    explicit Population(std::shared_ptr<Parameters> parameters);
 
     void reset();
 

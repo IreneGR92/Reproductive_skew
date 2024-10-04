@@ -4,7 +4,6 @@
 #include <cmath>
 #include <numeric>
 #include <algorithm>
-#include <functional>
 #include <assert.h>
 
 

@@ -15,14 +15,15 @@ class Simulation; // Forward declaration of the Simulation class.
 class ResultCache {
     const int replica;    ///< The replica number for this simulation.
 
-    Parameters *parameters; ///< The parameters of the simulation.
+    std::shared_ptr<Parameters> parameters; ///< The parameters of the simulation.
 
     ///< stores the text output before written to file.
     std::queue<LastGenerationCacheElement> lastGenerationCache;
     std::queue<MainCacheElement> mainCache;
 
 public:
-    explicit ResultCache(Parameters *parameters, int replica) : parameters(parameters), replica(replica) {
+    explicit ResultCache(std::shared_ptr<Parameters> parameters, int replica) : parameters(parameters),
+                                                                                replica(replica) {
     };
 
 

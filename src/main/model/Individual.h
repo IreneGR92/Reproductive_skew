@@ -2,6 +2,7 @@
 #define GROUP_AUGMENTATION_INDIVIDUAL_H
 
 #include <unordered_map>
+#include <memory>
 #include "FishType.h"
 #include "../util/Parameters.h"
 #include "Attribute.h"
@@ -16,7 +17,7 @@
 class Individual {
 
 private:
-    Parameters *parameters;
+    std::shared_ptr<Parameters> parameters;
     double id; ///< The unique identifier of the individual.
     double alpha; ///< Genetic parameter alpha.
     double beta; ///< Genetic parameter beta.
@@ -43,7 +44,7 @@ private:
 
 public:
 
-    Individual(FishType fishType, Parameters *parameters);
+    Individual(FishType fishType, std::shared_ptr<Parameters> parameters);
 
     Individual(Individual &individual, FishType fishType, int &generation);
 

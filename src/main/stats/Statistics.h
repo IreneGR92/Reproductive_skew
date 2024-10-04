@@ -19,7 +19,7 @@ class Statistics {
 
 
 private:
-    Parameters *parameters; ///< The parameters of the simulation.
+    std::shared_ptr<Parameters> parameters; ///< The parameters of the simulation.
 
 
     // Population parameters and Statistics
@@ -43,7 +43,7 @@ public:
     /**
      * @brief Default constructor for the Statistics class.
      */
-    explicit Statistics(Parameters *parameters) : parameters(parameters) {};
+    explicit Statistics(std::shared_ptr<Parameters> parameters) : parameters(parameters) {};
 
     /**
      * @brief Calculates various statistics for the population.
@@ -75,7 +75,7 @@ public:
     void printToConsole(int generation, int deaths, int emigrants);
 
     MainCacheElement generateMainCacheElement(int generation, int deaths, int newBreederOutsider,
-                                       int newBreederInsider);
+                                              int newBreederInsider);
 };
 
 

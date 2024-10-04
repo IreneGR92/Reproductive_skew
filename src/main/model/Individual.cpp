@@ -31,7 +31,7 @@ Individual::Individual(Individual &individual, FishType fishType, int &generatio
 }
 
 //Constructor for initial creation
-Individual::Individual(FishType fishType, Parameters *parameters) : parameters(parameters) {
+Individual::Individual(FishType fishType, std::shared_ptr<Parameters> parameters) : parameters(parameters) {
 
 
     this->alpha = parameters->getInitAlpha();

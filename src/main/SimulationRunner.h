@@ -2,12 +2,12 @@
 #define REPRODUCTIVE_SKEW_SIMULATIONRUNNER_H
 
 
+#include <memory>
 #include "util/Parameters.h"
 #include "util/ResultCache.h"
 
 class SimulationRunner {
-private:
-    Parameters *parameters; // Pointer to the Parameters object
+    std::shared_ptr<Parameters> parameters; // Pointer to the Parameters object
 
     // Static method to run a single simulation and store the result
     static void runSimulation(Simulation *simulation, ResultCache **result);

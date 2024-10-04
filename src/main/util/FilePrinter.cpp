@@ -162,7 +162,7 @@ void FilePrinter::printHeader(std::ofstream &writer) {
            << "stepDrift:" << "\t" << parameters->getStepDrift() << endl << endl;
 }
 
-FilePrinter::FilePrinter(Parameters *parameters) : parameters(parameters) {
+FilePrinter::FilePrinter(std::shared_ptr<Parameters> parameters) : parameters(parameters) {
     // Create the output files
     this->mainWriter = new std::ofstream("main_" + parameters->getName() + ".txt");
     this->lastGenerationWriter = new std::ofstream("last_generation_" + parameters->getName() + ".txt");
