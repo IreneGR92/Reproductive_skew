@@ -33,11 +33,10 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
 
 }
 
-void SimulationRunner::runSimulation(Simulation *simulation, ResultCache **result) {
+void SimulationRunner::runSimulation(std::unique_ptr<Simulation> simulation, ResultCache **result) {
     // Run the simulation and store the result in the provided ResultCache pointer
     *result = simulation->run();
     // Clean up the simulation object
-    delete simulation;
 }
 
 void SimulationRunner::runMultithreaded(std::vector<ResultCache *> &results) {
@@ -48,9 +47,11 @@ void SimulationRunner::runMultithreaded(std::vector<ResultCache *> &results) {
         // Clone parameters for the current replica
         auto newParams = parameters->cloneWithIncrementedReplica(replica);
         // Create a new simulation instance with the cloned parameters
-        auto *simulation = new Simulation(newParams);
+        auto simulation = std::make_unique<Simulation>(newParams);
         // Start the simulation in a new thread
-        threads.emplace_back(runSimulation, simulation, &results[replica]);
+        threads.emplace_back([this, simulation = std::move(simulation), &results, replica]() mutable {
+            runSimulation(std::move(simulation), &results[replica]);
+        });
     }
 
     // Wait for all threads to finish
@@ -69,7 +70,7 @@ void SimulationRunner::runSinglethreaded(std::vector<ResultCache *> &results) {
         // Clone parameters for the current replica
         auto newParams = parameters->cloneWithIncrementedReplica(replica);
         // Create a new simulation instance with the cloned parameters
-        auto *simulation = new Simulation(newParams);
+        auto simulation = std::make_unique<Simulation>(newParams);
         // Run the simulation and store the result
         results.emplace_back(simulation->run());
     }
