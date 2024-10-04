@@ -15,10 +15,10 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
     std::vector<ResultCache *> results(parameters->getMaxNumReplicates());
 #ifdef NDEBUG
     // Run the simulation in multi-threaded mode
-    runMultithreaded(*parameters, results);
+    runMultithreaded(results);
 #else
     // Run the simulation in single-threaded mode
-    runSinglethreaded(*parameters, results);
+    runSinglethreaded(results);
 #endif
 
     // Print the results to files
@@ -40,13 +40,13 @@ void SimulationRunner::runSimulation(Simulation *simulation, ResultCache **resul
     delete simulation;
 }
 
-void SimulationRunner::runMultithreaded(Parameters &parameters, std::vector<ResultCache *> &results) {
+void SimulationRunner::runMultithreaded(std::vector<ResultCache *> &results) {
     spdlog::debug("Running multi-threaded mode");
     std::vector<std::thread> threads;
     // Create and start a thread for each replica
-    for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
+    for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
         // Clone parameters for the current replica
-        auto newParams = parameters.cloneWithIncrementedReplica(replica);
+        auto newParams = parameters->cloneWithIncrementedReplica(replica);
         // Create a new simulation instance with the cloned parameters
         auto *simulation = new Simulation(newParams);
         // Start the simulation in a new thread
@@ -61,13 +61,13 @@ void SimulationRunner::runMultithreaded(Parameters &parameters, std::vector<Resu
     threads.shrink_to_fit();
 }
 
-void SimulationRunner::runSinglethreaded(Parameters &parameters, std::vector<ResultCache *> &results) {
+void SimulationRunner::runSinglethreaded(std::vector<ResultCache *> &results) {
     spdlog::debug("Running single-threaded mode");
     results.clear();
     // Run each replica sequentially
-    for (int replica = 0; replica < parameters.getMaxNumReplicates(); replica++) {
+    for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
         // Clone parameters for the current replica
-        auto newParams = parameters.cloneWithIncrementedReplica(replica);
+        auto newParams = parameters->cloneWithIncrementedReplica(replica);
         // Create a new simulation instance with the cloned parameters
         auto *simulation = new Simulation(newParams);
         // Run the simulation and store the result

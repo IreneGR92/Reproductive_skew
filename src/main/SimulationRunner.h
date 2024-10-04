@@ -13,10 +13,10 @@ class SimulationRunner {
     static void runSimulation(Simulation *simulation, ResultCache **result);
 
     // Method to run simulations in a multi-threaded mode
-    void runMultithreaded(Parameters &parameters, std::vector<ResultCache *> &results);
+    void runMultithreaded(std::vector<ResultCache *> &results);
 
     // Method to run simulations in a single-threaded mode
-    void runSinglethreaded(Parameters &parameters, std::vector<ResultCache *> &results);
+    void runSinglethreaded(std::vector<ResultCache *> &results);
 
 public:
     // Method to initialize and run the simulation with the given parameter file path
