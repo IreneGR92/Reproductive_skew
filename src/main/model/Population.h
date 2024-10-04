@@ -41,7 +41,7 @@ class Population {
 
 
 public:
-    explicit Population(std::shared_ptr<Parameters> parameters);
+    explicit Population(const std::shared_ptr<Parameters>& parameters);
 
     void reset();
 

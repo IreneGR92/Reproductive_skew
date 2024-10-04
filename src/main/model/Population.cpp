@@ -25,7 +25,7 @@ void Population::reset() {
     this->emigrants = 0;
 }
 
-Population::Population(std::shared_ptr<Parameters> parameters) : parameters(parameters) {
+Population::Population(const std::shared_ptr<Parameters>& parameters) : parameters(parameters) {
     for (int i = 0; i < parameters->getMaxColonies(); i++) {
         Group group(parameters);
         this->groups.emplace_back(group);

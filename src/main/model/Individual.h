@@ -44,7 +44,7 @@ private:
 
 public:
 
-    Individual(FishType fishType, std::shared_ptr<Parameters> parameters);
+    Individual(FishType fishType, const std::shared_ptr<Parameters>& parameters);
 
     Individual(Individual &individual, FishType fishType, int &generation);
 
