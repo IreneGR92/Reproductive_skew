@@ -10,13 +10,13 @@ class SimulationRunner {
     std::shared_ptr<Parameters> parameters; // Pointer to the Parameters object
 
     // Static method to run a single simulation and store the result
-    static void runSimulation(std::unique_ptr<Simulation> simulation, ResultCache **result);
+    static void runSimulation(std::unique_ptr<Simulation> simulation, std::unique_ptr<ResultCache> *result);
 
     // Method to run simulations in a multi-threaded mode
-    void runMultithreaded(std::vector<ResultCache *> &results);
+    void runMultithreaded(std::vector<std::unique_ptr<ResultCache> > &results);
 
     // Method to run simulations in a single-threaded mode
-    void runSinglethreaded(std::vector<ResultCache *> &results);
+    void runSinglethreaded(std::vector<std::unique_ptr<ResultCache> > &results);
 
 public:
     // Method to initialize and run the simulation with the given parameter file path

@@ -4,7 +4,7 @@
 #include <cmath>
 #include <numeric>
 #include <algorithm>
-#include <assert.h>
+#include <cassert>
 
 
 double StatisticalFormulas::calculateMean() {

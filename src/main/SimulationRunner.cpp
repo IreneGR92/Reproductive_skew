@@ -12,7 +12,7 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
         parameters = std::make_shared<Parameters>(0);
     }
     spdlog::debug("Starting: {}", parameters->getName());
-    std::vector<ResultCache *> results(parameters->getMaxNumReplicates());
+    std::vector<std::unique_ptr<ResultCache>> results(parameters->getMaxNumReplicates());
 #ifdef NDEBUG
     // Run the simulation in multi-threaded mode
     runMultithreaded(results);
@@ -30,16 +30,15 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
 
     results.clear();
     results.shrink_to_fit();
-
 }
 
-void SimulationRunner::runSimulation(std::unique_ptr<Simulation> simulation, ResultCache **result) {
+void SimulationRunner::runSimulation(std::unique_ptr<Simulation> simulation, std::unique_ptr<ResultCache> *result) {
     // Run the simulation and store the result in the provided ResultCache pointer
     *result = simulation->run();
     // Clean up the simulation object
 }
 
-void SimulationRunner::runMultithreaded(std::vector<ResultCache *> &results) {
+void SimulationRunner::runMultithreaded(std::vector<std::unique_ptr<ResultCache> > &results) {
     spdlog::debug("Running multi-threaded mode");
     std::vector<std::thread> threads;
     // Create and start a thread for each replica
@@ -62,7 +61,7 @@ void SimulationRunner::runMultithreaded(std::vector<ResultCache *> &results) {
     threads.shrink_to_fit();
 }
 
-void SimulationRunner::runSinglethreaded(std::vector<ResultCache *> &results) {
+void SimulationRunner::runSinglethreaded(std::vector<std::unique_ptr<ResultCache>> &results) {
     spdlog::debug("Running single-threaded mode");
     results.clear();
     // Run each replica sequentially

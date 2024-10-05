@@ -1,4 +1,3 @@
-
 #ifndef REPRODUCTIVE_SKEW_FILEPRINTER_H
 #define REPRODUCTIVE_SKEW_FILEPRINTER_H
 
@@ -22,9 +21,9 @@ private:
 public:
     explicit FilePrinter(std::shared_ptr<Parameters> parameters);
 
-    void writeMainFile(std::vector<ResultCache *> &results);
+    void writeMainFile(std::vector<std::unique_ptr<ResultCache> > &results);
 
-    void writeLastGenerationFile(std::vector<ResultCache *> &results);
+    void writeLastGenerationFile(std::vector<std::unique_ptr<ResultCache> > &results);
 };
 
 

@@ -27,7 +27,7 @@ public:
     }
 
     // Runs the simulation.
-    ResultCache *run();
+    std::unique_ptr<ResultCache> run();
 
     // Returns the current generation number in the simulation.
     // @return The generation number.

@@ -2,10 +2,8 @@
 #define GROUP_AUGMENTATION_STATISTICS_H
 
 #include "../model/Group.h"
-#include "../model/Individual.h"
 #include "../Simulation.h"
 #include "StatisticalFormulas.h"
-#include "../model/container/IndividualVector.h"
 #include "../util/MainCacheElement.h"
 
 /**
