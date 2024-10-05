@@ -90,26 +90,28 @@ void setupLogging() {
 
 
 void runSimulations(const std::vector<std::string> &parameters) {
-    const int MAX_NUMBER_OF_CONCURRENT_EXECUTIONS = 1;
+    const int MAX_NUMBER_OF_CONCURRENT_EXECUTIONS = 4;
     int executionCount = 0;
     std::vector<std::thread> threads;
 
     for (size_t i = 0; i < parameters.size(); ++i) {
         const std::string &parameterFilename = parameters[i];
         while (executionCount >= MAX_NUMBER_OF_CONCURRENT_EXECUTIONS) {
-            std::this_thread::sleep_for(std::chrono::minutes(1));
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
         spdlog::info("start {}: {} of {}", parameterFilename, i + 1, parameters.size());
         threads.emplace_back([parameterFilename, &executionCount]() {
             auto simulationRunner = std::make_unique<SimulationRunner>();
             simulationRunner->run(parameterFilename);
-            executionCount--;
             spdlog::info("finish {}", parameterFilename);
+            executionCount--;
         });
         executionCount++;
     }
 
     for (auto &thread: threads) {
-        thread.join();
+        if (thread.joinable()) {
+            thread.join();
+        }
     }
 }
