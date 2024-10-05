@@ -167,3 +167,11 @@ FilePrinter::FilePrinter(std::shared_ptr<Parameters> parameters) : parameters(pa
     this->mainWriter = new std::ofstream("main_" + parameters->getName() + ".txt");
     this->lastGenerationWriter = new std::ofstream("last_generation_" + parameters->getName() + ".txt");
 }
+
+FilePrinter::~FilePrinter() {
+    // Close the output files
+    this->mainWriter->close();
+    this->lastGenerationWriter->close();
+    delete this->mainWriter;
+    delete this->lastGenerationWriter;
+}

@@ -21,6 +21,8 @@ private:
 public:
     explicit FilePrinter(std::shared_ptr<Parameters> parameters);
 
+    virtual ~FilePrinter();
+
     void writeMainFile(std::vector<std::unique_ptr<ResultCache> > &results);
 
     void writeLastGenerationFile(std::vector<std::unique_ptr<ResultCache> > &results);
