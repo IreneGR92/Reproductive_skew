@@ -4,17 +4,16 @@
 
 std::unique_ptr<ResultCache> Simulation::run() {
     // Output file
-    auto *statistics = new Statistics(parameters);
+    auto statistics = std::make_unique<Statistics>(parameters);
     auto results = std::make_unique<ResultCache>(parameters, parameters->getReplica());
     statistics->calculateStatistics(population);
     statistics->printHeadersToConsole();
     statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
     //    statistics->writeToCacheMain(replica, generation, population.getDeaths(), newBreederOutsider, newBreederInsider, inheritance);
 
-    delete statistics;
 
     for (generation = 1; generation <= parameters->getNumGenerations(); generation++) {
-        statistics = new Statistics(this->parameters);
+        statistics = std::make_unique<Statistics>(this->parameters);
         population.reset();
 
         population.disperse();
