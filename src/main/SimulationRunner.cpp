@@ -25,16 +25,12 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
     FilePrinter filePrinter(parameters);
     filePrinter.writeMainFile(results);
     filePrinter.writeLastGenerationFile(results);
-    // attempt to free memory-> to solve non releasing stack memory after use
-    // --> https://stackoverflow.com/questions/13944886/is-stdvector-memory-freed-upon-a-clear
-
-    results.clear();
-    results.shrink_to_fit();
 }
 
 void SimulationRunner::runSimulation(std::unique_ptr<Simulation> simulation, std::unique_ptr<ResultCache> &result) {
     result = simulation->run();
 }
+
 void SimulationRunner::runMultithreaded(std::vector<std::unique_ptr<ResultCache>> &results) {
     spdlog::debug("Running multi-threaded mode");
     std::vector<std::thread> threads;
@@ -48,8 +44,6 @@ void SimulationRunner::runMultithreaded(std::vector<std::unique_ptr<ResultCache>
     for (auto &thread: threads) {
         thread.join();
     }
-    threads.clear();
-    threads.shrink_to_fit();
 }
 
 void SimulationRunner::runSinglethreaded(std::vector<std::unique_ptr<ResultCache>> &results) {
