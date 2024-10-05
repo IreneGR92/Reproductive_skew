@@ -32,28 +32,19 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
     results.shrink_to_fit();
 }
 
-void SimulationRunner::runSimulation(std::unique_ptr<Simulation> simulation, std::unique_ptr<ResultCache> *result) {
-    // Run the simulation and store the result in the provided ResultCache pointer
-    *result = simulation->run();
-    // Clean up the simulation object
+void SimulationRunner::runSimulation(std::unique_ptr<Simulation> simulation, std::unique_ptr<ResultCache> &result) {
+    result = simulation->run();
 }
-
-void SimulationRunner::runMultithreaded(std::vector<std::unique_ptr<ResultCache> > &results) {
+void SimulationRunner::runMultithreaded(std::vector<std::unique_ptr<ResultCache>> &results) {
     spdlog::debug("Running multi-threaded mode");
     std::vector<std::thread> threads;
-    // Create and start a thread for each replica
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
-        // Clone parameters for the current replica
         auto newParams = parameters->cloneWithIncrementedReplica(replica);
-        // Create a new simulation instance with the cloned parameters
         auto simulation = std::make_unique<Simulation>(newParams);
-        // Start the simulation in a new thread
         threads.emplace_back([this, simulation = std::move(simulation), &results, replica]() mutable {
-            runSimulation(std::move(simulation), &results[replica]);
+            runSimulation(std::move(simulation), results[replica]);
         });
     }
-
-    // Wait for all threads to finish
     for (auto &thread: threads) {
         thread.join();
     }

@@ -20,7 +20,6 @@
 
 #include <thread>
 #include "util/Parameters.h"
-#include "stats/Statistics.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "SimulationRunner.h"
@@ -50,7 +49,7 @@ int main() {
 // Function to load parameter files from a specified path
 static std::vector<std::string> loadParameterFiles() {
 #ifdef NDEBUG
-    std::string filePath = "../parameters/parameters.yml";
+    std::string filePath = "../parameters/parameters_debug.yml";
 #else
     std::string filePath = "../parameters/parameters_debug.yml";
 #endif
