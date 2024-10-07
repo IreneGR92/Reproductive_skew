@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.7)
 project(reproductive_skew C CXX)
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 
 # Include the FetchContent module
 include(FetchContent)
