@@ -19,21 +19,28 @@
 /*HEADER FILES*/
 
 #include <thread>
+#include <iostream>
 #include "util/Parameters.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "SimulationRunner.h"
 #include "spdlog/sinks/basic_file_sink.h"
+#include "loadbalancing/ThreadPool.h"
 
 
 static std::vector<std::string> loadParameterFiles();
 
-void runSimulations(const std::vector<std::string> &parameters);
+void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<ThreadPool> &threadPool);
 
 void setupLogging();
 
+
+void test(int i);
+
 /* MAIN PROGRAM */
 int main() {
+    std::shared_ptr<ThreadPool> pool = std::make_shared<ThreadPool>(2);// Create a thread pool with 4 threads
+
     // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
     setupLogging();
 
@@ -41,8 +48,14 @@ int main() {
     auto parameters = loadParameterFiles();
 
     // Run the simulations
-    runSimulations(parameters);
+    runSimulations(parameters, pool);
+
     return 0;
+}
+
+void test(int i) {
+    spdlog::info("Test {}", i);
+
 }
 
 
@@ -84,29 +97,27 @@ void setupLogging() {
     auto console_logger = spdlog::stdout_color_mt("console_logger");
     spdlog::set_default_logger(console_logger);
     console_logger->set_pattern(log_pattern_console);
-    spdlog::set_level(spdlog::level::debug);
+    spdlog::set_level(spdlog::level::trace);
 #endif
 }
 
 
-void runSimulations(const std::vector<std::string> &parameters) {
-    const int MAX_NUMBER_OF_CONCURRENT_EXECUTIONS = 4;
-    int executionCount = 0;
+void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<ThreadPool> &threadPool) {
+
     std::vector<std::thread> threads;
 
     for (size_t i = 0; i < parameters.size(); ++i) {
         const std::string &parameterFilename = parameters[i];
-        while (executionCount >= MAX_NUMBER_OF_CONCURRENT_EXECUTIONS) {
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        }
+
+        spdlog::trace("Thread pool length: {}", threadPool->queueLength());
         spdlog::info("start {}: {} of {}", parameterFilename, i + 1, parameters.size());
-        threads.emplace_back([parameterFilename, &executionCount]() {
+        threads.emplace_back([parameterFilename, threadPool]() {
             auto simulationRunner = std::make_unique<SimulationRunner>();
-            simulationRunner->run(parameterFilename);
+            simulationRunner->run(parameterFilename, threadPool);
             spdlog::info("finish {}", parameterFilename);
-            executionCount--;
         });
-        executionCount++;
+
+
     }
 
     for (auto &thread: threads) {

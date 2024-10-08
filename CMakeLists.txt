@@ -34,6 +34,10 @@ endif ()
 
 # Define the source files for the App executable
 set(SOURCE_FILES
+        src/main/loadbalancing/TaskQueue.h
+        src/main/loadbalancing/TaskQueue.cpp
+        src/main/loadbalancing/ThreadPool.h
+        src/main/loadbalancing/ThreadPool.cpp
         src/main/model/Attribute.h
         src/main/model/FishType.h
         src/main/util/Parameters.h
