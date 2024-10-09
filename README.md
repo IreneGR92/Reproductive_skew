@@ -5,7 +5,7 @@ Simulation code, written in C++, to support the paper:
 
 ## Getting Started
 
-### Configuation
+### Configuration
 
 - Configs can be set in config.yml if you want to change the default values.
 - you also can create a file in your $HOME directory called .reproductive_skew.yml to have your custom configuration
