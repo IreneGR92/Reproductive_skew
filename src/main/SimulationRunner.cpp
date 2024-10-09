@@ -2,6 +2,7 @@
 #include "SimulationRunner.h"
 #include "util/FilePrinter.h"
 #include "spdlog/spdlog.h"
+#include "util/Config.h"
 
 void SimulationRunner::run(const std::string &parameterFilePath) {
     if (!parameterFilePath.empty()) {
@@ -12,14 +13,16 @@ void SimulationRunner::run(const std::string &parameterFilePath) {
         parameters = std::make_shared<Parameters>(0);
     }
     spdlog::debug("Starting: {}", parameters->getName());
-    std::vector<std::unique_ptr<ResultCache>> results(parameters->getMaxNumReplicates());
-#ifdef NDEBUG
-    // Run the simulation in multi-threaded mode
-    runMultithreaded(results);
-#else
-    // Run the simulation in single-threaded mode
-    runSinglethreaded(results);
-#endif
+    std::vector<std::unique_ptr<ResultCache> > results(parameters->getMaxNumReplicates());
+
+
+    if (Config::IS_MULTITHREADED())
+        // Run the simulation in multithreaded mode
+        runMultithreaded(results);
+    else
+        // Run the simulation in single-threaded mode
+        runSinglethreaded(results);
+
 
     // Print the results to files
     FilePrinter filePrinter(parameters);
@@ -31,7 +34,7 @@ void SimulationRunner::runSimulation(std::unique_ptr<Simulation> simulation, std
     result = simulation->run();
 }
 
-void SimulationRunner::runMultithreaded(std::vector<std::unique_ptr<ResultCache>> &results) {
+void SimulationRunner::runMultithreaded(std::vector<std::unique_ptr<ResultCache> > &results) {
     spdlog::debug("Running multi-threaded mode");
     std::vector<std::thread> threads;
     for (int replica = 0; replica < parameters->getMaxNumReplicates(); replica++) {
@@ -46,7 +49,7 @@ void SimulationRunner::runMultithreaded(std::vector<std::unique_ptr<ResultCache>
     }
 }
 
-void SimulationRunner::runSinglethreaded(std::vector<std::unique_ptr<ResultCache>> &results) {
+void SimulationRunner::runSinglethreaded(std::vector<std::unique_ptr<ResultCache> > &results) {
     spdlog::debug("Running single-threaded mode");
     results.clear();
     // Run each replica sequentially

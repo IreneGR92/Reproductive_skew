@@ -32,6 +32,7 @@ endif ()
 
 # Define the source files for the App executable
 set(SOURCE_FILES
+        src/main/util/Config.h
         src/main/model/Attribute.h
         src/main/model/FishType.h
         src/main/util/Parameters.h

@@ -24,6 +24,7 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "SimulationRunner.h"
 #include "spdlog/sinks/basic_file_sink.h"
+#include "util/Config.h"
 
 
 static std::vector<std::string> loadParameterFiles();
@@ -34,6 +35,9 @@ void setupLogging();
 
 /* MAIN PROGRAM */
 int main() {
+    //load config file
+    Config::loadConfig();
+
     // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
     setupLogging();
 
@@ -49,9 +53,9 @@ int main() {
 // Function to load parameter files from a specified path
 static std::vector<std::string> loadParameterFiles() {
 #ifdef NDEBUG
-    std::string filePath = "../parameters/parameters_debug.yml";
+    std::string filePath = "Config::GET_PARAMETERS_FOLDER() + "/parameters_debug.yml";
 #else
-    std::string filePath = "../parameters/parameters_debug.yml";
+    std::string filePath = Config::GET_PARAMETERS_FOLDER() + "/parameters_debug.yml";
 #endif
     std::vector<std::string> parameterFiles;
     std::ifstream file(filePath);
@@ -62,7 +66,7 @@ static std::vector<std::string> loadParameterFiles() {
         while (std::getline(file, line)) {
             if (line.empty()) continue; //ignore empty lines
             if (line[0] == '#') continue; //ignore comments
-            parameterFiles.push_back("../parameters/" + line);
+            parameterFiles.push_back(Config::GET_PARAMETERS_FOLDER() + "/" + line);
         }
         file.close();
     } else {
