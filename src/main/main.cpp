@@ -98,7 +98,12 @@ void setupLogging() {
 #endif
 }
 
-
+/**
+ * Runs the simulations based on the provided parameters and thread pool.
+ *
+ * @param parameters A vector of strings containing the parameter file names.
+ * @param threadPool A shared pointer to the ThreadPool used for managing threads.
+ */
 void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<ThreadPool> &threadPool) {
 
     std::vector<std::thread> threads;
