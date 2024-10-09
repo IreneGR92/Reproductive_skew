@@ -60,7 +60,7 @@ int main() {
 // Function to load parameter files from a specified path
 static std::vector<std::string> loadParameterFiles() {
 #ifdef NDEBUG
-    std::string filePath = "Config::GET_PARAMETERS_FOLDER() + "/parameters_debug.yml";
+    std::string filePath = Config::GET_PARAMETERS_FOLDER() + "/parameters_debug.yml";
 #else
     std::string filePath = Config::GET_PARAMETERS_FOLDER() + "/parameters_debug.yml";
 #endif

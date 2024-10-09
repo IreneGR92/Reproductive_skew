@@ -28,13 +28,14 @@ class Config {
 public:
     static void loadConfig();
 
-    static int &GET_MAX_THREADS();
+    static const int &GET_MAX_THREADS();
 
-    static bool &IS_MULTITHREADED();
+    static const std::string &GET_PARAMETERS_FOLDER();
 
-    static std::string &GET_OUTPUT_DIR();
+    static const bool &IS_MULTITHREADED();
 
-    static std::string &GET_PARAMETERS_FOLDER();
+    static const std::string &GET_OUTPUT_DIR();
+
 };
 
 

@@ -4,6 +4,8 @@
 #include <string>
 #include <fstream>
 #include <random>
+#include <memory>
+#include <iomanip>
 
 
 class Statistics;   // Forward declaration

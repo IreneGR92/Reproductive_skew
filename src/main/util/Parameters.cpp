@@ -1,7 +1,10 @@
 #include <iostream>
+#include <algorithm>
+#include <iomanip>
 #include "yaml-cpp/yaml.h"
 #include "Parameters.h"
 #include "spdlog/spdlog.h"
+
 
 using namespace std;
 
