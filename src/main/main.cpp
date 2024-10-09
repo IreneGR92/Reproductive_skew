@@ -123,7 +123,7 @@ void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<
             simulationRunner->run(parameterFilename, threadPool, simulationCount, finishedCondition);
             spdlog::info("finish {}", parameterFilename);
         });
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        std::this_thread::sleep_for(std::chrono::seconds (1));
 
         threadPool->subscribeToPoolEmpty([&completionCondition] {
             completionCondition.notify_one();
