@@ -5,12 +5,20 @@ Simulation code, written in C++, to support the paper:
 
 ## Getting Started
 
+### Configuation
+
+- Configs can be set in config.yml if you want to change the default values.
+- you also can create a file in your $HOME directory called .reproductive_skew.yml to have your custom configuration
+  values. This will overwrite the default values in config.yml.
+
 ### Pre conditions
 
 - The software was built and tested on Ubuntu Linux -> this guide only covers Ubuntu Linux x86_64 if you are using macOS
   or Windows you may need to adapt some steps.
 - Cmake, make and gcc installed
-- The project now uses the `FetchContent` CMake module to download and build the `yaml-cpp` library directly from its GitHub repository. This means you no longer need to manually compile and reference `yaml-cpp` in the `CMakeLists.txt` file.
+- The project now uses the `FetchContent` CMake module to download and build the `yaml-cpp` library directly from its
+  GitHub repository. This means you no longer need to manually compile and reference `yaml-cpp` in the `CMakeLists.txt`
+  file.
 
 ### Compile the binary
 
