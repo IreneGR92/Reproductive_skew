@@ -35,8 +35,6 @@ void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<
 void setupLogging();
 
 
-void test(int i);
-
 /* MAIN PROGRAM */
 int main() {
     std::shared_ptr<ThreadPool> pool = std::make_shared<ThreadPool>(2);// Create a thread pool with 4 threads
@@ -51,11 +49,6 @@ int main() {
     runSimulations(parameters, pool);
 
     return 0;
-}
-
-void test(int i) {
-    spdlog::info("Test {}", i);
-
 }
 
 
