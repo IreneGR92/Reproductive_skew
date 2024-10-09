@@ -33,6 +33,7 @@ endif ()
 # Define the source files for the App executable
 set(SOURCE_FILES
         src/main/util/Config.h
+        src/main/util/Config.cpp
         src/main/loadbalancing/TaskQueue.h
         src/main/loadbalancing/TaskQueue.cpp
         src/main/loadbalancing/ThreadPool.h
@@ -63,6 +64,7 @@ set(SOURCE_FILES
         src/main/util/FilePrinter.cpp
         src/main/SimulationRunner.h
         src/main/SimulationRunner.cpp
+
 
 )
 
