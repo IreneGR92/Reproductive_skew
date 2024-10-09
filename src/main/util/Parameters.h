@@ -1,11 +1,9 @@
 #ifndef CPP_PARAMETERS_H
 #define CPP_PARAMETERS_H
 
-#include <iomanip>
 #include <string>
 #include <fstream>
 #include <random>
-#include <memory>
 
 
 class Statistics;   // Forward declaration

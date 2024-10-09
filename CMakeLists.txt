@@ -33,6 +33,7 @@ endif ()
 # Define the source files for the App executable
 set(SOURCE_FILES
         src/main/util/Config.h
+        src/main/util/Config.cpp
         src/main/model/Attribute.h
         src/main/model/FishType.h
         src/main/util/Parameters.h
@@ -55,10 +56,10 @@ set(SOURCE_FILES
         src/main/stats/StatisticalFormulas.cpp
         src/main/model/container/IndividualVector.h
         src/main/model/container/IndividualVector.cpp
-        src/main/util/FilePrinter.h
         src/main/util/FilePrinter.cpp
         src/main/SimulationRunner.h
         src/main/SimulationRunner.cpp
+
 
 )
 

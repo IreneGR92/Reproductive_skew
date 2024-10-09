@@ -1,13 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
-#include <string>
-#include <__filesystem/operations.h>
-#include "yaml-cpp/yaml.h"
-#include "spdlog/spdlog.h"
 
-namespace YAML {
-    class BadFile;
-}
+#include <string>
 
 class Config {
     /**
@@ -32,44 +26,16 @@ class Config {
     static std::string PARAMETERS_FOLDER;
 
 public:
-    static void loadConfig() {
-        std::string url;
-        YAML::Node config;
+    static void loadConfig();
 
-        if (std::filesystem::exists("~/.reproductive_skew_config.yml")) {
-            spdlog::trace("loading config using ~/.reproductive_skew_config.yml");
-            url = "~/.reproductive_skew_config.yml";
-        } else {
-            spdlog::trace("loading config using ../config.yml");
-            url = "../config.yml";
-        }
-        try {
-            config = YAML::LoadFile(url);
-        } catch (YAML::BadFile &e) {
-            spdlog::error("Error loading config from file: {}", url);
-            throw e;
-        }
+    static int &GET_MAX_THREADS();
 
-        MAX_THREADS = config["MAX_THREADS"].as<int>();
-        RUN_MULTITHREADED = config["RUN_MULTITHREADED"].as<bool>();
-        OUTPUT_DIR = config["OUTPUT_DIR"].as<std::string>();
-        PARAMETERS_FOLDER = config["PARAMETERS_FOLDER"].as<std::string>();
-    }
+    static bool &IS_MULTITHREADED();
 
-    static int GET_MAX_THREADS() {
-        return MAX_THREADS;
-    }
+    static std::string &GET_OUTPUT_DIR();
 
-    static bool IS_MULTITHREADED() {
-        return RUN_MULTITHREADED;
-    }
-
-    static std::string GET_OUTPUT_DIR() {
-        return OUTPUT_DIR;
-    }
-
-    static std::string GET_PARAMETERS_FOLDER() {
-        return PARAMETERS_FOLDER;
-    }
+    static std::string &GET_PARAMETERS_FOLDER();
 };
+
+
 #endif //CONFIG_H
