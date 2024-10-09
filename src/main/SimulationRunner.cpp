@@ -2,6 +2,7 @@
 #include "SimulationRunner.h"
 #include "util/FilePrinter.h"
 #include "spdlog/spdlog.h"
+#include "util/Config.h"
 
 void SimulationRunner::run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool) {
     if (!parameterFilePath.empty()) {
@@ -12,16 +13,16 @@ void SimulationRunner::run(const std::string &parameterFilePath, const std::shar
         parameters = std::make_shared<Parameters>(0);
     }
     spdlog::debug("Starting: {}", parameters->getName());
-    std::vector<std::unique_ptr<ResultCache>> results(parameters->getMaxNumReplicates());
-#ifdef NDEBUG
-    // Run the simulation in multi-threaded mode
-    runMultithreaded(results, threadPool);
-#else
-    // Run the simulation in single-threaded mode
-    runMultithreaded(results, threadPool);
-//TODO fixme
-//    runSinglethreaded(results);
-#endif
+    std::vector<std::unique_ptr<ResultCache> > results(parameters->getMaxNumReplicates());
+
+
+    if (Config::IS_MULTITHREADED())
+        // Run the simulation in multithreaded mode
+        runMultithreaded(results, threadPool);
+    else
+        // Run the simulation in single-threaded mode
+        runSinglethreaded(results);
+
 
     // Print the results to files
     FilePrinter filePrinter(parameters);
