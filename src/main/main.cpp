@@ -38,14 +38,14 @@ void setupLogging();
 
 /* MAIN PROGRAM */
 int main() {
+    // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
+    setupLogging();
+
     //load config file
     Config::loadConfig();
 
     std::shared_ptr<ThreadPool> pool = std::make_shared<ThreadPool>(2);// Create a thread pool with 4 threads
 
-
-    // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
-    setupLogging();
 
     // Load parameter files
     auto parameters = loadParameterFiles();

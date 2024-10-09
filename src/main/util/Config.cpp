@@ -16,9 +16,14 @@ void Config::loadConfig() {
     std::string url;
     YAML::Node config;
 
-    if (std::filesystem::exists("~/.reproductive_skew_config.yml")) {
-        spdlog::trace("loading config using ~/.reproductive_skew_config.yml");
-        url = "~/.reproductive_skew_config.yml";
+    // construct the path to the config file
+    const char *homeDir = std::getenv("HOME");
+    std::string configFilePath = std::string(homeDir) + "/.reproductive_skew.yml";
+    delete homeDir;
+
+    if (std::filesystem::exists(configFilePath)) {
+        spdlog::trace("loading config using {}", configFilePath);
+        url = configFilePath;
     } else {
         spdlog::trace("loading config using ../config.yml");
         url = "../config.yml";
