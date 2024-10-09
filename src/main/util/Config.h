@@ -25,6 +25,8 @@ class Config {
      */
     static std::string PARAMETERS_FOLDER;
 
+    static int calulateMaxThreads(int configThreads);
+
 public:
     static void loadConfig();
 

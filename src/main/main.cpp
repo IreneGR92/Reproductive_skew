@@ -19,7 +19,6 @@
 /*HEADER FILES*/
 
 #include <thread>
-#include <iostream>
 #include "util/Parameters.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -44,8 +43,8 @@ int main() {
     //load config file
     Config::loadConfig();
 
-    std::shared_ptr<ThreadPool> pool = std::make_shared<ThreadPool>(2);// Create a thread pool with 4 threads
-
+    std::shared_ptr<ThreadPool> pool = std::make_shared<ThreadPool>(
+            Config::GET_MAX_THREADS());// Create a thread pool with 4 threads
 
     // Load parameter files
     auto parameters = loadParameterFiles();
@@ -91,7 +90,7 @@ void setupLogging() {
     file_logger->set_pattern(log_pattern_file);
     spdlog::set_level(spdlog::level::info);
 #else
-    std::string log_pattern_console = "[%l] %v";
+    std::string log_pattern_console = "[%l][%t] %v";
     auto console_logger = spdlog::stdout_color_mt("console_logger");
     spdlog::set_default_logger(console_logger);
     console_logger->set_pattern(log_pattern_console);
@@ -103,21 +102,40 @@ void setupLogging() {
 void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<ThreadPool> &threadPool) {
 
     std::vector<std::thread> threads;
+    std::condition_variable completionCondition;
+    std::mutex completionMutex;
+
+    int simulationCount = 0;
+    std::condition_variable finishedCondition;
 
     for (size_t i = 0; i < parameters.size(); ++i) {
         const std::string &parameterFilename = parameters[i];
 
         spdlog::trace("Thread pool length: {}", threadPool->queueLength());
         spdlog::info("start {}: {} of {}", parameterFilename, i + 1, parameters.size());
-        threads.emplace_back([parameterFilename, threadPool]() {
+        threads.emplace_back([parameterFilename, threadPool, &simulationCount, &finishedCondition]() {
             auto simulationRunner = std::make_unique<SimulationRunner>();
-            simulationRunner->run(parameterFilename, threadPool);
+            simulationRunner->run(parameterFilename, threadPool, simulationCount, finishedCondition);
             spdlog::info("finish {}", parameterFilename);
         });
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
+        threadPool->subscribeToPoolEmpty([&completionCondition] {
+            completionCondition.notify_one();
+        });
+        spdlog::trace("waiting.. Thread pool length: {}", threadPool->queueLength());
+
+        std::unique_lock<std::mutex> lock(completionMutex);
+        completionCondition.wait(lock, [threadPool] { return threadPool->queueLength() == 0; });
+        spdlog::trace("continue Thread pool length: {}", threadPool->queueLength());
 
     }
+    std::mutex finishedMutex;
+    std::unique_lock<std::mutex> lock(finishedMutex);
+    finishedCondition.wait(lock, [&simulationCount, &parameters] { return simulationCount == parameters.size(); });
+    spdlog::info("All simulations completed");
 
+    // Join all remaining threads
     for (auto &thread: threads) {
         if (thread.joinable()) {
             thread.join();

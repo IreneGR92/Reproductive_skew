@@ -32,7 +32,6 @@ ThreadPool::~ThreadPool() {
 }
 
 
-
 void ThreadPool::enqueue(std::function<void()> task) {
     taskQueue.push(std::move(task));
     condition.notify_one();
@@ -48,7 +47,10 @@ void ThreadPool::worker() {
             task = taskQueue.pop();
         }
         task();
-
+        std::unique_lock<std::mutex> lock(queueMutex);
+        if (taskQueue.empty() && poolEmptyCallback) {
+            poolEmptyCallback(); // Call the callback when the pool is empty
+        }
 
     }
 }
@@ -57,3 +59,7 @@ int ThreadPool::queueLength() const {
     return taskQueue.size();
 }
 
+void ThreadPool::subscribeToPoolEmpty(std::function<void()> callback) {
+    std::unique_lock<std::mutex> lock(queueMutex);
+    poolEmptyCallback = callback;
+}

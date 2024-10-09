@@ -14,14 +14,13 @@ class SimulationRunner {
     static void runSimulation(std::shared_ptr<Simulation> simulation, std::unique_ptr<ResultCache> &result);
 
     // Method to run simulations in a multi-threaded mode
-    void runMultithreaded(std::vector<std::unique_ptr<ResultCache> > &results, const std::shared_ptr<ThreadPool>& threadPool);
-
-    // Method to run simulations in a single-threaded mode
-    void runSinglethreaded(std::vector<std::unique_ptr<ResultCache> > &results);
+    void spawnWorkerThreads(std::vector<std::unique_ptr<ResultCache> > &results,
+                            const std::shared_ptr<ThreadPool> &threadPool);
 
 public:
     // Method to initialize and run the simulation with the given parameter file path
-    void run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool>& threadPool);
+    void run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool, int &simulationCount,
+             std::condition_variable &completionCondition);
 };
 
 #endif //REPRODUCTIVE_SKEW_SIMULATIONRUNNER_H

@@ -1,5 +1,7 @@
 #include <string>
 #include <filesystem>
+#include <thread>
+#include <iostream>
 #include "yaml-cpp/yaml.h"
 #include "spdlog/spdlog.h"
 #include "Config.h"
@@ -19,7 +21,6 @@ void Config::loadConfig() {
     // construct the path to the config file
     const char *homeDir = std::getenv("HOME");
     std::string configFilePath = std::string(homeDir) + "/.reproductive_skew.yml";
-    delete homeDir;
 
     if (std::filesystem::exists(configFilePath)) {
         spdlog::trace("loading config using {}", configFilePath);
@@ -35,7 +36,7 @@ void Config::loadConfig() {
         throw e;
     }
 
-    MAX_THREADS = config["MAX_THREADS"].as<int>();
+    MAX_THREADS = calulateMaxThreads(config["MAX_THREADS"].as<int>());
     RUN_MULTITHREADED = config["RUN_MULTITHREADED"].as<bool>();
     OUTPUT_DIR = config["OUTPUT_DIR"].as<std::string>();
     PARAMETERS_FOLDER = config["PARAMETERS_FOLDER"].as<std::string>();
@@ -55,4 +56,22 @@ const bool &Config::IS_MULTITHREADED() {
 
 const std::string &Config::GET_OUTPUT_DIR() {
     return Config::OUTPUT_DIR;
+}
+
+
+int Config::calulateMaxThreads(int configThreads) {
+    int numCores = std::thread::hardware_concurrency();
+    int netThreads = 0;
+    if (numCores == 0) {
+        spdlog::warn("Unable to determine number of CPU cores. Using raw config value: {}", configThreads);
+        if (configThreads == 0) {
+            spdlog::error("Config value for MAX_THREADS is 0. And unable to determine number of CPU cores. Exiting...");
+            exit(1);
+        }
+        netThreads = configThreads;
+    } else {
+        netThreads = std::min(configThreads, numCores);
+        spdlog::info("Using {} threads out of {} available cores", netThreads, numCores);
+    }
+    return netThreads;
 }
