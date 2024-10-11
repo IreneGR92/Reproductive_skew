@@ -34,7 +34,6 @@ int main() {
     //load config file
     Config::loadConfig();
 
-    // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
     Util::setupLogging();
 
     std::shared_ptr<ThreadPool> pool = std::make_shared<ThreadPool>(
