@@ -7,8 +7,9 @@ COLLECTION_FOLDER: "../collections"
 COLLECTION_FILE: "default_collection.yml"
 
 #Logging
-LOG_FILE: "debug.log"
+#Set the log level (levels: trace, debug, info, warn, error, critical)
 LOG_LEVEL: "debug"
 LOG_PATTERN: "[%Y-%m-%d %H:%M] [%l] %v"
 LOG_TO_CONSOLE: true
-LOG_TO_FILE: true
+LOG_TO_FILE: false
+LOG_FILE: "debug.log"
