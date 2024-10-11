@@ -1,7 +1,6 @@
 #include <string>
 #include <filesystem>
 #include <thread>
-#include <iostream>
 #include "yaml-cpp/yaml.h"
 #include "spdlog/spdlog.h"
 #include "Config.h"
@@ -12,7 +11,13 @@ int Config::MAX_THREADS;
 bool Config::RUN_MULTITHREADED;
 std::string Config::OUTPUT_DIR;
 std::string Config::PARAMETERS_FOLDER;
-
+std::string Config::COLLECTION_FILE;
+std::string Config::COLLECTION_FOLDER;
+std::string Config::LOG_PATTERN;
+std::string Config::LOG_FILE;
+std::string Config::LOG_LEVEL;
+bool Config::LOG_TO_CONSOLE;
+bool Config::LOG_TO_FILE;
 
 void Config::loadConfig() {
     std::string url;
@@ -40,24 +45,14 @@ void Config::loadConfig() {
     RUN_MULTITHREADED = config["RUN_MULTITHREADED"].as<bool>();
     OUTPUT_DIR = config["OUTPUT_DIR"].as<std::string>();
     PARAMETERS_FOLDER = config["PARAMETERS_FOLDER"].as<std::string>();
+    COLLECTION_FILE = config["COLLECTION_FILE"].as<std::string>();
+    COLLECTION_FOLDER = config["COLLECTION_FOLDER"].as<std::string>();
+    LOG_PATTERN = config["LOG_PATTERN"].as<std::string>();
+    LOG_FILE = config["LOG_FILE"].as<std::string>();
+    LOG_TO_CONSOLE = config["LOG_TO_CONSOLE"].as<bool>();
+    LOG_TO_FILE = config["LOG_TO_FILE"].as<bool>();
+    LOG_LEVEL = config["LOG_LEVEL"].as<std::string>();
 }
-
-const int &Config::GET_MAX_THREADS() {
-    return Config::MAX_THREADS;
-}
-
-const std::string &Config::GET_PARAMETERS_FOLDER() {
-    return Config::PARAMETERS_FOLDER;
-}
-
-const bool &Config::IS_MULTITHREADED() {
-    return Config::RUN_MULTITHREADED;
-}
-
-const std::string &Config::GET_OUTPUT_DIR() {
-    return Config::OUTPUT_DIR;
-}
-
 
 int Config::calulateMaxThreads(int configThreads) {
     int numCores = std::thread::hardware_concurrency();
@@ -74,4 +69,49 @@ int Config::calulateMaxThreads(int configThreads) {
         spdlog::info("Using {} threads out of {} available cores", netThreads, numCores);
     }
     return netThreads;
+}
+
+const int &Config::GET_MAX_THREADS() {
+    return MAX_THREADS;
+}
+
+const std::string &Config::GET_PARAMETERS_FOLDER() {
+    return PARAMETERS_FOLDER;
+}
+
+const bool &Config::IS_MULTITHREADED() {
+    return RUN_MULTITHREADED;
+}
+
+const std::string &Config::GET_OUTPUT_DIR() {
+    return OUTPUT_DIR;
+}
+
+const std::string &Config::GET_LOG_PATTERN() {
+    return LOG_PATTERN;
+}
+
+const std::string &Config::GET_LOG_FILE() {
+    return LOG_FILE;
+}
+
+const bool &Config::IS_LOG_TO_CONSOLE() {
+    return LOG_TO_CONSOLE;
+}
+
+const bool &Config::IS_LOG_TO_FILE() {
+    return LOG_TO_FILE;
+}
+
+const std::string &Config::GET_LOG_LEVEL() {
+    return LOG_LEVEL;
+}
+
+
+const std::string &Config::GET_COLLECTION_FILE() {
+    return COLLECTION_FILE;
+}
+
+const std::string &Config::GET_COLLECTION_FOLDER() {
+    return COLLECTION_FOLDER;
 }

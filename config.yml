@@ -2,3 +2,13 @@ MAX_THREADS: 48
 RUN_MULTITHREADED: true
 OUTPUT_DIR: ""
 PARAMETERS_FOLDER: "../parameters"
+
+COLLECTION_FOLDER: "../collections"
+COLLECTION_FILE: "default_collection.yml"
+
+#Logging
+LOG_FILE: "debug.log"
+LOG_LEVEL: "debug"
+LOG_PATTERN: "[%Y-%m-%d %H:%M] [%l] %v"
+LOG_TO_CONSOLE: true
+LOG_TO_FILE: true

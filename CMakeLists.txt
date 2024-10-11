@@ -64,6 +64,8 @@ set(SOURCE_FILES
         src/main/util/FilePrinter.cpp
         src/main/SimulationRunner.h
         src/main/SimulationRunner.cpp
+        src/main/util/Util.cpp
+        src/main/util/Util.h
 
 
 )

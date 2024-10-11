@@ -21,33 +21,27 @@
 #include <thread>
 #include "util/Parameters.h"
 #include "spdlog/spdlog.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
 #include "SimulationRunner.h"
-#include "spdlog/sinks/basic_file_sink.h"
 #include "loadbalancing/ThreadPool.h"
 #include "util/Config.h"
-
-
-static std::vector<std::string> loadParameterFiles();
+#include "util/Util.h"
 
 void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<ThreadPool> &threadPool);
-
-void setupLogging();
 
 
 /* MAIN PROGRAM */
 int main() {
-    // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
-    setupLogging();
-
     //load config file
     Config::loadConfig();
 
+    // Set the log level to debug (shows all levels: trace, debug, info, warn, error, critical)
+    Util::setupLogging();
+
     std::shared_ptr<ThreadPool> pool = std::make_shared<ThreadPool>(
-            Config::GET_MAX_THREADS());// Create a thread pool with 4 threads
+        Config::GET_MAX_THREADS()); // Create a thread pool with 4 threads
 
     // Load parameter files
-    auto parameters = loadParameterFiles();
+    auto parameters = Util::loadParameterFiles();
 
     // Run the simulations
     runSimulations(parameters, pool);
@@ -56,48 +50,6 @@ int main() {
 }
 
 
-// Function to load parameter files from a specified path
-static std::vector<std::string> loadParameterFiles() {
-#ifdef NDEBUG
-    std::string filePath = Config::GET_PARAMETERS_FOLDER() + "/parameters.yml";
-#else
-    std::string filePath = Config::GET_PARAMETERS_FOLDER() + "/parameters_debug.yml";
-#endif
-    std::vector<std::string> parameterFiles;
-    std::ifstream file(filePath);
-    std::string line;
-
-    // Read each line from the file and add to the parameter files vector
-    if (file.is_open()) {
-        while (std::getline(file, line)) {
-            if (line.empty()) continue; //ignore empty lines
-            if (line[0] == '#') continue; //ignore comments
-            parameterFiles.push_back(Config::GET_PARAMETERS_FOLDER() + "/" + line);
-        }
-        file.close();
-    } else {
-        spdlog::error("Unable to open file: {} ", filePath);
-    }
-    return parameterFiles;
-}
-
-void setupLogging() {
-#ifdef NDEBUG
-    std::string log_pattern_file = "[%Y-%m-%d %H:%M] [%l] %v";
-    auto file_logger = spdlog::basic_logger_mt("file_logger", "reproductive_skew.log");
-    file_logger->flush_on(spdlog::level::debug);
-    spdlog::set_default_logger(file_logger);
-    file_logger->set_pattern(log_pattern_file);
-    spdlog::set_level(spdlog::level::info);
-#else
-    std::string log_pattern_console = "[%l][%t] %v";
-    auto console_logger = spdlog::stdout_color_mt("console_logger");
-    spdlog::set_default_logger(console_logger);
-    console_logger->set_pattern(log_pattern_console);
-    spdlog::set_level(spdlog::level::trace);
-#endif
-}
-
 /**
  * Runs the simulations based on the provided parameters and thread pool.
  *
@@ -105,7 +57,6 @@ void setupLogging() {
  * @param threadPool A shared pointer to the ThreadPool used for managing threads.
  */
 void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<ThreadPool> &threadPool) {
-
     std::vector<std::thread> threads;
     std::condition_variable completionCondition;
     std::mutex completionMutex;
@@ -123,7 +74,7 @@ void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<
             simulationRunner->run(parameterFilename, threadPool, simulationCount, finishedCondition);
             spdlog::info("finish {}", parameterFilename);
         });
-        std::this_thread::sleep_for(std::chrono::seconds (1));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 
         threadPool->subscribeToPoolEmpty([&completionCondition] {
             completionCondition.notify_one();
@@ -133,7 +84,6 @@ void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<
         std::unique_lock<std::mutex> lock(completionMutex);
         completionCondition.wait(lock, [threadPool] { return threadPool->queueLength() == 0; });
         spdlog::trace("continue Thread pool length: {}", threadPool->queueLength());
-
     }
     std::mutex finishedMutex;
     std::unique_lock<std::mutex> lock(finishedMutex);
