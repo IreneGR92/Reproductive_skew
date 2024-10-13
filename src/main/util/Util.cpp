@@ -15,8 +15,10 @@
 void Util::setupLogging() {
     // Create a console sink
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    console_sink->set_level(spdlog::level::from_str(Config::GET_LOG_LEVEL()));
     // Create a file sink
-    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(Config::GET_LOG_FILE(), true);
+    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(Config::GET_LOG_FILE());
+    file_sink->set_level(spdlog::level::from_str(Config::GET_LOG_LEVEL()));
 
     // Combine the sinks into a single logger
     std::vector<spdlog::sink_ptr> sinks;

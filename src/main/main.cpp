@@ -19,7 +19,6 @@
 /*HEADER FILES*/
 
 #include <thread>
-#include "util/Parameters.h"
 #include "spdlog/spdlog.h"
 #include "SimulationRunner.h"
 #include "loadbalancing/ThreadPool.h"
