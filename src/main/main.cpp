@@ -40,10 +40,10 @@ int main() {
 
     // Load parameter files
     auto parameters = Util::loadParameterFiles();
-
+    spdlog::info("Loaded {} parameter files", parameters.size());
     // Run the simulations
     runSimulations(parameters, pool);
-
+    spdlog::drop_all();
     return 0;
 }
 
@@ -79,12 +79,12 @@ void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<
         });
         spdlog::trace("waiting.. Thread pool length: {}", threadPool->queueLength());
 
-        std::unique_lock<std::mutex> lock(completionMutex);
+        std::unique_lock lock(completionMutex);
         completionCondition.wait(lock, [threadPool] { return threadPool->queueLength() == 0; });
         spdlog::trace("continue Thread pool length: {}", threadPool->queueLength());
     }
     std::mutex finishedMutex;
-    std::unique_lock<std::mutex> lock(finishedMutex);
+    std::unique_lock lock(finishedMutex);
     finishedCondition.wait(lock, [&simulationCount, &parameters] { return simulationCount == parameters.size(); });
     spdlog::info("All simulations completed");
 

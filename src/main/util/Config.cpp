@@ -8,7 +8,6 @@
 
 // Define static members
 int Config::MAX_THREADS;
-bool Config::RUN_MULTITHREADED;
 std::string Config::OUTPUT_DIR;
 std::string Config::PARAMETERS_FOLDER;
 std::string Config::COLLECTION_FILE;
@@ -42,7 +41,6 @@ void Config::loadConfig() {
     }
 
     MAX_THREADS = calulateMaxThreads(config["MAX_THREADS"].as<int>());
-    RUN_MULTITHREADED = config["RUN_MULTITHREADED"].as<bool>();
     OUTPUT_DIR = config["OUTPUT_DIR"].as<std::string>();
     PARAMETERS_FOLDER = config["PARAMETERS_FOLDER"].as<std::string>();
     COLLECTION_FILE = config["COLLECTION_FILE"].as<std::string>();
@@ -77,10 +75,6 @@ const int &Config::GET_MAX_THREADS() {
 
 const std::string &Config::GET_PARAMETERS_FOLDER() {
     return PARAMETERS_FOLDER;
-}
-
-const bool &Config::IS_MULTITHREADED() {
-    return RUN_MULTITHREADED;
 }
 
 const std::string &Config::GET_OUTPUT_DIR() {

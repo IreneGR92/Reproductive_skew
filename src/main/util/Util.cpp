@@ -7,6 +7,7 @@
 #include <fstream>
 
 #include "Config.h"
+#include "../../../cmake-build-release/_deps/spdlog-src/include/spdlog/sinks/daily_file_sink.h"
 #include "spdlog/logger.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -15,10 +16,8 @@
 void Util::setupLogging() {
     // Create a console sink
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    console_sink->set_level(spdlog::level::from_str(Config::GET_LOG_LEVEL()));
     // Create a file sink
-    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(Config::GET_LOG_FILE());
-    file_sink->set_level(spdlog::level::from_str(Config::GET_LOG_LEVEL()));
+    auto file_sink = std::make_shared<spdlog::sinks::daily_file_format_sink_mt>(Config::GET_LOG_FILE(), 23, 59);
 
     // Combine the sinks into a single logger
     std::vector<spdlog::sink_ptr> sinks;
@@ -29,12 +28,16 @@ void Util::setupLogging() {
     if (Config::IS_LOG_TO_FILE())
         sinks.push_back(file_sink);
 
-    auto logger = std::make_shared<spdlog::logger>("logger", sinks.begin(), sinks.end());
-    logger->set_level(spdlog::level::from_str(Config::GET_LOG_LEVEL()));
 
-    logger->set_pattern(Config::GET_LOG_PATTERN());
+    auto default_logger = std::make_shared<spdlog::logger>("logger", begin(sinks), end(sinks));
+    default_logger->set_level(spdlog::level::from_str(Config::GET_LOG_LEVEL()));
+
+    default_logger->set_pattern(Config::GET_LOG_PATTERN());
+    register_logger(default_logger);
     // Set the combined logger as the default logger
-    set_default_logger(logger);
+    set_default_logger(default_logger);
+    // Flush the logger on info level
+    default_logger->flush_on(spdlog::level::info);
 }
 
 std::vector<std::string> Util::loadParameterFiles() {
