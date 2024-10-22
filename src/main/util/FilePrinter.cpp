@@ -164,7 +164,7 @@ void FilePrinter::printHeader(std::ofstream &writer) {
             << "stepDrift:" << "\t" << parameters->getStepDrift() << endl << endl;
 }
 
-FilePrinter::FilePrinter(std::shared_ptr<Parameters>& parameters) : parameters(parameters) {
+FilePrinter::FilePrinter(std::shared_ptr<Parameters> &parameters) : parameters(parameters) {
     // Create the output files
     this->mainWriter = std::make_unique<std::ofstream>(
         Config::GET_OUTPUT_DIR() + "/" + "main_" + parameters->getName() + ".txt");
@@ -174,6 +174,10 @@ FilePrinter::FilePrinter(std::shared_ptr<Parameters>& parameters) : parameters(p
 
 FilePrinter::~FilePrinter() {
     // Close the output files
-    this->mainWriter->close();
-    this->lastGenerationWriter->close();
+    if (mainWriter->is_open()) {
+        mainWriter->close();
+    }
+    if (lastGenerationWriter->is_open()) {
+        lastGenerationWriter->close();
+    }
 }
