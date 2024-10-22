@@ -7,7 +7,7 @@
 using namespace std;
 
 
-Group::Group(std::shared_ptr<Parameters> parameters) : mainBreeder(BREEDER, parameters), parameters(parameters) {
+Group::Group(const std::shared_ptr<Parameters>& parameters) : mainBreeder(BREEDER, parameters), parameters(parameters) {
     mainBreederAlive = true;
     cumHelp = 0;
     acceptanceRate = Parameters::NO_VALUE;

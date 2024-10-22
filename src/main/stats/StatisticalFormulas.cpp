@@ -27,7 +27,7 @@ double StatisticalFormulas::calculateSD() {
     std::transform(individualValues.begin(), individualValues.end(), diff.begin(),
                    [mean](double x) { return x - mean; });
     double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
-    if (individualValues.size() > 0) {
+    if (!individualValues.empty()) {
         stdev = std::sqrt(sq_sum / individualValues.size());
     } else {
         stdev = 0;

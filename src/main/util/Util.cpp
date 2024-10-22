@@ -1,7 +1,3 @@
-//
-// Created by odin on 11.10.2024.
-//
-
 #include "Util.h"
 
 #include <fstream>
@@ -16,7 +12,7 @@ void Util::setupLogging() {
     // Create a console sink
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     // Create a file sink
-    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(Config::GET_LOG_FILE(), true);
+    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(Config::GET_LOG_FILE());
 
     // Combine the sinks into a single logger
     std::vector<spdlog::sink_ptr> sinks;
@@ -27,12 +23,16 @@ void Util::setupLogging() {
     if (Config::IS_LOG_TO_FILE())
         sinks.push_back(file_sink);
 
-    auto logger = std::make_shared<spdlog::logger>("logger", sinks.begin(), sinks.end());
-    logger->set_level(spdlog::level::from_str(Config::GET_LOG_LEVEL()));
 
-    logger->set_pattern(Config::GET_LOG_PATTERN());
+    auto default_logger = std::make_shared<spdlog::logger>("logger", begin(sinks), end(sinks));
+    default_logger->set_level(spdlog::level::from_str(Config::GET_LOG_LEVEL()));
+
+    default_logger->set_pattern(Config::GET_LOG_PATTERN());
+    register_logger(default_logger);
     // Set the combined logger as the default logger
-    set_default_logger(logger);
+    set_default_logger(default_logger);
+    // Flush the logger on info level
+    default_logger->flush_on(spdlog::level::info);
 }
 
 std::vector<std::string> Util::loadParameterFiles() {

@@ -22,9 +22,9 @@ class ResultCache {
     std::queue<MainCacheElement> mainCache;
 
 public:
-    explicit ResultCache(std::shared_ptr<Parameters> parameters, int replica) : parameters(parameters),
-                                                                                replica(replica) {
-    };
+    explicit ResultCache(const std::shared_ptr<Parameters>& parameters, int replica) : parameters(parameters),
+                                                                                       replica(replica) {
+    }
 
 
     /**
@@ -38,9 +38,9 @@ public:
 
     void writeToCacheMain(MainCacheElement element);
 
-    const std::queue<LastGenerationCacheElement> &getLastGenerationCache() const;
+    [[nodiscard]] const std::queue<LastGenerationCacheElement> &getLastGenerationCache() const;
 
-    const std::queue<MainCacheElement> &getMainCache() const;
+    [[nodiscard]] const std::queue<MainCacheElement> &getMainCache() const;
 
     /**
  * @brief Prints the statistics to a file.

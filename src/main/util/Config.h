@@ -11,11 +11,6 @@ class Config {
     static int MAX_THREADS;
 
     /**
-    * Flag to enable/disable multithreaded execution
-    */
-    static bool RUN_MULTITHREADED;
-
-    /**
      * Path to the output directory where the results will be stored
      */
     static std::string OUTPUT_DIR;
@@ -71,8 +66,6 @@ public:
     static const int &GET_MAX_THREADS();
 
     static const std::string &GET_PARAMETERS_FOLDER();
-
-    static const bool &IS_MULTITHREADED();
 
     static const std::string &GET_OUTPUT_DIR();
 

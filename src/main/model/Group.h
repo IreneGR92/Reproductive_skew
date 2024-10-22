@@ -51,7 +51,7 @@ private:
 
 public:
 
-    explicit Group(std::shared_ptr<Parameters> parameters);
+    explicit Group(const std::shared_ptr<Parameters>& parameters);
 
     void calculateGroupSize();
 

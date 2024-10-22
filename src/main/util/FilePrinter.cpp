@@ -2,9 +2,11 @@
 
 #include <sstream>
 #include <iomanip>
+#include "Config.h"
 
 
 using namespace std;
+
 
 void FilePrinter::writeMainFile(std::vector<std::unique_ptr<ResultCache> > &results) {
     //print header
@@ -34,38 +36,38 @@ void FilePrinter::writeMainFile(std::vector<std::unique_ptr<ResultCache> > &resu
             auto cacheElement = cache.front();
             std::ostringstream oss;
             oss << fixed << showpoint
-                    << result->getReplica() + 1
+                    << result->getReplica() + 1 // +1 to start from 1 in result files
                     << "\t" << cacheElement.generation
                     << "\t" << cacheElement.population
                     << "\t" << cacheElement.deaths
                     << "\t" << cacheElement.totalFloaters
-                    << "\t" << setprecision(4) << cacheElement.groupSize
-                    << "\t" << setprecision(4) << cacheElement.numOfSubBreeders
-                    << "\t" << setprecision(4) << cacheElement.ageHelpers
-                    << "\t" << setprecision(4) << cacheElement.ageFloaters
-                    << "\t" << setprecision(4) << cacheElement.ageDomBreeders
-                    << "\t" << setprecision(4) << cacheElement.ageSubBreeders
-                    << "\t" << setprecision(4) << cacheElement.ageBecomeBreeder
-                    << "\t" << setprecision(4) << cacheElement.alpha
-                    << "\t" << setprecision(4) << cacheElement.beta
-                    << "\t" << setprecision(4) << cacheElement.gamma
-                    << "\t" << setprecision(4) << cacheElement.delta
-                    << "\t" << setprecision(4) << cacheElement.dispersal
-                    << "\t" << setprecision(4) << cacheElement.acceptanceRate
-                    << "\t" << setprecision(4) << cacheElement.help
-                    << "\t" << setprecision(4) << cacheElement.cumulativeHelp
-                    << "\t" << setprecision(4) << cacheElement.survivalHelpers
-                    << "\t" << setprecision(4) << cacheElement.survivalFloaters
-                    << "\t" << setprecision(4) << cacheElement.survivalDomBreeders
-                    << "\t" << setprecision(4) << cacheElement.survivalSubBreeders
-                    << "\t" << setprecision(4) << cacheElement.mk
-                    << "\t" << setprecision(4) << cacheElement.reproductiveShareRate
-                    << "\t" << setprecision(4) << cacheElement.fecundityGroupMean
-                    << "\t" << setprecision(4) << cacheElement.fecundityGroupSD
-                    << "\t" << setprecision(4) << cacheElement.offspringMainBreeder
-                    << "\t" << setprecision(4) << cacheElement.offspringOfSubordinateBreeders
-                    << "\t" << setprecision(4) << cacheElement.relatednessHelpers
-                    << "\t" << setprecision(4) << cacheElement.relatednessBreeders
+                    << "\t" << setprecision(PRECISION) << cacheElement.groupSize
+                    << "\t" << setprecision(PRECISION) << cacheElement.numOfSubBreeders
+                    << "\t" << setprecision(PRECISION) << cacheElement.ageHelpers
+                    << "\t" << setprecision(PRECISION) << cacheElement.ageFloaters
+                    << "\t" << setprecision(PRECISION) << cacheElement.ageDomBreeders
+                    << "\t" << setprecision(PRECISION) << cacheElement.ageSubBreeders
+                    << "\t" << setprecision(PRECISION) << cacheElement.ageBecomeBreeder
+                    << "\t" << setprecision(PRECISION) << cacheElement.alpha
+                    << "\t" << setprecision(PRECISION) << cacheElement.beta
+                    << "\t" << setprecision(PRECISION) << cacheElement.gamma
+                    << "\t" << setprecision(PRECISION) << cacheElement.delta
+                    << "\t" << setprecision(PRECISION) << cacheElement.dispersal
+                    << "\t" << setprecision(PRECISION) << cacheElement.acceptanceRate
+                    << "\t" << setprecision(PRECISION) << cacheElement.help
+                    << "\t" << setprecision(PRECISION) << cacheElement.cumulativeHelp
+                    << "\t" << setprecision(PRECISION) << cacheElement.survivalHelpers
+                    << "\t" << setprecision(PRECISION) << cacheElement.survivalFloaters
+                    << "\t" << setprecision(PRECISION) << cacheElement.survivalDomBreeders
+                    << "\t" << setprecision(PRECISION) << cacheElement.survivalSubBreeders
+                    << "\t" << setprecision(PRECISION) << cacheElement.mk
+                    << "\t" << setprecision(PRECISION) << cacheElement.reproductiveShareRate
+                    << "\t" << setprecision(PRECISION) << cacheElement.fecundityGroupMean
+                    << "\t" << setprecision(PRECISION) << cacheElement.fecundityGroupSD
+                    << "\t" << setprecision(PRECISION) << cacheElement.offspringMainBreeder
+                    << "\t" << setprecision(PRECISION) << cacheElement.offspringOfSubordinateBreeders
+                    << "\t" << setprecision(PRECISION) << cacheElement.relatednessHelpers
+                    << "\t" << setprecision(PRECISION) << cacheElement.relatednessBreeders
                     << "\t" << cacheElement.newBreederOutsider
                     << "\t" << cacheElement.newBreederInsider;
             *this->mainWriter << oss.str() << endl;
@@ -75,9 +77,8 @@ void FilePrinter::writeMainFile(std::vector<std::unique_ptr<ResultCache> > &resu
 }
 
 void FilePrinter::writeLastGenerationFile(std::vector<std::unique_ptr<ResultCache> > &results) {
-    auto writer = this->lastGenerationWriter;
     //print header
-    this->printHeader(*writer);
+    this->printHeader(*lastGenerationWriter);
     // column headings in output file last generation
     *this->lastGenerationWriter << "replica" << "\t" << "generation" << "\t" << "groupID"
             << "\t" << "type" << "\t" << "age" << "\t"
@@ -99,17 +100,17 @@ void FilePrinter::writeLastGenerationFile(std::vector<std::unique_ptr<ResultCach
                     << "\t" << cacheElement.generation
                     << "\t" << cacheElement.groupID
                     << "\t" << cacheElement.individual.getFishType()
-                    << "\t" << setprecision(4) << cacheElement.individual.getAge()
-                    << "\t" << setprecision(4) << cacheElement.individual.getAlpha()
-                    << "\t" << setprecision(4) << cacheElement.individual.getBeta()
-                    << "\t" << setprecision(4) << cacheElement.individual.getGamma()
-                    << "\t" << setprecision(4) << cacheElement.individual.getDelta()
-                    << "\t" << setprecision(4) << cacheElement.individual.getDrift()
-                    << "\t" << setprecision(4) << cacheElement.individual.getDispersal()
-                    << "\t" << setprecision(4) << cacheElement.individual.getHelp()
-                    << "\t" << setprecision(4) << cacheElement.individual.getSurvival()
-                    << "\t" << setprecision(4) << cacheElement.individual.isInherit();
-            *writer << oss.str() << endl;
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.getAge()
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.getAlpha()
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.getBeta()
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.getGamma()
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.getDelta()
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.getDrift()
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.getDispersal()
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.getHelp()
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.getSurvival()
+                    << "\t" << setprecision(PRECISION) << cacheElement.individual.isInherit();
+            *lastGenerationWriter << oss.str() << endl;
             cache.pop();
         }
     }
@@ -163,16 +164,20 @@ void FilePrinter::printHeader(std::ofstream &writer) {
             << "stepDrift:" << "\t" << parameters->getStepDrift() << endl << endl;
 }
 
-FilePrinter::FilePrinter(std::shared_ptr<Parameters> parameters) : parameters(parameters) {
+FilePrinter::FilePrinter(std::shared_ptr<Parameters> &parameters) : parameters(parameters) {
     // Create the output files
-    this->mainWriter = new std::ofstream("main_" + parameters->getName() + ".txt");
-    this->lastGenerationWriter = new std::ofstream("last_generation_" + parameters->getName() + ".txt");
+    this->mainWriter = std::make_unique<std::ofstream>(
+        Config::GET_OUTPUT_DIR() + "/" + "main_" + parameters->getName() + ".txt");
+    this->lastGenerationWriter = std::make_unique<std::ofstream>(
+        Config::GET_OUTPUT_DIR() + "/" + "last_generation_" + parameters->getName() + ".txt");
 }
 
 FilePrinter::~FilePrinter() {
     // Close the output files
-    this->mainWriter->close();
-    this->lastGenerationWriter->close();
-    delete this->mainWriter;
-    delete this->lastGenerationWriter;
+    if (mainWriter->is_open()) {
+        mainWriter->close();
+    }
+    if (lastGenerationWriter->is_open()) {
+        lastGenerationWriter->close();
+    }
 }

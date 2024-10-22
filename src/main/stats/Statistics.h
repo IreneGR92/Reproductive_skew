@@ -62,7 +62,7 @@ public:
     /**
      * @brief Prints the headers for the statistics to the console.
      */
-    void printHeadersToConsole();
+    static void printHeadersToConsole();
 
 
     /**

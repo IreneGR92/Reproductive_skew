@@ -2,7 +2,6 @@
 #include "SimulationRunner.h"
 #include "util/FilePrinter.h"
 #include "spdlog/spdlog.h"
-#include "util/Config.h"
 
 void SimulationRunner::run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool,
                            int &simulationCount, std::condition_variable &completionCondition) {
@@ -17,10 +16,7 @@ void SimulationRunner::run(const std::string &parameterFilePath, const std::shar
     std::vector<std::unique_ptr<ResultCache> > results(parameters->getMaxNumReplicates());
 
 
-    if (Config::IS_MULTITHREADED())
-        // Run the simulation in multithreaded mode
-        spawnWorkerThreads(results, threadPool);
-
+    spawnWorkerThreads(results, threadPool);
 
 
     // Print the results to files
@@ -35,10 +31,8 @@ void SimulationRunner::runSimulation(std::shared_ptr<Simulation> simulation, std
     result = simulation->run();
 }
 
-void SimulationRunner::spawnWorkerThreads(std::vector<std::unique_ptr<ResultCache>> &results,
+void SimulationRunner::spawnWorkerThreads(std::vector<std::unique_ptr<ResultCache> > &results,
                                           const std::shared_ptr<ThreadPool> &threadPool) {
-    spdlog::debug("Running multi-threaded mode");
-
     std::atomic<int> tasksRemaining(parameters->getMaxNumReplicates());
     std::mutex completionMutex;
     std::condition_variable completionCondition;
@@ -49,20 +43,18 @@ void SimulationRunner::spawnWorkerThreads(std::vector<std::unique_ptr<ResultCach
         auto simulation = std::make_shared<Simulation>(newParams);
 
         threadPool->enqueue(
-                [simulation, &results, replica, &tasksRemaining, &completionMutex, &completionCondition]() mutable {
-                    spdlog::trace("replica {} started: task remaining: {}", replica, tasksRemaining);
-                    runSimulation(simulation, results[replica]);
-                    if (--tasksRemaining == 0) {
-                        std::lock_guard<std::mutex> lock(completionMutex);
-                        completionCondition.notify_one();
-
-                    }
-                    spdlog::trace("replica {} completed: task remaining: {}", replica, tasksRemaining);
-                });
+            [simulation, &results, replica, &tasksRemaining, &completionMutex, &completionCondition]() mutable {
+                spdlog::trace("replica {} started: task remaining: {}", replica, tasksRemaining);
+                runSimulation(simulation, results[replica]);
+                if (--tasksRemaining == 0) {
+                    std::lock_guard<std::mutex> lock(completionMutex);
+                    completionCondition.notify_one();
+                }
+                spdlog::trace("replica {} completed: task remaining: {}", replica, tasksRemaining);
+            });
     }
     spdlog::debug("Waiting for completion");
     std::unique_lock<std::mutex> lock(completionMutex);
     completionCondition.wait(lock, [&tasksRemaining] { return tasksRemaining == 0; });
     spdlog::debug("All tasks completed");
-
 }
