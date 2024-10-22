@@ -34,8 +34,7 @@ Population::Population(const std::shared_ptr<Parameters>& parameters) : paramete
 
 void Population::disperse() {
 
-    for (int i = 0; i < groups.size(); i++) {
-        Group &group = groups[i];
+    for (auto & group : groups) {
         this->floaters.merge(group.disperse());
     }
     this->emigrants = floaters.size(); // After all floater are created, the number of emigrants is set to the number of floaters.
@@ -142,9 +141,7 @@ void Population::mortalityGroup() {
 }
 
 void Population::mortalityFloaters() {
-
-    std::vector<Individual, std::allocator<Individual>>::iterator floaterIt;
-    floaterIt = floaters.begin();
+    auto floaterIt = floaters.begin();
     int size = floaters.size();
     for (int count = 0; !floaters.empty() && size > count; count++) {
 

@@ -3,15 +3,12 @@
 
 
 #include <vector>
-#include <algorithm>
 #include <iostream>
-#include <iterator>
 #include "../../util/Parameters.h"
 
 template<class T>
 
 class Container {
-private:
     explicit Container(std::default_random_engine *generator);
 
     std::default_random_engine generator;
@@ -23,9 +20,9 @@ protected:
 public:
 
 
-    const unsigned int size() const;
+    [[nodiscard]] unsigned int size() const;
 
-    const bool isEmpty() const;
+    [[nodiscard]] bool isEmpty() const;
 
     const T &accessElement(int index);
 
@@ -57,12 +54,12 @@ public:
 
 
 template<class T>
-const unsigned int Container<T>::size() const {
+unsigned int Container<T>::size() const {
     return vector.size();
 }
 
 template<class T>
-const bool Container<T>::isEmpty() const {
+bool Container<T>::isEmpty() const {
     return vector.empty();
 }
 

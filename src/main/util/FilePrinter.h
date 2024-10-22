@@ -9,7 +9,7 @@
 class FilePrinter {
     const int PRECISION = 4;
 
-    std::shared_ptr<Parameters> parameters;
+    std::shared_ptr<Parameters> &parameters;
 
     void printHeader(std::ofstream &writer);
 
@@ -19,7 +19,7 @@ class FilePrinter {
     std::unique_ptr<std::ofstream> lastGenerationWriter; ///< A pointer to the last generation output stream writer.
 
 public:
-    explicit FilePrinter(std::shared_ptr<Parameters> parameters);
+    explicit FilePrinter(std::shared_ptr<Parameters> &parameters);
 
     virtual ~FilePrinter();
 

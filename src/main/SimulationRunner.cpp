@@ -2,7 +2,6 @@
 #include "SimulationRunner.h"
 #include "util/FilePrinter.h"
 #include "spdlog/spdlog.h"
-#include "util/Config.h"
 
 void SimulationRunner::run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool,
                            int &simulationCount, std::condition_variable &completionCondition) {
