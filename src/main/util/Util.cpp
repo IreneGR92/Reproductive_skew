@@ -7,7 +7,6 @@
 #include <fstream>
 
 #include "Config.h"
-#include "../../../cmake-build-release/_deps/spdlog-src/include/spdlog/sinks/daily_file_sink.h"
 #include "spdlog/logger.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -17,7 +16,7 @@ void Util::setupLogging() {
     // Create a console sink
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     // Create a file sink
-    auto file_sink = std::make_shared<spdlog::sinks::daily_file_format_sink_mt>(Config::GET_LOG_FILE(), 23, 59);
+    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(Config::GET_LOG_FILE());
 
     // Combine the sinks into a single logger
     std::vector<spdlog::sink_ptr> sinks;
