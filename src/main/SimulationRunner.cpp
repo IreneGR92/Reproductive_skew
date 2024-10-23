@@ -3,10 +3,20 @@
 #include "util/FilePrinter.h"
 #include "spdlog/spdlog.h"
 
-void SimulationRunner::run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool, std::condition_variable &completionCondition) {
+namespace YAML {
+    class BadFile;
+}
+
+void SimulationRunner::run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool,
+                           std::condition_variable &completionCondition) {
     if (!parameterFilePath.empty()) {
         // Initialize parameters from the provided file
-        parameters = std::make_shared<Parameters>(parameterFilePath, 0);
+        try {
+            parameters = std::make_shared<Parameters>(parameterFilePath, 0);
+        } catch (YAML::BadFile &e) {
+            spdlog::error("unable to run simulation: {} -> skipping", parameterFilePath);
+            return;
+        }
     } else {
         // Initialize parameters with default values
         parameters = std::make_shared<Parameters>(0);
