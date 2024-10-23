@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "yaml-cpp/yaml.h"
 #include "Parameters.h"
 #include "spdlog/spdlog.h"
@@ -255,8 +256,6 @@ double Parameters::getStepDrift() const {
 
 
 std::string Parameters::getName(std::string url) {
-
-
     unsigned first = url.find("parameters/");
     unsigned last = url.find(".yml");
     string name = url.substr(first, last - first);
