@@ -2,7 +2,6 @@
 #define REPRODUCTIVE_SKEW_SIMULATIONRUNNER_H
 
 
-#include <memory>
 #include "util/Parameters.h"
 #include "util/ResultCache.h"
 #include "loadbalancing/ThreadPool.h"
@@ -19,7 +18,7 @@ class SimulationRunner {
 
 public:
     // Method to initialize and run the simulation with the given parameter file path
-    void run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool, int &simulationCount,
+    void run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool,
              std::condition_variable &completionCondition);
 };
 

@@ -3,8 +3,7 @@
 #include "util/FilePrinter.h"
 #include "spdlog/spdlog.h"
 
-void SimulationRunner::run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool,
-                           int &simulationCount, std::condition_variable &completionCondition) {
+void SimulationRunner::run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool, std::condition_variable &completionCondition) {
     if (!parameterFilePath.empty()) {
         // Initialize parameters from the provided file
         parameters = std::make_shared<Parameters>(parameterFilePath, 0);
@@ -23,7 +22,6 @@ void SimulationRunner::run(const std::string &parameterFilePath, const std::shar
     FilePrinter filePrinter(parameters);
     filePrinter.writeMainFile(results);
     filePrinter.writeLastGenerationFile(results);
-    simulationCount++;
     completionCondition.notify_one();
 }
 
