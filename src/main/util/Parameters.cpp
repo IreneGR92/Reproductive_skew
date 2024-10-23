@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 #include "yaml-cpp/yaml.h"
 #include "Parameters.h"
 #include "spdlog/spdlog.h"
