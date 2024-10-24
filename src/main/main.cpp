@@ -88,19 +88,20 @@ void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<
             });
         }
 
-
         std::this_thread::sleep_for(std::chrono::seconds(1));
-
         threadPool->subscribeToPoolEmpty([&completionCondition] {
             completionCondition.notify_one();
         });
         spdlog::trace("waiting.. Thread pool length: {}", threadPool->queueLength());
 
+        // Wait until the thread pool is empty
         std::unique_lock lock(completionMutex);
         completionCondition.wait(lock, [threadPool] {
             return threadPool->queueLength() == 0;
         });
         spdlog::trace("continue Thread pool length: {}", threadPool->queueLength());
+
+        // Check if a stop signal was received
         if (stopFlag) {
             threadPool->subscribeToPoolEmpty([&threadPoolEmpty, &finishedCondition] {
                 threadPoolEmpty.store(true);
@@ -111,10 +112,10 @@ void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<
             break;
         }
     }
+
+    // Wait until all threads have finished
     std::mutex finishedMutex;
     std::unique_lock lock(finishedMutex);
-
-
     finishedCondition.wait(lock, [&threadPoolEmpty] {
         return threadPoolEmpty.load();
     });
@@ -125,5 +126,7 @@ void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<
             thread.join();
         }
     }
+
+    // Log the completion status
     stopFlag ? spdlog::info("not all simulations completed") : spdlog::info("All simulations completed");
 }

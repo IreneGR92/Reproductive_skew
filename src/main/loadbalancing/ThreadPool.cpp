@@ -1,16 +1,6 @@
-#include <iostream>
 #include <thread>
-#include <cstdio>
-#include <memory>
-#include <stdexcept>
-#include <string>
-#include <array>
 
 #include "ThreadPool.h"
-
-#include <condition_variable>
-#include <utility>
-
 #include "spdlog/spdlog.h"
 
 
@@ -63,8 +53,4 @@ int ThreadPool::queueLength() const {
 void ThreadPool::subscribeToPoolEmpty(std::function<void()> callback) {
     std::unique_lock lock(queueMutex);
     poolEmptyCallback = callback;
-    if (taskQueue.empty()) {
-        spdlog::trace("subscribe empty callback");
-        // callback();
-    }
 }
