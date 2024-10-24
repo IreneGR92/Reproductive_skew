@@ -119,12 +119,11 @@ void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<
         return threadPoolEmpty.load();
     });
 
-    stopFlag ? spdlog::info("not all simulations completed") : spdlog::info("All simulations completed");
-
     // Join all remaining threads
     for (auto &thread: threads) {
         if (thread.joinable()) {
             thread.join();
         }
     }
+    stopFlag ? spdlog::info("not all simulations completed") : spdlog::info("All simulations completed");
 }
