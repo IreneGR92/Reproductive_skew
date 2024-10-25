@@ -47,7 +47,7 @@ private:
     std::string name; ///< The name of the simulation.
     int replica; ///< The replica number.
     // Run parameters
-    const int SEED = 0; ///< The seed for the random number generator.
+    const int SEED = 1; ///< The seed for the random number generator.
     bool BET_HEDGING_HELP;    ///< Apply reaction norm to age for dispersal?
     bool HELP_OBLIGATORY;      ///< Help obligatory for reproduction?
     bool PREDICTABLE_ENVIRONMENT;         ///< Is the environment (change in mOff) predictable?
