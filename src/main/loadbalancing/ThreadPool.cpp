@@ -46,11 +46,7 @@ void ThreadPool::worker() {
     }
 }
 
-int ThreadPool::queueLength() const {
-    return taskQueue.size();
+int ThreadPool::empty() const {
+    return taskQueue.empty();
 }
 
-void ThreadPool::subscribeToPoolEmpty(std::function<void()> callback) {
-    std::unique_lock lock(queueMutex);
-    poolEmptyCallback = callback;
-}

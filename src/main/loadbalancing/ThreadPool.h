@@ -14,9 +14,7 @@ public:
     ~ThreadPool();
 
     void enqueue(std::function<void()> task);
-    int queueLength() const;
-
-    void subscribeToPoolEmpty(std::function<void()> callback);
+    int empty() const;
 
 private:
     void worker();

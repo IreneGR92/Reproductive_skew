@@ -5,7 +5,6 @@
 #include "yaml-cpp/yaml.h"
 
 
-
 void SimulationRunner::run(const std::string &parameterFilePath, const std::shared_ptr<ThreadPool> &threadPool,
                            std::condition_variable &completionCondition) {
     if (!parameterFilePath.empty()) {
@@ -63,5 +62,5 @@ void SimulationRunner::spawnWorkerThreads(std::vector<std::unique_ptr<ResultCach
     spdlog::debug("Waiting for completion");
     std::unique_lock<std::mutex> lock(completionMutex);
     completionCondition.wait(lock, [&tasksRemaining] { return tasksRemaining == 0; });
-    spdlog::debug("All tasks completed");
+    spdlog::debug("All tasks completed --> Simulation completed for: {}", parameters->getName());
 }
