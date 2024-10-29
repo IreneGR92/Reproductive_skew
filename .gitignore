@@ -8,6 +8,7 @@ share/
 # CMake
 cmake-build-*/
 build
+.DS_Store
 
 Andrés_R_files/*
 
