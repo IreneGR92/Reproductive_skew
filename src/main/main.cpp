@@ -25,8 +25,6 @@
 #include "util/Config.h"
 #include "util/Util.h"
 
-void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<ThreadPool> &threadPool);
-
 std::atomic stopFlag(false);
 
 
@@ -55,78 +53,7 @@ int main() {
     auto parameters = Util::loadParameterFiles();
     spdlog::info("Loaded {} parameter files", parameters.size());
     // Run the simulations
-    runSimulations(parameters, pool);
+    SimulationRunner::runSimulations(parameters, pool, stopFlag);
     spdlog::drop_all();
     return 0;
-}
-
-
-/**
- * Runs the simulations based on the provided parameters and thread pool.
- *
- * @param parameters A vector of strings containing the parameter file names.
- * @param threadPool A shared pointer to the ThreadPool used for managing threads.
- */
-void runSimulations(const std::vector<std::string> &parameters, std::shared_ptr<ThreadPool> &threadPool) {
-    std::atomic threadPoolEmpty = false;
-    std::vector<std::thread> threads;
-    std::condition_variable completionCondition;
-    std::mutex completionMutex;
-
-    std::condition_variable finishedCondition;
-
-    for (size_t i = 0; i < parameters.size(); ++i) {
-        const std::string &parameterFilename = parameters[i];
-
-        spdlog::trace("Thread pool length: {}", threadPool->queueLength());
-        spdlog::info("start {}: {} of {}", parameterFilename, i + 1, parameters.size());
-        if (stopFlag == false) {
-            threads.emplace_back([parameterFilename, threadPool, &finishedCondition]() {
-                auto simulationRunner = std::make_unique<SimulationRunner>();
-                simulationRunner->run(parameterFilename, threadPool, finishedCondition);
-                spdlog::info("finish {}", parameterFilename);
-            });
-        }
-
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        threadPool->subscribeToPoolEmpty([&completionCondition] {
-            completionCondition.notify_one();
-        });
-        spdlog::trace("waiting.. Thread pool length: {}", threadPool->queueLength());
-
-        // Wait until the thread pool is empty
-        std::unique_lock lock(completionMutex);
-        completionCondition.wait(lock, [threadPool] {
-            return threadPool->queueLength() == 0;
-        });
-        spdlog::trace("continue Thread pool length: {}", threadPool->queueLength());
-
-        // Check if a stop signal was received
-        if (stopFlag) {
-            threadPool->subscribeToPoolEmpty([&threadPoolEmpty, &finishedCondition] {
-                threadPoolEmpty.store(true);
-                finishedCondition.notify_one();
-            });
-            spdlog::info("Gracefully stopping runs.. finishing current simulation queue {}", threadPool->queueLength());
-            spdlog::info("NEXT simulation (not done yet) is: {}", parameters[i + 1]);
-            break;
-        }
-    }
-
-    // Wait until all threads have finished
-    std::mutex finishedMutex;
-    std::unique_lock lock(finishedMutex);
-    finishedCondition.wait(lock, [&threadPoolEmpty] {
-        return threadPoolEmpty.load();
-    });
-
-    // Join all remaining threads
-    for (auto &thread: threads) {
-        if (thread.joinable()) {
-            thread.join();
-        }
-    }
-
-    // Log the completion status
-    stopFlag ? spdlog::info("not all simulations completed") : spdlog::info("All simulations completed");
 }
