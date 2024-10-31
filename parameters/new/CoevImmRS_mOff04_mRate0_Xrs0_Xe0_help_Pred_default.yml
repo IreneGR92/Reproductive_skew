@@ -1,11 +1,11 @@
 #Run parameters
 EVOLUTION_HELP_AFTER_DISPERSAL: false   # Help evolves only after the evolution of dispersal?
 NO_GROUP_AUGMENTATION: false
-NO_RELATEDNESS: true                  # Apply implementation to remove the effect of relatedness?
+NO_RELATEDNESS: false                   # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
 BET_HEDGING_HELP: false                 # Does help have a negative influence on fecundity when the environment is benign?
 HELP_OBLIGATORY: false                  # Is help obligatory for successful reproduction?
-PREDICTABLE_ENVIRONMENT: false          # Is the environment (change in mOff) predictable?
+PREDICTABLE_ENVIRONMENT: true          # Is the environment (change in mOff) predictable?
 
 MAX_COLONIES: 500     # max number of groups or colonies
 NUM_GENERATIONS: 100000
@@ -24,12 +24,12 @@ m: 0.1    # environmental mortality
 X0: 0.6     # base survival (between 0 and 1)
 Xh: 1    # cost of help in survival
 Xn: 3    # benefit of group size in survival
-Xe: 1    # cost of expulsion of immigrants in survival
-Xrs: 1    # cost of reproductive suppression in survival
+Xe: 0    # cost of expulsion of immigrants in survival
+Xrs: 0    # cost of reproductive suppression in survival
 
 # Modifiers in offspring mortality
-mOff: 1.0    # average survival of offspring
-mRate: 0.3   # rate of change in survival of offspring
+mOff: 0.4    # average survival of offspring
+mRate: 0   # rate of change in survival of offspring
 mStep: 4   # step size in survival of offspring
 
 #Modifiers in fecundity
@@ -44,8 +44,8 @@ y: 1    # max proportion of reproductive share
 #Genetic values
 
 #For help
-INIT_ALPHA: 1.0             #bigger values higher level of help
-MUTATION_ALPHA: 0.0        # mutation rate in alpha for level of help
+INIT_ALPHA: 0.0             #bigger values higher level of help
+MUTATION_ALPHA: 0.06        # mutation rate in alpha for level of help
 STEP_ALPHA: 0.04            # mutation step size in alpha for level of help
 
 #For dispersal
@@ -54,8 +54,8 @@ MUTATION_BETA: 0.06         # mutation rate for the propensity to disperse
 STEP_BETA: 0.04             # mutation step size for the propensity to disperse
 
 #For expulsion of immigrants
-INIT_GAMMA: 0.5              # bigger values higher expulsion
-MUTATION_GAMMA: 0.0         # mutation rate for the expulsion effort
+INIT_GAMMA: 0.0              # bigger values higher expulsion
+MUTATION_GAMMA: 0.06         # mutation rate for the expulsion effort
 STEP_GAMMA: 0.04             # mutation step size for the expulsion effort
 
 #For reproductive concessions

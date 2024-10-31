@@ -1,4 +1,4 @@
-MAX_THREADS: 1
+MAX_THREADS: 4
 RUN_MULTITHREADED: false
 OUTPUT_DIR: ""
 PARAMETERS_FOLDER: "../parameters"
@@ -8,7 +8,7 @@ COLLECTION_FILE: "debug.yml"
 
 #Logging
 #Set the log level (levels: trace, debug, info, warn, error, critical)
-LOG_LEVEL: "debug"
+LOG_LEVEL: "trace"
 LOG_PATTERN: "[%Y-%m-%d %H:%M] [%l] %v"
 LOG_TO_CONSOLE: true
 LOG_TO_FILE: true

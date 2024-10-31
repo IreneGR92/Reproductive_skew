@@ -8,8 +8,8 @@ HELP_OBLIGATORY: false                  # Is help obligatory for successful repr
 PREDICTABLE_ENVIRONMENT: true          # Is the environment (change in mOff) predictable?
 
 MAX_COLONIES: 500     # max number of groups or colonies
-NUM_GENERATIONS: 20000
-MAX_NUM_REPLICATES: 5
+NUM_GENERATIONS: 10
+MAX_NUM_REPLICATES: 100
 SKIP: 1000   # interval between print-outs
 
 #Fix values
