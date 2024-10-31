@@ -1,4 +1,3 @@
-
 #ifndef REPRODUCTIVE_SKEW_THREADPOOL_H
 #define REPRODUCTIVE_SKEW_THREADPOOL_H
 
@@ -11,10 +10,14 @@
 class ThreadPool {
 public:
     explicit ThreadPool(size_t numThreads);
+
     ~ThreadPool();
 
     void enqueue(std::function<void()> task);
-    int empty() const;
+
+    int queueLength() const;
+
+    bool empty() const;
 
 private:
     void worker();
@@ -23,7 +26,8 @@ private:
     TaskQueue taskQueue;
     std::mutex queueMutex;
     std::condition_variable condition;
-    std::condition_variable poolEmptyCondition; // Condition variable for pool empty
+
+private:
     bool stop;
     std::function<void()> poolEmptyCallback; // Callback for pool empty
 };

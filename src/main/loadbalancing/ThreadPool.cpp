@@ -46,7 +46,13 @@ void ThreadPool::worker() {
     }
 }
 
-int ThreadPool::empty() const {
-    return taskQueue.empty();
+
+
+
+int ThreadPool::queueLength() const {
+    return taskQueue.size();
 }
 
+bool ThreadPool::empty() const {
+    return taskQueue.empty();
+}
