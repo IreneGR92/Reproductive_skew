@@ -9,7 +9,10 @@ std::unique_ptr<ResultCache> Simulation::run() {
     statistics->calculateStatistics(population);
     statistics->printHeadersToConsole();
     statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
-    //    statistics->writeToCacheMain(replica, generation, population.getDeaths(), newBreederOutsider, newBreederInsider, inheritance);
+    results->writeToCacheMain(
+        statistics->generateMainCacheElement(generation, population.getDeaths(),
+                                             population.getNewBreederOutsider(),
+                                             population.getNewBreederInsider()));
 
 
     for (generation = 1; generation <= parameters->getNumGenerations(); generation++) {
