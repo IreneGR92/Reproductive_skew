@@ -48,7 +48,7 @@ std::vector<std::string> Util::loadParameterFiles() {
         while (std::getline(file, line)) {
             if (line.empty()) continue; //ignore empty lines
             if (line[0] == '#') continue; //ignore comments
-            parameterFiles.push_back(Config::GET_PARAMETERS_FOLDER() + "/" + line);
+            parameterFiles.push_back("parameters_" + line);
         }
         file.close();
     } else {
