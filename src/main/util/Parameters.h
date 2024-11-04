@@ -31,9 +31,9 @@ public:
 
     /**
      * @brief Constructor for the Parameters class that takes a URL.
-     * @param url The URL to load parameters from.
+     * @param filename The URL to load parameters from.
      */
-    explicit Parameters(const std::string &url, int replica);
+    explicit Parameters(const std::string &filename, int replica);
 
 
     /**
@@ -117,7 +117,7 @@ private:
 
     std::default_random_engine *generator; ///< A pointer to the random number generator.
 
-    std::string getName(std::string url); ///< Helper function to get the name of the simulation from a URL.
+    std::string removeExtension(std::string url); ///< Helper function to get the name of the simulation from a URL.
 
     void print(std::ofstream &outputStream); ///< Helper function to print the parameters to an output stream.
 

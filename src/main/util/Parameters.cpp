@@ -14,18 +14,18 @@ using namespace std;
 Parameters::Parameters(const int replica) : Parameters("../parameters/default.yml", replica) {
 }
 
-Parameters::Parameters(const string &url, const int replica) : replica(replica) {
-    std::string path = Config::GET_PARAMETERS_FOLDER() + "/" + url;
+Parameters::Parameters(const string &filename, const int replica) : replica(replica) {
+    std::string path = Config::GET_PARAMETERS_FOLDER() + "/" + filename;
 
     spdlog::debug("Loading parameters from file: {}", path);
     YAML::Node config;
     try {
         config = YAML::LoadFile(path);
     } catch (YAML::BadFile &e) {
-        spdlog::error("Error loading parameters from file: {}", url);
+        spdlog::error("Error loading parameters from file: {}", filename);
         throw e;
     }
-    this->name = this->getName(url);
+    this->name = this->removeExtension(filename);
     this->BET_HEDGING_HELP = config["BET_HEDGING_HELP"].as<bool>();
     this->HELP_OBLIGATORY = config["HELP_OBLIGATORY"].as<bool>();
     this->PREDICTABLE_ENVIRONMENT = config["PREDICTABLE_ENVIRONMENT"].as<bool>();
@@ -259,13 +259,12 @@ double Parameters::getStepDrift() const {
 }
 
 
-std::string Parameters::getName(std::string url) {
-    unsigned first = url.find("parameters/");
-    unsigned last = url.find(".yml");
-    string name = url.substr(first, last - first);
-    replace(name.begin(), name.end(), '/', '_');
-
-    return name;
+std::string Parameters::removeExtension(std::string filename) {
+    size_t lastDot = filename.find_last_of('.');
+    if (lastDot == std::string::npos) {
+        return filename; // No extension found
+    }
+    return filename.substr(0, lastDot);
 }
 
 
