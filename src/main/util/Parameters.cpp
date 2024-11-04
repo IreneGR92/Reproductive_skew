@@ -2,6 +2,8 @@
 #include <algorithm>
 #include "yaml-cpp/yaml.h"
 #include "Parameters.h"
+
+#include "Config.h"
 #include "spdlog/spdlog.h"
 
 
@@ -9,14 +11,16 @@ using namespace std;
 
 
 //default value if not provided
-Parameters::Parameters(const int replica) : Parameters("../parameters/default.yml", replica) {}
+Parameters::Parameters(const int replica) : Parameters("../parameters/default.yml", replica) {
+}
 
 Parameters::Parameters(const string &url, const int replica) : replica(replica) {
+    std::string path = Config::GET_PARAMETERS_FOLDER() + "/" + url;
 
-    spdlog::debug("Loading parameters from file: {}", url);
+    spdlog::debug("Loading parameters from file: {}", path);
     YAML::Node config;
     try {
-        config = YAML::LoadFile(url);
+        config = YAML::LoadFile(path);
     } catch (YAML::BadFile &e) {
         spdlog::error("Error loading parameters from file: {}", url);
         throw e;
@@ -280,11 +284,3 @@ shared_ptr<Parameters> Parameters::cloneWithIncrementedReplica(int newReplica) {
     deepCopy->generator = new std::default_random_engine(SEED + newReplica);
     return deepCopy;
 }
-
-
-
-
-
-
-
-

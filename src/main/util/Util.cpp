@@ -48,8 +48,7 @@ std::vector<std::string> Util::loadParameterFiles() {
         while (std::getline(file, line)) {
             if (line.empty()) continue; //ignore empty lines
             if (line[0] == '#') continue; //ignore comments
-            //TODO remove as soon as not needed anymore "parameters_" technically not needed its there due to the way the files were named in the past
-            parameterFiles.push_back("parameters_" + line);
+            parameterFiles.push_back(line);
         }
         file.close();
     } else {
