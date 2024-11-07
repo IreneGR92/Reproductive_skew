@@ -134,6 +134,7 @@ Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
     int counter = 0;
     double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
     double sumProductXY = 0, sumProductXX = 0, sumProductYY = 0;
+    double X, Y;
 
     for (const Group &group: groups) {
         for (const Individual &helper: group.getHelpers()) {
@@ -153,8 +154,8 @@ Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
     for (const Group &group: groups) {
         for (const Individual &helper: group.getHelpers()) {
             if (!std::isnan(helper.getDispersal()) || !std::isnan(helper.getHelp())) {
-                double X = (helper.getDrift() - meanX);
-                double Y = (group.getMainBreeder().getDrift() - meanY);
+                X = (helper.getDrift() - meanX);
+                Y = (group.getMainBreeder().getDrift() - meanY);
 
                 sumProductXY += X * Y;
                 sumProductXX += X * X;
@@ -168,7 +169,7 @@ Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
     }
 
     if (stdevX * stdevY * counter == 0) {
-        correlation = 0;
+        correlation = 999; //TODO: make R code interpret this as NA
     } else {
         correlation = sumProductXY / (stdevX * stdevY * counter);
     }
@@ -179,11 +180,13 @@ Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
 
 
 double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups) {
+
     //Relatedness
     double correlation;
     int counter = 0;
     double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
     double sumProductXY = 0, sumProductXX = 0, sumProductYY = 0;
+    double X, Y;
 
     for (const Group &group: groups) {
         for (const Individual &breeder: group.getSubordinateBreeders()) {
@@ -202,11 +205,10 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
 
     for (const Group &group: groups) {
         for (const Individual &breeder: group.getSubordinateBreeders()) {
-            if (!std::isnan(breeder.getDispersal()) ||
-                !std::isnan(breeder.getHelp())) {
-                //TODO: check if this is correct or needed
-                double X = (breeder.getDrift() - meanX);
-                double Y = (group.getMainBreeder().getDrift() - meanY);
+            if (!std::isnan(breeder.getDispersal()) || !std::isnan(breeder.getHelp())) {
+
+                X = (breeder.getDrift() - meanX);
+                Y = (group.getMainBreeder().getDrift() - meanY);
 
                 sumProductXY += X * Y;
                 sumProductXX += X * X;
@@ -220,7 +222,7 @@ double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups
     }
 
     if (stdevX * stdevY * counter == 0) {
-        correlation = 0;
+        correlation = 999; //TODO: make R code interpret this as NA
     } else {
         correlation = sumProductXY / (stdevX * stdevY * counter);
     }
