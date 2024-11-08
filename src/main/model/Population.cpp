@@ -23,6 +23,10 @@ void Population::reset() {
     this->newBreederInsider = 0;
     this->newBreederOutsider = 0;
     this->emigrants = 0;
+    this->groupColonization = 0;
+
+
+
 }
 
 Population::Population(const std::shared_ptr<Parameters>& parameters) : parameters(parameters) {
@@ -104,9 +108,14 @@ void Population::immigrate() {
     if (!floaters.empty()) { // checks if there are any floaters available for immigration.
         for (int i: indices) {
             Group &group = groups[i];
+
+            // Check if the group is empty, if so, floaters are recolonizing the territory
+            if (!group.isBreederAlive() && group.getHelpers().empty() && group.getSubordinateBreeders().empty()) {
+                groupColonization++;
+            }
+
             // Add new helpers to the group
-            auto newHelpers = group.getAcceptedFloaters(
-                    floaters); //  gets a list of floaters that are accepted by the current group.
+            auto newHelpers = group.getAcceptedFloaters(floaters); //  gets a list of floaters that are accepted by the current group.
             group.addHelpers(newHelpers);
 
         }
@@ -232,6 +241,10 @@ int Population::getNewBreederInsider() const {
 
 int Population::getInheritance() const {
     return inheritance;
+}
+
+int Population::getGroupColonization() const {
+    return groupColonization;
 }
 
 

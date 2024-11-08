@@ -22,13 +22,13 @@ class Population {
 
     IndividualVector floaters; ///< A vector of Individual objects that are not part of any group.
 
-    int deaths = 0; ///< The number of deaths in the population.
+    int deaths, groupColonization; ///< The number of deaths in the population.
 
-    int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0; ///< Statistics related to new breeders and inheritance.
+    int newBreederOutsider, newBreederInsider, inheritance; ///< Statistics related to new breeders and inheritance.
 
-    int emigrants = 0; ///< The number of floaters generated before immigration.
+    int emigrants; ///< The number of floaters generated before immigration.
 
-    double mk = 0; ///< variable environmental mortality of offspring.
+    double mk; ///< variable environmental mortality of offspring.
 
     // variables to change the predictability of the environment
     int conditionCheckCounter = 0;
@@ -85,6 +85,8 @@ public:
     double getOffspringSurvival();
 
     double getMk() const;
+
+    int getGroupColonization() const;
 
 
 };

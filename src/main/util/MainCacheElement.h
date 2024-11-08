@@ -11,6 +11,7 @@ public:
     double groupSize;
     double numOfSubBreeders;
     double groupExtinction;
+    double groupColonizationRate;
     double ageHelpers;
     double ageFloaters;
     double ageDomBreeders;
@@ -39,14 +40,16 @@ public:
     int newBreederOutsider;
     int newBreederInsider;
 
-    MainCacheElement(int gen, int pop, int dths, int totalFlts, double grpSize, double numSubBrdrs, double ageHlprs,
+    MainCacheElement(int gen, int pop, int dths, int totalFlts, double extint, double colonRate,
+                     double grpSize, double numSubBrdrs, double ageHlprs,
                      double ageFltrs, double ageDomBrdrs, double ageSubBrdrs, double ageBcmBrdr, double alph,
                      double bet,
                      double gmm, double dlt, double dsprsl, double accRate, double hlp, double cumHlp, double survHlprs,
                      double survFltrs, double survDomBrdrs, double survSubBrdrs, double m, double reprShareRate,
                      double fecGrpMean, double fecGrpSD, double offMainBrdr, double offSubBrdrs, double relHlprs,
                      double relBrdrs, int newBrdrOut, int newBrdrIn)
-        : generation(gen), population(pop), deaths(dths), totalFloaters(totalFlts), groupSize(grpSize),
+        : generation(gen), population(pop), deaths(dths), totalFloaters(totalFlts), groupExtinction(extint),
+          groupColonizationRate(colonRate), groupSize(grpSize),
           numOfSubBreeders(numSubBrdrs), ageHelpers(ageHlprs), ageFloaters(ageFltrs), ageDomBreeders(ageDomBrdrs),
           ageSubBreeders(ageSubBrdrs), ageBecomeBreeder(ageBcmBrdr), alpha(alph), beta(bet), gamma(gmm), delta(dlt),
           dispersal(dsprsl), acceptanceRate(accRate), help(hlp), cumulativeHelp(cumHlp), survivalHelpers(survHlprs),

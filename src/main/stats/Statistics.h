@@ -22,10 +22,9 @@ private:
 
     // Population parameters and Statistics
     int population{}, totalFloaters{}, totalHelpers{}, totalMainBreeders{}, totalSubordinateBreeders{}, emptyGroupsCount{}; // Counters
-
     double relatednessHelpers{}, relatednessBreeders{};
-    double mk{}; // variable environmental mortality of offspring.
-    double groupExtinction{};
+    double mk{}; // variable environmental survival of offspring.
+    double groupExtinction{}, groupColonizationRate{};
 
     // StatisticalFormulas objects for various statistics
     StatisticalFormulas groupSize, numOfSubBreeders;
