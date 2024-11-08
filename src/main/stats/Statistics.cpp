@@ -125,11 +125,9 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     relatednessBreeders = calculateRelatednessBreeders(populationObj.getGroups());
 }
 
-double
-Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
-    //TODO: generalize relatedness calculation
 
-    //Relatedness
+template <typename GetIndividualsFunc>
+double calculateRelatedness(const std::vector<Group> &groups, GetIndividualsFunc getIndividuals) {
     double correlation;
     int counter = 0;
     double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
@@ -137,9 +135,10 @@ Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
     double X, Y;
 
     for (const Group &group: groups) {
-        for (const Individual &helper: group.getHelpers()) {
-            if (group.isBreederAlive() && group.hasHelpers()) {
-                sumX += helper.getDrift();
+        auto individuals = getIndividuals(group);
+        if (group.isBreederAlive() && !individuals.empty()) {
+            for (const Individual &individual: individuals) {
+                sumX += individual.getDrift();
                 sumY += group.getMainBreeder().getDrift();
                 counter++;
             }
@@ -152,9 +151,10 @@ Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
     }
 
     for (const Group &group: groups) {
-        for (const Individual &helper: group.getHelpers()) {
-            if (!std::isnan(helper.getDispersal()) || !std::isnan(helper.getHelp())) {
-                X = (helper.getDrift() - meanX);
+        auto individuals = getIndividuals(group);
+        for (const Individual &individual: individuals) {
+            if (group.isBreederAlive() && !individuals.empty()) {
+                X = (individual.getDrift() - meanX);
                 Y = (group.getMainBreeder().getDrift() - meanY);
 
                 sumProductXY += X * Y;
@@ -169,66 +169,20 @@ Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
     }
 
     if (stdevX * stdevY * counter == 0) {
-        correlation = 999; //TODO: make R code interpret this as NA
+        correlation = 999; // TODO: Interpret as NA in R code
     } else {
         correlation = sumProductXY / (stdevX * stdevY * counter);
     }
 
-//    assert(abs(correlation) <= 1);
     return correlation;
 }
 
+double Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
+    return calculateRelatedness(groups, [](const Group &group) { return group.getHelpers(); });
+}
 
 double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups) {
-
-    //Relatedness
-    double correlation;
-    int counter = 0;
-    double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
-    double sumProductXY = 0, sumProductXX = 0, sumProductYY = 0;
-    double X, Y;
-
-    for (const Group &group: groups) {
-        for (const Individual &breeder: group.getSubordinateBreeders()) {
-            if (group.isBreederAlive() && group.hasSubordinateBreeders()) {
-                sumX += breeder.getDrift();
-                sumY += group.getMainBreeder().getDrift();
-                counter++;
-            }
-        }
-    }
-
-    if (counter != 0) {
-        meanX = sumX / counter;
-        meanY = sumY / counter;
-    }
-
-    for (const Group &group: groups) {
-        for (const Individual &breeder: group.getSubordinateBreeders()) {
-            if (!std::isnan(breeder.getDispersal()) || !std::isnan(breeder.getHelp())) {
-
-                X = (breeder.getDrift() - meanX);
-                Y = (group.getMainBreeder().getDrift() - meanY);
-
-                sumProductXY += X * Y;
-                sumProductXX += X * X;
-                sumProductYY += Y * Y;
-            }
-        }
-    }
-    if (counter != 0) {
-        stdevX = sqrt(sumProductXX / counter);
-        stdevY = sqrt(sumProductYY / counter);
-    }
-
-    if (stdevX * stdevY * counter == 0) {
-        correlation = 999; //TODO: make R code interpret this as NA
-    } else {
-        correlation = sumProductXY / (stdevX * stdevY * counter);
-    }
-
-//    assert(abs(correlation) <= 1);
-    return correlation;
+    return calculateRelatedness(groups, [](const Group &group) { return group.getSubordinateBreeders(); });
 }
 
 
