@@ -2,6 +2,7 @@
 #define GROUP_AUGMENTATION_STATISTICALFORMULAS_H
 
 #include<vector>
+#include "../model/Group.h"
 
 /**
  * @class StatisticalFormulas
@@ -15,59 +16,26 @@ class StatisticalFormulas {
 
 public:
 
-    /**
-     * @brief Adds a value to the vector.
-     * @param toAdd The value to add.
-     */
     void addValue(double toAdd);
 
-    /**
-     * @brief Adds multiple values to the vector.
-     * @param values The vector of values to add.
-     */
     void addValues(const std::vector<double> &values);
 
-    /**
-     * @brief Calculates the mean of the values in the vector.
-     * @return The mean of the values.
-     */
     double calculateMean();
 
-    /**
-     * @brief Calculates the standard deviation of the values in the vector.
-     * @return The standard deviation of the values.
-     */
     double calculateSD();
 
-    /**
-     * @brief Calculates the correlation between the values in this vector and another vector.
-     * @param y The other vector of values.
-     * @return The correlation between the two vectors.
-     */
     double correlation(StatisticalFormulas y);
 
-    /**
-     * @brief Returns the maximum value in the vector.
-     * @return The maximum value.
-     */
+    double calculateRelatednessHelpers(const std::vector<Group> &groups);
+
+    double calculateRelatednessBreeders(const std::vector<Group> &groups);
+
     int getMaxValue();
 
-    /**
-     * @brief Merges another StatisticalFormulas object into this object.
-     * @param statisticalFormulas The other StatisticalFormulas object.
-     */
     void merge(StatisticalFormulas statisticalFormulas);
 
-    /**
-     * @brief Returns the size of the vector.
-     * @return The size of the vector.
-     */
     int size();
 
-    /**
-     * @brief Returns the values in the vector.
-     * @return The values in the vector.
-     */
     std::vector<double> getValues() const;
 
 };

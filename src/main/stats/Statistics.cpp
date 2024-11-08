@@ -6,12 +6,11 @@ using namespace std;
 
 /* CALCULATE STATISTICS */
 void Statistics::calculateStatistics(const Population &populationObj) {
-    //Counters
-    population = 0, totalFloaters = 0, totalHelpers = 0, totalMainBreeders = 0, totalSubordinateBreeders = 0;
+    // Counters
+    population = 0, totalFloaters = 0, totalHelpers = 0, totalMainBreeders = 0, totalSubordinateBreeders = 0, emptyGroupsCount = 0;
 
-    //Relatedness
+    // Relatedness
     relatednessHelpers = 0.0, relatednessBreeders = 0.0;
-
 
     IndividualVector mainBreeders;
     IndividualVector subordinateBreeders;
@@ -27,7 +26,6 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     std::vector<double> offspringMainBreeders;
     std::vector<double> offspringSubordinateBreeders;
     std::vector<double> totalOffspringGroups;
-
 
     for (const Individual &helper: helpers) {
         if (helper.getFishType() != HELPER) {
@@ -50,6 +48,9 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     mk = populationObj.getMk();
 
     for (const Group &group: populationObj.getGroups()) {
+        if (!group.isBreederAlive() && group.getHelpers().empty() && group.getSubordinateBreeders().empty()) {
+            emptyGroupsCount++;
+        }
         if (group.isBreederAlive()) {
             mainBreeders.push_back(group.getMainBreeder());
         }
@@ -74,7 +75,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     allBreeders.merge(mainBreeders);
     allBreeders.merge(subordinateBreeders);
 
-    //Counters
+    // Counters
     totalHelpers = helpers.size();
     totalFloaters = populationObj.getFloaters().size();
     totalMainBreeders = mainBreeders.size();
@@ -82,15 +83,15 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     population = totalMainBreeders + totalSubordinateBreeders + totalHelpers + totalFloaters;
     //    assert(population > 0);
 
-    //Initialize the stats
+    // Initialize the stats
 
-    //Genes
+    // Genes
     alpha.addValues(individualsAll.get(ALPHA));
     beta.addValues(individualsAll.get(BETA));
     gamma.addValues(individualsAll.get(GAMMA));
     delta.addValues(individualsAll.get(DELTA));
 
-    //Phenotypes
+    // Phenotypes
     age.addValues(individualsAll.get(AGE));
     ageDomBreeders.addValues(mainBreeders.get(AGE));
     ageSubBreeders.addValues(subordinateBreeders.get(AGE));
@@ -107,8 +108,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     survivalHelpers.addValues(helpers.get(SURVIVAL));
     survivalFloaters.addValues(populationObj.getFloaters().get(SURVIVAL));
 
-
-    //Group attributes
+    // Group attributes
     groupSize.addValues(groupSizes);
     numOfSubBreeders.addValues(numSubBreeders);
     cumulativeHelp.addValues(cumHelp);
@@ -119,79 +119,12 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     offspringOfSubordinateBreeders.addValues(offspringSubordinateBreeders);
     totalOffspringGroup.addValues(totalOffspringGroups);
 
-
-    //Correlations in different levels
-    relatednessHelpers = calculateRelatednessHelpers(populationObj.getGroups());
-    relatednessBreeders = calculateRelatednessBreeders(populationObj.getGroups());
+    // Correlations in different levels
+    relatednessHelpers = relatedness.calculateRelatednessHelpers(populationObj.getGroups());
+    relatednessBreeders = relatedness.calculateRelatednessBreeders(populationObj.getGroups());
 }
 
 
-template <typename GetIndividualsFunc>
-double calculateRelatedness(const std::vector<Group> &groups, GetIndividualsFunc getIndividuals) {
-    double correlation;
-    int counter = 0;
-    double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
-    double sumProductXY = 0, sumProductXX = 0, sumProductYY = 0;
-
-    // Calculate sums and means
-    for (const Group &group: groups) {
-        if (group.isBreederAlive()) {
-            auto individuals = getIndividuals(group);
-            if (!individuals.empty()) {
-                double mainBreederDrift = group.getMainBreeder().getDrift();
-                for (const Individual &individual: individuals) {
-                    sumX += individual.getDrift();
-                    sumY += mainBreederDrift;
-                    counter++;
-                }
-            }
-        }
-    }
-
-    if (counter != 0) {
-        meanX = sumX / counter;
-        meanY = sumY / counter;
-    }
-
-    // Calculate products for standard deviation and correlation
-    for (const Group &group: groups) {
-        if (group.isBreederAlive()) {
-            auto individuals = getIndividuals(group);
-            if (!individuals.empty()) {
-                double mainBreederDrift = group.getMainBreeder().getDrift();
-                for (const Individual &individual: individuals) {
-                    double X = (individual.getDrift() - meanX);
-                    double Y = (mainBreederDrift - meanY);
-
-                    sumProductXY += X * Y;
-                    sumProductXX += X * X;
-                    sumProductYY += Y * Y;
-                }
-            }
-        }
-    }
-
-    if (counter != 0) {
-        stdevX = sqrt(sumProductXX / counter);
-        stdevY = sqrt(sumProductYY / counter);
-    }
-
-    if (stdevX * stdevY * counter == 0) {
-        correlation = 999; // TODO: Interpret as NA in R code
-    } else {
-        correlation = sumProductXY / (stdevX * stdevY * counter);
-    }
-
-    return correlation;
-}
-
-double Statistics::calculateRelatednessHelpers(const std::vector<Group> &groups) {
-    return calculateRelatedness(groups, [](const Group &group) { return group.getHelpers(); });
-}
-
-double Statistics::calculateRelatednessBreeders(const std::vector<Group> &groups) {
-    return calculateRelatedness(groups, [](const Group &group) { return group.getSubordinateBreeders(); });
-}
 
 
 /* PRINT STATISTICS TO CONSOLE */

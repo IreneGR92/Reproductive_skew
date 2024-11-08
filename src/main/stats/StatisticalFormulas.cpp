@@ -67,6 +67,74 @@ double StatisticalFormulas::correlation(StatisticalFormulas y) {
     return correlation;
 }
 
+template <typename GetIndividualsFunc>
+double calculateRelatedness(const std::vector<Group> &groups, GetIndividualsFunc getIndividuals) {
+    double correlation;
+    int counter = 0;
+    double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
+    double sumProductXY = 0, sumProductXX = 0, sumProductYY = 0;
+
+    // Calculate sums and means
+    for (const Group &group: groups) {
+        if (group.isBreederAlive()) {
+            auto individuals = getIndividuals(group);
+            if (!individuals.empty()) {
+                double mainBreederDrift = group.getMainBreeder().getDrift();
+                for (const Individual &individual: individuals) {
+                    sumX += individual.getDrift();
+                    sumY += mainBreederDrift;
+                    counter++;
+                }
+            }
+        }
+    }
+
+    if (counter != 0) {
+        meanX = sumX / counter;
+        meanY = sumY / counter;
+    }
+
+    // Calculate products for standard deviation and correlation
+    for (const Group &group: groups) {
+        if (group.isBreederAlive()) {
+            auto individuals = getIndividuals(group);
+            if (!individuals.empty()) {
+                double mainBreederDrift = group.getMainBreeder().getDrift();
+                for (const Individual &individual: individuals) {
+                    double X = (individual.getDrift() - meanX);
+                    double Y = (mainBreederDrift - meanY);
+
+                    sumProductXY += X * Y;
+                    sumProductXX += X * X;
+                    sumProductYY += Y * Y;
+                }
+            }
+        }
+    }
+
+    if (counter != 0) {
+        stdevX = sqrt(sumProductXX / counter);
+        stdevY = sqrt(sumProductYY / counter);
+    }
+
+    if (stdevX * stdevY * counter == 0) {
+        correlation = 999; // TODO: Interpret as NA in R code
+    } else {
+        correlation = sumProductXY / (stdevX * stdevY * counter);
+    }
+
+    return correlation;
+}
+
+double StatisticalFormulas::calculateRelatednessHelpers(const std::vector<Group> &groups) {
+    return calculateRelatedness(groups, [](const Group &group) { return group.getHelpers(); });
+}
+
+double StatisticalFormulas::calculateRelatednessBreeders(const std::vector<Group> &groups) {
+    return calculateRelatedness(groups, [](const Group &group) { return group.getSubordinateBreeders(); });
+}
+
+
 int StatisticalFormulas::getMaxValue() {
     int max = *max_element(individualValues.begin(), individualValues.end());
     return max;
