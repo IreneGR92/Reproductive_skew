@@ -81,6 +81,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     totalMainBreeders = mainBreeders.size();
     totalSubordinateBreeders = subordinateBreeders.size();
     population = totalMainBreeders + totalSubordinateBreeders + totalHelpers + totalFloaters;
+    groupExtinction = static_cast<double>(emptyGroupsCount) / static_cast<double>(parameters->getMaxColonies());
     //    assert(population > 0);
 
     // Initialize the stats
@@ -119,7 +120,7 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     offspringOfSubordinateBreeders.addValues(offspringSubordinateBreeders);
     totalOffspringGroup.addValues(totalOffspringGroups);
 
-    // Correlations in different levels
+    // Relatedness
     relatednessHelpers = relatedness.calculateRelatednessHelpers(populationObj.getGroups());
     relatednessBreeders = relatedness.calculateRelatednessBreeders(populationObj.getGroups());
 }
@@ -132,8 +133,8 @@ void Statistics::calculateStatistics(const Population &populationObj) {
 void Statistics::printHeadersToConsole() {
     // column headings on screen
     spdlog::debug(
-            "{:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9}",
-            "gen", "pop", "deaths", "emig", "float", "group", "maxGroup", "subBreed", "age", "alpha", "beta", "gamma",
+            "{:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9} {:<9}",
+            "gen", "pop", "deaths", "emig", "float","extinct", "group", "maxGroup",  "subBreed",  "age", "alpha", "beta", "gamma",
             "delta", "disper", "immRate", "help", "surv", "survOff", "skew", "offpr", "offsDom", "offsSub", "relatH",
             "relatB");
 }
@@ -141,10 +142,10 @@ void Statistics::printHeadersToConsole() {
 void Statistics::printToConsole(int generation, int deaths, int emigrants) {
     // show values on screen
     spdlog::debug(
-            "{:<9} {:<9} {:<9} {:<9} {:<9} {:<9.2f} {:<9} {:<9.2f} {:<9.2f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f}",
-            generation, population, deaths, emigrants, totalFloaters, groupSize.calculateMean(),
-            groupSize.getMaxValue(),
-            numOfSubBreeders.calculateMean(), age.calculateMean(), alpha.calculateMean(), beta.calculateMean(),
+            "{:<9} {:<9} {:<9} {:<9} {:<9} {:<9.2f} {:<9.2f} {:<9} {:<9.2f} {:<9.2f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.4f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f} {:<9.2f}",
+            generation, population, deaths, emigrants, totalFloaters, groupExtinction, groupSize.calculateMean(),
+            groupSize.getMaxValue(), numOfSubBreeders.calculateMean(),
+            age.calculateMean(), alpha.calculateMean(), beta.calculateMean(),
             gamma.calculateMean(), delta.calculateMean(), dispersal.calculateMean(), acceptanceRate.calculateMean(),
             help.calculateMean(), survival.calculateMean(), mk, reproductiveShareRate.calculateMean(),
             fecundityGroup.calculateMean(), offspringMainBreeder.calculateMean(),

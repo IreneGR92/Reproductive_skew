@@ -23,8 +23,9 @@ private:
     // Population parameters and Statistics
     int population{}, totalFloaters{}, totalHelpers{}, totalMainBreeders{}, totalSubordinateBreeders{}, emptyGroupsCount{}; // Counters
 
-    double relatednessHelpers{}, relatednessBreeders{}; ///< The relatedness in the population.
+    double relatednessHelpers{}, relatednessBreeders{};
     double mk{}; // variable environmental mortality of offspring.
+    double groupExtinction{};
 
     // StatisticalFormulas objects for various statistics
     StatisticalFormulas groupSize, numOfSubBreeders;

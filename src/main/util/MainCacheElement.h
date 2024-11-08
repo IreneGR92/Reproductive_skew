@@ -10,6 +10,7 @@ public:
     int totalFloaters;
     double groupSize;
     double numOfSubBreeders;
+    double groupExtinction;
     double ageHelpers;
     double ageFloaters;
     double ageDomBreeders;

@@ -13,8 +13,8 @@ void FilePrinter::writeMainFile(std::vector<std::unique_ptr<ResultCache> > &resu
     this->printHeader(*this->mainWriter);
     // column headings in output file main
     *this->mainWriter << "Replica" << "\t" << "Generation" << "\t" << "Population" << "\t"
-            << "Deaths" << "\t" << "Floaters" << "\t" << "Group_size" << "\t" << "Sub_Breeders"
-            << "\t"
+            << "Deaths"   "\t" << "Floaters" << "\t" << "GroupExtinction" << "\t"
+            << "Group_size" << "\t" << "Sub_Breeders" << "\t"
             << "Age_H" << "\t" << "Age_F" << "\t" << "Age_DomB" << "\t" << "Age_SubB" << "\t"
             << "Age_New_Breeder" << "\t"
             << "Alpha" << "\t" << "Beta" << "\t" << "Gamma" << "\t" << "Delta" << "\t"
@@ -41,6 +41,7 @@ void FilePrinter::writeMainFile(std::vector<std::unique_ptr<ResultCache> > &resu
                     << "\t" << cacheElement.population
                     << "\t" << cacheElement.deaths
                     << "\t" << cacheElement.totalFloaters
+                    << "\t" << setprecision(PRECISION) << cacheElement.groupExtinction
                     << "\t" << setprecision(PRECISION) << cacheElement.groupSize
                     << "\t" << setprecision(PRECISION) << cacheElement.numOfSubBreeders
                     << "\t" << setprecision(PRECISION) << cacheElement.ageHelpers
@@ -126,8 +127,7 @@ void FilePrinter::printHeader(std::ofstream &writer) {
             << "No_group_augmentation?:" << "\t" << parameters->isNoGroupAugmentation() << endl
             << "No_effect_relatedness?:" << "\t" << parameters->isNoRelatedness() << endl
             << "No_effect_age_inheritance?:" << "\t" << parameters->isAgeNoInfluenceInheritance() << endl
-            << "Initial_population:" << "\t" << parameters->getMaxColonies() * (parameters->getInitNumHelpers() + 1)
-            << endl
+            << "Initial_population:" << "\t" << parameters->getMaxColonies() * (parameters->getInitNumHelpers() + 1) << endl
             << "Number_of_colonies:" << "\t" << parameters->getMaxColonies() << endl
             << "Number_generations:" << "\t" << parameters->getNumGenerations() << endl
             << "Number_replicates:" << "\t" << parameters->getMaxNumReplicates() << endl
