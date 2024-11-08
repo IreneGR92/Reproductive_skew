@@ -74,7 +74,7 @@ void SimulationRunner::runSimulations(const std::vector<std::string> &parameters
     }
 
     // Log the completion status
-    stopFlag ? spdlog::info("not all simulations completed") : spdlog::info("All simulations completed");
+    if (stopFlag) { spdlog::info("Not all simulations completed");} else { spdlog::info("All simulations completed");}
 }
 
 void SimulationRunner::runSimulation(std::shared_ptr<Simulation> simulation, std::unique_ptr<ResultCache> &result,
