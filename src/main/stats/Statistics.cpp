@@ -132,15 +132,18 @@ double calculateRelatedness(const std::vector<Group> &groups, GetIndividualsFunc
     int counter = 0;
     double meanX = 0, meanY = 0, stdevX = 0, stdevY = 0, sumX = 0.0, sumY = 0.0;
     double sumProductXY = 0, sumProductXX = 0, sumProductYY = 0;
-    double X, Y;
 
+    // Calculate sums and means
     for (const Group &group: groups) {
-        auto individuals = getIndividuals(group);
-        if (group.isBreederAlive() && !individuals.empty()) {
-            for (const Individual &individual: individuals) {
-                sumX += individual.getDrift();
-                sumY += group.getMainBreeder().getDrift();
-                counter++;
+        if (group.isBreederAlive()) {
+            auto individuals = getIndividuals(group);
+            if (!individuals.empty()) {
+                double mainBreederDrift = group.getMainBreeder().getDrift();
+                for (const Individual &individual: individuals) {
+                    sumX += individual.getDrift();
+                    sumY += mainBreederDrift;
+                    counter++;
+                }
             }
         }
     }
@@ -150,19 +153,24 @@ double calculateRelatedness(const std::vector<Group> &groups, GetIndividualsFunc
         meanY = sumY / counter;
     }
 
+    // Calculate products for standard deviation and correlation
     for (const Group &group: groups) {
-        auto individuals = getIndividuals(group);
-        for (const Individual &individual: individuals) {
-            if (group.isBreederAlive() && !individuals.empty()) {
-                X = (individual.getDrift() - meanX);
-                Y = (group.getMainBreeder().getDrift() - meanY);
+        if (group.isBreederAlive()) {
+            auto individuals = getIndividuals(group);
+            if (!individuals.empty()) {
+                double mainBreederDrift = group.getMainBreeder().getDrift();
+                for (const Individual &individual: individuals) {
+                    double X = (individual.getDrift() - meanX);
+                    double Y = (mainBreederDrift - meanY);
 
-                sumProductXY += X * Y;
-                sumProductXX += X * X;
-                sumProductYY += Y * Y;
+                    sumProductXY += X * Y;
+                    sumProductXX += X * X;
+                    sumProductYY += Y * Y;
+                }
             }
         }
     }
+
     if (counter != 0) {
         stdevX = sqrt(sumProductXX / counter);
         stdevY = sqrt(sumProductYY / counter);
