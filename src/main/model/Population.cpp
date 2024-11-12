@@ -24,12 +24,15 @@ void Population::reset() {
     this->newBreederOutsider = 0;
     this->emigrants = 0;
     this->groupColonization = 0;
-
-
-
+    this->mk = 0;
 }
 
-Population::Population(const std::shared_ptr<Parameters>& parameters) : parameters(parameters) {
+Population::Population(const std::shared_ptr<Parameters> &parameters) : parameters(parameters), deaths(0),
+                                                                        groupColonization(0),
+                                                                        newBreederOutsider(0),
+                                                                        newBreederInsider(0),
+                                                                        inheritance(0),
+                                                                        emigrants(0), mk(0) {
     for (int i = 0; i < parameters->getMaxColonies(); i++) {
         Group group(parameters);
         this->groups.emplace_back(group);
@@ -37,17 +40,16 @@ Population::Population(const std::shared_ptr<Parameters>& parameters) : paramete
 }
 
 void Population::disperse() {
-
-    for (auto & group : groups) {
+    for (auto &group: groups) {
         this->floaters.merge(group.disperse());
     }
-    this->emigrants = floaters.size(); // After all floater are created, the number of emigrants is set to the number of floaters.
+    this->emigrants = floaters.size();
+    // After all floater are created, the number of emigrants is set to the number of floaters.
 
     this->reassignNoRelatedHelpers();
 }
 
 void Population::reassignNoRelatedHelpers() {
-
     int groupID = 0;
 
     std::vector<Individual> noRelatedHelpers;
@@ -68,7 +70,6 @@ void Population::reassignNoRelatedHelpers() {
 
     // Assign helpers to random group while maintaining the same group size
     if (!allNoRelatedHelpers.empty()) {
-
         int selectGroupID;
         int timeout = 0;
         while (!allNoRelatedHelpers.empty()) {
@@ -76,19 +77,21 @@ void Population::reassignNoRelatedHelpers() {
             if (noRelatednessGroupsID.size() > 1) {
                 std::uniform_int_distribution<int> uniformIntDistribution(0, noRelatednessGroupsID.size() - 1);
                 selectGroupIndex = uniformIntDistribution(
-                        *parameters->getGenerator()); // selects a random index the noRelatednessGroupsID vector
+                    *parameters->getGenerator()); // selects a random index the noRelatednessGroupsID vector
             }
-            selectGroupID = noRelatednessGroupsID[selectGroupIndex]; // translates the index to the ID of a group from the noRelatednessGroupsID vector
+            selectGroupID = noRelatednessGroupsID[selectGroupIndex];
+            // translates the index to the ID of a group from the noRelatednessGroupsID vector
 
             auto indexLastIndividual = allNoRelatedHelpers.size() - 1;
 
             if (selectGroupID != allNoRelatedHelpers[indexLastIndividual].getGroupIndex() || timeout > 5000) {
                 noRelatednessGroupsID.erase(noRelatednessGroupsID.begin() +
-                                            selectGroupIndex); //remove the group ID from the vector to not draw it again
+                                            selectGroupIndex);
+                //remove the group ID from the vector to not draw it again
                 groups[selectGroupID].addHelper(
-                        allNoRelatedHelpers[indexLastIndividual]); //add the no related helper to the helper vector in a randomly selected group
+                    allNoRelatedHelpers[indexLastIndividual]);
+                //add the no related helper to the helper vector in a randomly selected group
                 allNoRelatedHelpers.pop_back(); //remove the no related helper from its vector
-
             } else {
                 timeout++; //if not other group to put the helper than the original one, do it anyway
             }
@@ -98,14 +101,14 @@ void Population::reassignNoRelatedHelpers() {
 
 
 void Population::immigrate() {
-
-// Shuffle the group indices. This is done to ensure that the immigration process does not favor any particular group due to their position in the groups vector.
+    // Shuffle the group indices. This is done to ensure that the immigration process does not favor any particular group due to their position in the groups vector.
     std::vector<int> indices(groups.size());
     std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers
     std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
 
-// Loop through the groups in a random order
-    if (!floaters.empty()) { // checks if there are any floaters available for immigration.
+    // Loop through the groups in a random order
+    if (!floaters.empty()) {
+        // checks if there are any floaters available for immigration.
         for (int i: indices) {
             Group &group = groups[i];
 
@@ -115,9 +118,9 @@ void Population::immigrate() {
             }
 
             // Add new helpers to the group
-            auto newHelpers = group.getAcceptedFloaters(floaters); //  gets a list of floaters that are accepted by the current group.
+            auto newHelpers = group.getAcceptedFloaters(floaters);
+            //  gets a list of floaters that are accepted by the current group.
             group.addHelpers(newHelpers);
-
         }
     }
 }
@@ -153,7 +156,6 @@ void Population::mortalityFloaters() {
     auto floaterIt = floaters.begin();
     int size = floaters.size();
     for (int count = 0; !floaters.empty() && size > count; count++) {
-
         //Mortality floaters
         if (parameters->uniform(*parameters->getGenerator()) > floaterIt->getSurvival()) {
             *floaterIt = floaters[floaters.size() - 1];
@@ -185,8 +187,6 @@ void Population::increaseAgeFloaters() {
 }
 
 double Population::getOffspringSurvival() {
-
-
     auto rng = *parameters->getGenerator();
     std::normal_distribution<double> NormalDist(0, parameters->getMStep());
 
@@ -246,6 +246,3 @@ int Population::getInheritance() const {
 int Population::getGroupColonization() const {
     return groupColonization;
 }
-
-
-
