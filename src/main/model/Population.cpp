@@ -24,7 +24,6 @@ void Population::reset() {
     this->newBreederOutsider = 0;
     this->emigrants = 0;
     this->groupColonization = 0;
-    this->mk = 0;
 }
 
 Population::Population(const std::shared_ptr<Parameters> &parameters) : parameters(parameters), deaths(0),
