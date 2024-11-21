@@ -118,7 +118,11 @@ void Individual::calcSurvival(const int &groupSize, double delta) {
     }
 
     if (Xn + Xe + Xh + Xrs == 0) {
-        this->survival = X0;
+        this->survival = X0; //prevent to divide by 0
+
+    } else if (roleType==FLOATER) {
+        this->survival = X0 + parameters->getY();
+        if (this->survival > 1) { this->survival = 1; }
     } else {
         this->survival = X0 + ((Xn * X1 / (1 + exp(-thisGroupSize))) + (Xh * X1 / (1 + exp(this->help))) +
                                (Xe * X1 / (1 + exp(this->gamma))) + (Xrs * X1 / (1 + exp(delta)))) /

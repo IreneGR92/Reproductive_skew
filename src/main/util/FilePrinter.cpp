@@ -142,13 +142,13 @@ void FilePrinter::printHeader(std::ofstream &writer) {
             << "Xn(Benefit_group_size_survival):" << "\t" << parameters->getXn() << endl
             << "Xe(Cost_expulsion_survival):" << "\t" << parameters->getXe() << endl
             << "Xrs(Reproductive_suppression_survival):" << "\t" << parameters->getXrs() << endl
+            << "y(Added_survival_floaters):" << "\t" << parameters->getY() << endl
             << "mOff(Average_mortality_offspring):" << "\t" << parameters->getMOff() << endl
-            << "mFreq(Change_mortality_offspring):" << "\t" << parameters->getMFreq() << endl
-            << "mMagnit(Rate_change_mortality_offspring):" << "\t" << parameters->getMMagnit() << endl
+            << "mFreq(Freq_change_mortality_offspring):" << "\t" << parameters->getMFreq() << endl
+            << "mMagnit(Magnitude_change_mortality_offspring):" << "\t" << parameters->getMMagnit() << endl
             << "K0(Base_fecundity):" << "\t" << parameters->getK0() << endl
             << "Kh(Benefit_help_fecundity):" << "\t" << parameters->getKh() << endl
             << "Knb(Benefit_number_breeders_fecundity):" << "\t" << parameters->getKnb() << endl
-            << "y(Min_skew):" << "\t" << parameters->getY() << endl
             << "initAlpha:" << "\t" << parameters->getInitAlpha() << endl
             << "initBeta:" << "\t" << parameters->getInitBeta() << endl
             << "initGamma:" << "\t" << parameters->getInitGamma() << endl
