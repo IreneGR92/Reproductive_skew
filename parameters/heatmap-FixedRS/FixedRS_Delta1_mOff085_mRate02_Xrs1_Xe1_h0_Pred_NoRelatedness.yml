@@ -26,6 +26,7 @@ Xh: 1    # cost of help in survival
 Xn: 3    # benefit of group size in survival
 Xe: 1    # cost of expulsion of immigrants in survival
 Xrs: 1    # cost of reproductive suppression in survival
+Xf: 0     # additional survival for floaters (S=x0+y)
 
 # Modifiers in offspring mortality
 mOff: 0.85    # average survival of offspring
@@ -36,9 +37,6 @@ mMagnit: 4   # step size in survival of offspring
 K0: 1    # baseline fecundity when no other factors influence it
 Kh: 2    # benefit of cumHelp in the fecundity
 Knb: 2   # benefit of number of breeders in the group fecundity
-
-# Modifier in reproductive skew
-y: 1    # max proportion of reproductive share
 
 
 #Genetic values
