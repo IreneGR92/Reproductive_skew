@@ -29,8 +29,8 @@ Xrs: 0    # cost of reproductive suppression in survival
 
 # Modifiers in offspring mortality
 mOff: 0.55    # average survival of offspring
-mRate: 0.4   # rate of change in survival of offspring
-mStep: 4   # step size in survival of offspring
+mFreq: 0.4   # rate of change in survival of offspring
+mMagnit: 4   # step size in survival of offspring
 
 #Modifiers in fecundity
 K0: 1    # baseline fecundity when no other factors influence it
