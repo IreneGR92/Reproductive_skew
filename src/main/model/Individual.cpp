@@ -3,11 +3,11 @@
 #include <cassert>
 
 #include "Individual.h"
-#include "FishType.h"
+#include "RoleType.h"
 #include "spdlog/spdlog.h"
 
 //Constructor for reproduction of a Breeder
-Individual::Individual(Individual &individual, FishType fishType, int &generation) : parameters(individual.parameters) {
+Individual::Individual(Individual &individual, RoleType fishType, int &generation) : parameters(individual.parameters) {
 
     if (individual.fishType != BREEDER) {
         spdlog::error("only breeders can reproduce");
@@ -31,7 +31,7 @@ Individual::Individual(Individual &individual, FishType fishType, int &generatio
 }
 
 //Constructor for initial creation
-Individual::Individual(FishType fishType, const std::shared_ptr<Parameters>& parameters) : parameters(parameters) {
+Individual::Individual(RoleType fishType, const std::shared_ptr<Parameters>& parameters) : parameters(parameters) {
 
 
     this->alpha = parameters->getInitAlpha();
@@ -42,7 +42,7 @@ Individual::Individual(FishType fishType, const std::shared_ptr<Parameters>& par
     this->initializeIndividual(fishType);
 }
 
-void Individual::initializeIndividual(FishType type) {
+void Individual::initializeIndividual(RoleType type) {
     this->dispersal = Parameters::NO_VALUE;
     this->help = 0;
     this->survival = Parameters::NO_VALUE;
@@ -231,11 +231,11 @@ double Individual::getFecundity() const {
     return fecundity;
 }
 
-FishType Individual::getFishType() const {
+RoleType Individual::getFishType() const {
     return fishType;
 }
 
-void Individual::setFishType(FishType type) {
+void Individual::setFishType(RoleType type) {
     Individual::fishType = type;
     if (type == BREEDER) {
         this->dispersal = Parameters::NO_VALUE;

@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 #include <memory>
-#include "FishType.h"
+#include "RoleType.h"
 #include "../util/Parameters.h"
 #include "Attribute.h"
 
@@ -29,7 +29,7 @@ private:
     double help; ///< The help provided by the individual.
     double survival; ///< The survival rate of the individual.
 
-    FishType fishType; ///< The type of the individual (breeder, helper, floater).
+    RoleType fishType; ///< The type of the individual (breeder, helper, floater).
     int age; ///< The age of the individual.
     int ageBecomeBreeder; ///< The age at which the individual became a breeder.
     bool inherit; ///< Flag indicating if the individual inherited the territory or dispersed.
@@ -40,13 +40,13 @@ private:
 
     void mutate(int generation);
 
-    void initializeIndividual(FishType type);
+    void initializeIndividual(RoleType type);
 
 public:
 
-    Individual(FishType fishType, const std::shared_ptr<Parameters>& parameters);
+    Individual(RoleType fishType, const std::shared_ptr<Parameters>& parameters);
 
-    Individual(Individual &individual, FishType fishType, int &generation);
+    Individual(Individual &individual, RoleType fishType, int &generation);
 
     bool operator==(const Individual &other) const;
 
@@ -76,9 +76,9 @@ public:
 
     double getSurvival() const;
 
-    FishType getFishType() const;
+    RoleType getFishType() const;
 
-    void setFishType(FishType type);
+    void setFishType(RoleType type);
 
     int getAge() const;
 

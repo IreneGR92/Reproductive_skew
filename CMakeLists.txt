@@ -39,7 +39,7 @@ set(SOURCE_FILES
         src/main/loadbalancing/ThreadPool.h
         src/main/loadbalancing/ThreadPool.cpp
         src/main/model/Attribute.h
-        src/main/model/FishType.h
+        src/main/model/RoleType.h
         src/main/util/Parameters.h
         src/main/util/Parameters.cpp
         src/main/model/Individual.h
