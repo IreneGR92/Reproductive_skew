@@ -48,13 +48,13 @@ Parameters::Parameters(const string &filename, const int replica) : replica(repl
     this->Xn = config["Xn"].as<double>();
     this->Xe = config["Xe"].as<double>();
     this->Xrs = config["Xrs"].as<double>();
+    this->Xf = config["Xf"].as<double>();
     this->mOff = config["mOff"].as<double>();
     this->mFreq = config["mFreq"].as<double>();
     this->mMagnit = config["mMagnit"].as<double>();
     this->K0 = config["K0"].as<double>();
     this->Kh = config["Kh"].as<double>();
     this->Knb = config["Knb"].as<double>();
-    this->y = config["y"].as<double>();
     this->INIT_ALPHA = config["INIT_ALPHA"].as<double>();
     this->MUTATION_ALPHA = config["MUTATION_ALPHA"].as<double>();
     this->STEP_ALPHA = config["STEP_ALPHA"].as<double>();
@@ -174,6 +174,10 @@ double Parameters::getXrs() const {
     return Xrs;
 }
 
+double Parameters::getXf() const {
+    return Xf;
+}
+
 double Parameters::getMOff() const {
     return mOff;
 }
@@ -196,10 +200,6 @@ double Parameters::getKh() const {
 
 double Parameters::getKnb() const {
     return Knb;
-}
-
-double Parameters::getY() const {
-    return y;
 }
 
 double Parameters::getInitAlpha() const {
