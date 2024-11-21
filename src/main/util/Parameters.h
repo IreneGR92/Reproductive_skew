@@ -78,8 +78,8 @@ private:
 
     // Modifiers in offspring mortality
     double mOff;     ///< mortality of offspring
-    double mRate;    ///< rate of change in mortality of offspring
-    double mStep;    ///< step size in mortality of offspring
+    double mFreq;    ///< frequency of change in mortality of offspring
+    double mMagnit;    ///< SD in mortality of offspring
 
     // Modifiers in fecundity
     double K0;    ///< Minimum fecundity, fecundity when no help provided.
@@ -185,9 +185,9 @@ public:
 
     double getMOff() const;
 
-    double getMRate() const;
+    double getMFreq() const;
 
-    double getMStep() const;
+    double getMMagnit() const;
 
     double getK0() const;
 

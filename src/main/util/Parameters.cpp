@@ -49,8 +49,8 @@ Parameters::Parameters(const string &filename, const int replica) : replica(repl
     this->Xe = config["Xe"].as<double>();
     this->Xrs = config["Xrs"].as<double>();
     this->mOff = config["mOff"].as<double>();
-    this->mRate = config["mRate"].as<double>();
-    this->mStep = config["mStep"].as<double>();
+    this->mFreq = config["mFreq"].as<double>();
+    this->mMagnit = config["mMagnit"].as<double>();
     this->K0 = config["K0"].as<double>();
     this->Kh = config["Kh"].as<double>();
     this->Knb = config["Knb"].as<double>();
@@ -178,12 +178,12 @@ double Parameters::getMOff() const {
     return mOff;
 }
 
-double Parameters::getMRate() const {
-    return mRate;
+double Parameters::getMFreq() const {
+    return mFreq;
 }
 
-double Parameters::getMStep() const {
-    return mStep;
+double Parameters::getMMagnit() const {
+    return mMagnit;
 }
 
 double Parameters::getK0() const {

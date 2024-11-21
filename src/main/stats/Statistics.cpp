@@ -28,19 +28,19 @@ void Statistics::calculateStatistics(const Population &populationObj) {
     std::vector<double> totalOffspringGroups;
 
     for (const Individual &helper: helpers) {
-        if (helper.getFishType() != HELPER) {
+        if (helper.getRoleType() != HELPER) {
             spdlog::warn("helper wrong class");
         }
     }
 
     for (const Individual &floater: populationObj.getFloaters()) {
-        if (floater.getFishType() != FLOATER) {
+        if (floater.getRoleType() != FLOATER) {
             spdlog::warn("floater wrong class");
         }
     }
 
     for (const Individual &breeder: allBreeders) {
-        if (breeder.getFishType() != BREEDER) {
+        if (breeder.getRoleType() != BREEDER) {
             spdlog::warn("breeder wrong class");
         }
     }

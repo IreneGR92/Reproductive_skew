@@ -7,13 +7,13 @@
 #include "spdlog/spdlog.h"
 
 //Constructor for reproduction of a Breeder
-Individual::Individual(Individual &individual, RoleType fishType, int &generation) : parameters(individual.parameters) {
+Individual::Individual(Individual &individual, RoleType roleType, int &generation) : parameters(individual.parameters) {
 
-    if (individual.fishType != BREEDER) {
+    if (individual.roleType != BREEDER) {
         spdlog::error("only breeders can reproduce");
     }
 
-    assert(individual.fishType == BREEDER);
+    assert(individual.roleType == BREEDER);
 
     this->alpha = individual.alpha;
     this->beta = individual.beta;
@@ -25,13 +25,13 @@ Individual::Individual(Individual &individual, RoleType fishType, int &generatio
     this->help = Parameters::NO_VALUE;
     this->fecundity = Parameters::NO_VALUE;
 
-    this->initializeIndividual(fishType);
+    this->initializeIndividual(roleType);
 
     this->mutate(generation);
 }
 
 //Constructor for initial creation
-Individual::Individual(RoleType fishType, const std::shared_ptr<Parameters>& parameters) : parameters(parameters) {
+Individual::Individual(RoleType roleType, const std::shared_ptr<Parameters>& parameters) : parameters(parameters) {
 
 
     this->alpha = parameters->getInitAlpha();
@@ -39,14 +39,14 @@ Individual::Individual(RoleType fishType, const std::shared_ptr<Parameters>& par
     this->gamma = parameters->getInitGamma();
     this->delta = parameters->getInitDelta();
     this->drift = parameters->driftUniform(*parameters->getGenerator());
-    this->initializeIndividual(fishType);
+    this->initializeIndividual(roleType);
 }
 
 void Individual::initializeIndividual(RoleType type) {
     this->dispersal = Parameters::NO_VALUE;
     this->help = 0;
     this->survival = Parameters::NO_VALUE;
-    this->fishType = type;
+    this->roleType = type;
     this->inherit = true;
     this->age = 1;
     this->ageBecomeBreeder = Parameters::NO_VALUE;
@@ -74,7 +74,7 @@ void Individual::calcDispersal() {
 /*DISPLAY LEVEL OF HELP*/
 
 void Individual::calcHelp() {
-    if (fishType == HELPER) {
+    if (roleType == HELPER) {
         help = alpha;
         if (help < 0) { help = 0; }
     } else {
@@ -100,12 +100,12 @@ void Individual::calcSurvival(const int &groupSize, double delta) {
     X0 = parameters->getX0();           // min survival
     X1 = (1 - X0) - parameters->getM(); //  X0 + X1 max survival
 
-    if (fishType == FLOATER) {
+    if (roleType == FLOATER) {
         Xn = 0;     // effect of group size
         Xe = 0;     // effect of expulsion
         Xh = 0;     // effect of help
         Xrs = 0;    // effect of reproductive suppression
-    } else if (fishType == BREEDER) {
+    } else if (roleType == BREEDER) {
         Xn = parameters->getXn();
         Xe = parameters->getXe();
         Xh = 0;
@@ -231,12 +231,12 @@ double Individual::getFecundity() const {
     return fecundity;
 }
 
-RoleType Individual::getFishType() const {
-    return fishType;
+RoleType Individual::getRoleType() const {
+    return roleType;
 }
 
-void Individual::setFishType(RoleType type) {
-    Individual::fishType = type;
+void Individual::setRoleType(RoleType type) {
+    Individual::roleType = type;
     if (type == BREEDER) {
         this->dispersal = Parameters::NO_VALUE;
         this->help = 0;

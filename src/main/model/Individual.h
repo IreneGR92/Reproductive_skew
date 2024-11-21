@@ -29,7 +29,7 @@ private:
     double help; ///< The help provided by the individual.
     double survival; ///< The survival rate of the individual.
 
-    RoleType fishType; ///< The type of the individual (breeder, helper, floater).
+    RoleType roleType; ///< The type of the individual (breeder, helper, floater).
     int age; ///< The age of the individual.
     int ageBecomeBreeder; ///< The age at which the individual became a breeder.
     bool inherit; ///< Flag indicating if the individual inherited the territory or dispersed.
@@ -44,9 +44,9 @@ private:
 
 public:
 
-    Individual(RoleType fishType, const std::shared_ptr<Parameters>& parameters);
+    Individual(RoleType roleType, const std::shared_ptr<Parameters>& parameters);
 
-    Individual(Individual &individual, RoleType fishType, int &generation);
+    Individual(Individual &individual, RoleType roleType, int &generation);
 
     bool operator==(const Individual &other) const;
 
@@ -76,9 +76,9 @@ public:
 
     double getSurvival() const;
 
-    RoleType getFishType() const;
+    RoleType getRoleType() const;
 
-    void setFishType(RoleType type);
+    void setRoleType(RoleType type);
 
     int getAge() const;
 

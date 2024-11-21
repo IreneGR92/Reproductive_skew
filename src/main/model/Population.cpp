@@ -187,7 +187,7 @@ void Population::increaseAgeFloaters() {
 
 double Population::getOffspringSurvival() {
     auto rng = *parameters->getGenerator();
-    std::normal_distribution<double> NormalDist(0, parameters->getMStep());
+    std::normal_distribution<double> NormalDist(0, parameters->getMMagnit());
 
 
     double offspringSurvival = parameters->getMOff();
@@ -195,7 +195,7 @@ double Population::getOffspringSurvival() {
     //predictable environment
     if (parameters->isPredictableEnvironment()) {
         conditionCheckCounter++;
-        int interval = static_cast<int>(1.0 / parameters->getMRate());
+        int interval = static_cast<int>(1.0 / parameters->getMFreq());
         if (changeCounter < (conditionCheckCounter / interval)) {
             double modification = abs(NormalDist(rng));
             if (negativeModification) {
@@ -208,7 +208,7 @@ double Population::getOffspringSurvival() {
 
 
         //unpredictable environment
-    } else if (parameters->uniform(rng) < parameters->getMRate()) {
+    } else if (parameters->uniform(rng) < parameters->getMFreq()) {
         offspringSurvival += NormalDist(rng);
     }
 

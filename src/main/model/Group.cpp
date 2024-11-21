@@ -51,12 +51,12 @@ vector<Individual> Group::disperse() {
 
         if (parameters->uniform(*parameters->getGenerator()) < helper.getDispersal()) {
             helper.setInherit(false); //the location of the individual is not the natal territory
-            helper.setFishType(FLOATER);
+            helper.setRoleType(FLOATER);
             newFloaters.push_back(helper); //add the individual to the vector floaters in the last position
             helpers.removeIndividual(i);
 
         } else {
-            helper.setFishType(HELPER); //individuals that stay or disperse to this group become helpers
+            helper.setRoleType(HELPER); //individuals that stay or disperse to this group become helpers
             i++;
         }
 
@@ -180,8 +180,8 @@ std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters) {
 void Group::transferBreedersToHelpers() {
     // Move breeders to the helper vector
     for (auto &breeder: subordinateBreeders) {
-        // Change the fish type of the breeder to helper
-        breeder.setFishType(HELPER);
+        // Change the role type of the breeder to helper
+        breeder.setRoleType(HELPER);
         // Add the breeder to the helpers vector
         helpers.emplace_back(breeder);
     }
@@ -191,7 +191,7 @@ void Group::transferBreedersToHelpers() {
     // Move the main breeder also to the helper vector
     if (mainBreederAlive) { //TODO: This assumes that the main breeder is chosen again every round, change?
         // Change the fish type of the mainBreeder to helper
-        mainBreeder.setFishType(HELPER);
+        mainBreeder.setRoleType(HELPER);
         // Add the mainBreeder to the helpers vector
         helpers.emplace_back(mainBreeder);
         // Set mainBreederAlive to false as mainBreeder is no longer a breeder
@@ -207,7 +207,7 @@ void Group::calculateCumulativeHelp() //Calculate accumulative help of all indiv
 
     //Level of help for helpers
     for (Individual &helper: helpers) {
-        assert(helper.getFishType() == HELPER);
+        assert(helper.getRoleType() == HELPER);
         helper.calcHelp();
         cumHelp += helper.getHelp();
 
@@ -336,7 +336,7 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
             std::shuffle(helpers.begin(), helpers.end(), *parameters->getGenerator());
             selectedBreeder = &helpers.back(); //substitute the previous dead mainBreeder
             selectedBreeder->setAgeBecomeBreeder();
-            selectedBreeder->setFishType(BREEDER); //modify the class
+            selectedBreeder->setRoleType(BREEDER); //modify the class
             if (selectedBreeder->isInherit() == false) {
                 newBreederOutsider++;
             } else {
@@ -375,7 +375,7 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
 
                     selectedBreeder = *candidate;
                     selectedBreeder->setAgeBecomeBreeder();
-                    selectedBreeder->setFishType(BREEDER); //modify the class
+                    selectedBreeder->setRoleType(BREEDER); //modify the class
 
                     if ((*candidate)->isInherit() == false) {
                         newBreederOutsider++;
@@ -398,7 +398,7 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
             }
         }
 
-        assert(selectedBreeder->getFishType() == BREEDER);
+        assert(selectedBreeder->getRoleType() == BREEDER);
     }
     return selectedBreeder;
 }
@@ -578,7 +578,7 @@ bool Group::hasSubordinateBreeders() const {
 }
 
 void Group::addHelper(Individual &helper) {
-    helper.setFishType(HELPER);
+    helper.setRoleType(HELPER);
     this->helpers.emplace_back(helper);
 }
 

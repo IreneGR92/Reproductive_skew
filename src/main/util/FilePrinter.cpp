@@ -101,7 +101,7 @@ void FilePrinter::writeLastGenerationFile(std::vector<std::unique_ptr<ResultCach
                     << result->getReplica() + 1
                     << "\t" << cacheElement.generation
                     << "\t" << cacheElement.groupID
-                    << "\t" << cacheElement.individual.getFishType()
+                    << "\t" << cacheElement.individual.getRoleType()
                     << "\t" << setprecision(PRECISION) << cacheElement.individual.getAge()
                     << "\t" << setprecision(PRECISION) << cacheElement.individual.getAlpha()
                     << "\t" << setprecision(PRECISION) << cacheElement.individual.getBeta()
@@ -143,8 +143,8 @@ void FilePrinter::printHeader(std::ofstream &writer) {
             << "Xe(Cost_expulsion_survival):" << "\t" << parameters->getXe() << endl
             << "Xrs(Reproductive_suppression_survival):" << "\t" << parameters->getXrs() << endl
             << "mOff(Average_mortality_offspring):" << "\t" << parameters->getMOff() << endl
-            << "mRate(Change_mortality_offspring):" << "\t" << parameters->getMRate() << endl
-            << "mStep(Rate_change_mortality_offspring):" << "\t" << parameters->getMStep() << endl
+            << "mFreq(Change_mortality_offspring):" << "\t" << parameters->getMFreq() << endl
+            << "mMagnit(Rate_change_mortality_offspring):" << "\t" << parameters->getMMagnit() << endl
             << "K0(Base_fecundity):" << "\t" << parameters->getK0() << endl
             << "Kh(Benefit_help_fecundity):" << "\t" << parameters->getKh() << endl
             << "Knb(Benefit_number_breeders_fecundity):" << "\t" << parameters->getKnb() << endl
