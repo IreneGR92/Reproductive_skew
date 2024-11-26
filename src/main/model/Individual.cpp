@@ -86,7 +86,7 @@ void Individual::calcHelp() {
 
 /*SURVIVAL*/
 
-void Individual::calcSurvival(const int &groupSize, double delta) {
+void Individual::calcSurvival(const int &groupSize, double delta, const bool &hasPotentialImmigrants) {
 
     double thisGroupSize;
     double Xn, Xe, Xh, Xrs, X0, X1;
@@ -117,15 +117,17 @@ void Individual::calcSurvival(const int &groupSize, double delta) {
         Xrs = 0;
     }
 
+    const double gamma = hasPotentialImmigrants ? this->gamma : 0;
+
     if (Xn + Xe + Xh + Xrs == 0) {
         this->survival = X0; //prevent to divide by 0
-
-    } else if (roleType==FLOATER) {
-        this->survival = X0 + parameters->getXf();
-        if (this->survival > 1) { this->survival = 1; }
+        if (roleType==FLOATER) {
+            this->survival = X0 + parameters->getXf();
+            if (this->survival > 1) { this->survival = 1;}
+        }
     } else {
         this->survival = X0 + ((Xn * X1 / (1 + exp(-thisGroupSize))) + (Xh * X1 / (1 + exp(this->help))) +
-                               (Xe * X1 / (1 + exp(this->gamma))) + (Xrs * X1 / (1 + exp(delta)))) /
+                               (Xe * X1 / (1 + exp(gamma))) + (Xrs * X1 / (1 + exp(delta)))) /
                               (Xn + Xe + Xh + Xrs);
     }
 

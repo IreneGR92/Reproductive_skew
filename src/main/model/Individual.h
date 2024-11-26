@@ -44,7 +44,7 @@ private:
 
 public:
 
-    Individual(RoleType roleType, const std::shared_ptr<Parameters>& parameters);
+    Individual(RoleType roleType, const std::shared_ptr<Parameters> &parameters);
 
     Individual(Individual &individual, RoleType roleType, int &generation);
 
@@ -56,8 +56,7 @@ public:
 
     void calcHelp();
 
-    void calcSurvival(const int &groupSize, double delta);
-
+    void calcSurvival(const int &groupSize, double delta, const bool &hasPotentialImmigrants);
 
     // Getters and setters
     double getAlpha() const;

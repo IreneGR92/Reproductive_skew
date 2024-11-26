@@ -76,7 +76,7 @@ void Population::reassignNoRelatedHelpers() {
             if (noRelatednessGroupsID.size() > 1) {
                 std::uniform_int_distribution<int> uniformIntDistribution(0, noRelatednessGroupsID.size() - 1);
                 selectGroupIndex = uniformIntDistribution(
-                    *parameters->getGenerator()); // selects a random index the noRelatednessGroupsID vector
+                        *parameters->getGenerator()); // selects a random index the noRelatednessGroupsID vector
             }
             selectGroupID = noRelatednessGroupsID[selectGroupIndex];
             // translates the index to the ID of a group from the noRelatednessGroupsID vector
@@ -88,7 +88,7 @@ void Population::reassignNoRelatedHelpers() {
                                             selectGroupIndex);
                 //remove the group ID from the vector to not draw it again
                 groups[selectGroupID].addHelper(
-                    allNoRelatedHelpers[indexLastIndividual]);
+                        allNoRelatedHelpers[indexLastIndividual]);
                 //add the no related helper to the helper vector in a randomly selected group
                 allNoRelatedHelpers.pop_back(); //remove the no related helper from its vector
             } else {
@@ -141,7 +141,7 @@ void Population::survivalGroup() {
 
 void Population::survivalFloaters() {
     for (Individual &floater: floaters) {
-        floater.calcSurvival(0, 0);
+        floater.calcSurvival(0, 0, false);
     }
 }
 

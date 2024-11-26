@@ -27,6 +27,7 @@ private:
     int offspringMainBreeder;
     int offspringSubordinateBreeders;
     int totalOffspringGroup;
+    bool hasPotentialImmigrants;
 
 
     Individual mainBreeder; ///< The main breeder of the group.

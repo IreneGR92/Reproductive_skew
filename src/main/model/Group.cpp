@@ -7,7 +7,7 @@
 using namespace std;
 
 
-Group::Group(const std::shared_ptr<Parameters>& parameters) : mainBreeder(BREEDER, parameters), parameters(parameters) {
+Group::Group(const std::shared_ptr<Parameters> &parameters) : mainBreeder(BREEDER, parameters), parameters(parameters) {
     mainBreederAlive = true;
     cumHelp = 0;
     acceptanceRate = Parameters::NO_VALUE;
@@ -165,6 +165,8 @@ std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters) {
     }
     std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + numSampledFloaters);
 
+    this->hasPotentialImmigrants = !sampleFloaters.empty();
+
 // Calculate the number of floaters that should be accepted by the group
     this->calcAcceptanceRate();
     acceptedFloatersSize = round(sampleFloaters.size() * acceptanceRate);
@@ -229,16 +231,16 @@ void Group::survivalGroup() {
 
     //Calculate survival for the helpers
     for (Individual &helper: helpers) {
-        helper.calcSurvival(groupSize, 0);
+        helper.calcSurvival(groupSize, 0, hasPotentialImmigrants);
     }
 
     //Calculate the survival for the subordinate breeders
     for (Individual &breeder: subordinateBreeders) {
-        breeder.calcSurvival(groupSize, 0);
+        breeder.calcSurvival(groupSize, 0, hasPotentialImmigrants);
     }
 
     //Calculate the survival of the dominant breeder
-    this->mainBreeder.calcSurvival(groupSize, delta);
+    this->mainBreeder.calcSurvival(groupSize, delta, hasPotentialImmigrants);
 }
 
 void Group::mortalityGroup(int &deaths) {
