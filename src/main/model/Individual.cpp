@@ -31,7 +31,7 @@ Individual::Individual(Individual &individual, RoleType roleType, int &generatio
 }
 
 //Constructor for initial creation
-Individual::Individual(RoleType roleType, const std::shared_ptr<Parameters>& parameters) : parameters(parameters) {
+Individual::Individual(RoleType roleType, const std::shared_ptr<Parameters> &parameters) : parameters(parameters) {
 
 
     this->alpha = parameters->getInitAlpha();
@@ -98,7 +98,8 @@ void Individual::calcSurvival(const int &groupSize, double delta, const bool &ha
     }
 
     X0 = parameters->getX0();           // min survival
-    X1 = (1 - X0) - parameters->getM(); //  X0 + X1 max survival
+    X1 = 1 - X0 - parameters->getM(); //  X0 + X1 max survival
+    if (X1 < 0) { X1 = 0; }
 
     if (roleType == FLOATER) {
         Xn = 0;     // effect of group size
@@ -117,13 +118,14 @@ void Individual::calcSurvival(const int &groupSize, double delta, const bool &ha
         Xrs = 0;
     }
 
-    const double gamma = hasPotentialImmigrants ? this->gamma : 0;
+    const double gamma = hasPotentialImmigrants ? this->gamma : 0; // no cost of expulsion if no potential immigrants
 
-    if (Xn + Xe + Xh + Xrs == 0) {
-        this->survival = X0; //prevent to divide by 0
-        if (roleType==FLOATER) {
-            this->survival = X0 + parameters->getXf();
-            if (this->survival > 1) { this->survival = 1;}
+    if (Xn + Xe + Xh + Xrs == 0) { //prevent to divide by 0
+        this->survival = X0;
+
+        if (roleType == FLOATER) {
+            this->survival = X0 + (X1 / 2) +
+                             parameters->getXf(); // effect of environment (X1) + exp(0) + additional survival/mortality defined by Xf
         }
     } else {
         this->survival = X0 + ((Xn * X1 / (1 + exp(-thisGroupSize))) + (Xh * X1 / (1 + exp(this->help))) +
@@ -131,7 +133,14 @@ void Individual::calcSurvival(const int &groupSize, double delta, const bool &ha
                               (Xn + Xe + Xh + Xrs);
     }
 
+    if (survival >= 0 && survival <= 1) {
+        spdlog::error("Survival rate is not between 0 and 1");
+    }
+
+
     assert(survival >= 0 && survival <= 1);
+    if (this->survival > 0.95) { this->survival = 0.95; }
+    else if (this->survival < 0) { this->survival = 0; } //prevent survival to be close to 1 or negative
 }
 
 
