@@ -133,7 +133,7 @@ void Individual::calcSurvival(const int &groupSize, double delta, const bool &ha
                               (Xn + Xe + Xh + Xrs);
     }
 
-    if (survival >= 0 && survival <= 1) {
+    if (survival < 0 && survival > 1) {
         spdlog::error("Survival rate is not between 0 and 1");
     }
 
