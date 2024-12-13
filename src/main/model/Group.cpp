@@ -407,10 +407,16 @@ Individual *Group::selectBreeder(int &newBreederOutsider, int &newBreederInsider
 
 void Group::calcReproductiveShareRate() {
     if (mainBreederAlive) {
-        reproductiveShareRate = 1 - mainBreeder.getDelta();
+        double delta = mainBreeder.getDelta();
+        if (delta < 0) {
+            delta = 0;
+        }
+        reproductiveShareRate = 1 - delta;
+
         if (reproductiveShareRate < 0) {
             reproductiveShareRate = 0;
         }
+
     } else {
         reproductiveShareRate = Parameters::NO_VALUE;
     }
