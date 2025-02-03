@@ -1,7 +1,7 @@
-# Group augmentation
+# Reproductive competition
 
 Simulation code, written in C++, to support the paper:
-"Group benefits are a prerequisite for the evolution of cooperative breeding".
+"Harsh environments promote the evolution of plural breeding".
 
 ## Getting Started
 
