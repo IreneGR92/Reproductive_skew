@@ -33,7 +33,6 @@ private:
     int age; ///< The age of the individual.
     int ageBecomeBreeder; ///< The age at which the individual became a breeder.
     bool inherit; ///< Flag indicating if the individual inherited the territory or dispersed.
-    double fecundity;
     int groupIndex; ///< The index of the group the individual belongs to.
 
 
@@ -94,8 +93,6 @@ public:
     void setGroupIndex(int groupIndex);
 
     bool isViableBreeder();
-
-    double getFecundity() const; //TODO: remove all individual fecundities
 
 };
 

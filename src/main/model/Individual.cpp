@@ -23,7 +23,6 @@ Individual::Individual(Individual &individual, RoleType roleType, int &generatio
 
     this->dispersal = Parameters::NO_VALUE;
     this->help = Parameters::NO_VALUE;
-    this->fecundity = Parameters::NO_VALUE;
 
     this->initializeIndividual(roleType);
 
@@ -242,9 +241,6 @@ double Individual::getSurvival() const {
     return survival;
 }
 
-double Individual::getFecundity() const {
-    return fecundity;
-}
 
 RoleType Individual::getRoleType() const {
     return roleType;
@@ -299,9 +295,6 @@ double Individual::get(Attribute type) const {
             return this->age;
         case AGE_BECOME_BREEDER:
             return this->ageBecomeBreeder;
-        case FECUNDITY:
-            return this->fecundity;
-
     }
 
     assert(false);
