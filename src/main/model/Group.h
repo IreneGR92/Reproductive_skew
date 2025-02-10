@@ -48,10 +48,10 @@ private:
 
     void calcReproductiveShareRate();
 
-    void calcFecundity(double mk);
+
 
 public:
-
+    int calcFecundity(double mk);
     explicit Group(const std::shared_ptr<Parameters>& parameters);
 
     void calculateGroupSize();

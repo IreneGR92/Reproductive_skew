@@ -6,7 +6,7 @@
 TEST(GroupTest, GroupReassignBreeders) {
     //given
     Config::loadConfig();
-    auto parameters = std::make_shared<Parameters>("baseline.yml",0);
+    auto parameters = std::make_shared<Parameters>("baseline.yml", 0);
     Group group(parameters);
     int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0;
     int deaths = 0;
@@ -31,7 +31,7 @@ TEST(GroupTest, GroupReassignBreeders) {
 TEST(GroupTest, GroupReassignBreedersStaySameSize) {
     //given
     Config::loadConfig();
-    auto parameters = std::make_shared<Parameters>("baseline.yml",0);
+    auto parameters = std::make_shared<Parameters>("baseline.yml", 0);
     Group group(parameters);
     int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0;
     group.calculateGroupSize();
@@ -52,10 +52,10 @@ TEST(GroupTest, GroupReassignBreedersStaySameSize) {
 TEST(GroupTest, OffspringProduction) {
     //given
     Config::loadConfig();
-    auto parameters = std::make_shared<Parameters>("baseline.yml",0);
+    auto parameters = std::make_shared<Parameters>("baseline.yml", 0);
     Group group(parameters);
     int initialGroupSize, groupSizeAfterReproduction;
-    int fecundity;
+    double fecundity;
     int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0;
 
     //when
@@ -71,4 +71,22 @@ TEST(GroupTest, OffspringProduction) {
         EXPECT_EQ(groupSizeAfterReproduction, initialGroupSize + fecundity);
         EXPECT_EQ(group.getFecundityGroup(), group.getOffspringMainBreeder() + group.getOffspringSubordinateBreeders());
     }
+}
+
+
+TEST(GroupTest, CalulateFecundity) {
+    //given
+    Config::loadConfig();
+    auto parameters = std::make_shared<Parameters>("default.yml", 0);
+    Group group(parameters);
+
+
+    const int fecundityBefore = group.getFecundityGroup();
+    printf("fecundityBefore: %d\n", fecundityBefore);
+    //when
+    const int fecundityAfter = group.calcFecundity(1);
+    printf("fecundityAfter: %f\n", group.getFecundityGroup());
+
+    //then
+//    EXPECT_EQ(fecundityBefore < fecundityAfter);
 }
