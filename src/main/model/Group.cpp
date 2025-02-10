@@ -505,6 +505,7 @@ void Group::reproduce(int generation, double mk) { // populate offspring generat
             }
         }
     }
+    assert(offspringMainBreeder + offspringSubordinateBreeders == fecundityGroup);
 }
 
 
