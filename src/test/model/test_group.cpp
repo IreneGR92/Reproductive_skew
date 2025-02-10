@@ -1,10 +1,13 @@
 #include <gtest/gtest.h>
 #include "../../main/model/Group.h"
+#include "../../main/util/Config.h"
 
 
 TEST(GroupTest, GroupReassignBreeders) {
     //given
-    Group group;
+    Config::loadConfig();
+    auto parameters = std::make_shared<Parameters>("baseline.yml",0);
+    Group group(parameters);
     int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0;
     int deaths = 0;
     group.calculateGroupSize();
@@ -27,7 +30,9 @@ TEST(GroupTest, GroupReassignBreeders) {
 
 TEST(GroupTest, GroupReassignBreedersStaySameSize) {
     //given
-    Group group;
+    Config::loadConfig();
+    auto parameters = std::make_shared<Parameters>("baseline.yml",0);
+    Group group(parameters);
     int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0;
     group.calculateGroupSize();
     const int initialGroupSize = group.getGroupSize();
@@ -46,7 +51,9 @@ TEST(GroupTest, GroupReassignBreedersStaySameSize) {
 
 TEST(GroupTest, OffspringProduction) {
     //given
-    Group group;
+    Config::loadConfig();
+    auto parameters = std::make_shared<Parameters>("baseline.yml",0);
+    Group group(parameters);
     int initialGroupSize, groupSizeAfterReproduction;
     int fecundity;
     int newBreederOutsider = 0, newBreederInsider = 0, inheritance = 0;
@@ -60,7 +67,7 @@ TEST(GroupTest, OffspringProduction) {
         fecundity = group.getFecundityGroup();
         group.calculateGroupSize();
         groupSizeAfterReproduction = group.getGroupSize();
-                //then
+        //then
         EXPECT_EQ(groupSizeAfterReproduction, initialGroupSize + fecundity);
         EXPECT_EQ(group.getFecundityGroup(), group.getOffspringMainBreeder() + group.getOffspringSubordinateBreeders());
     }

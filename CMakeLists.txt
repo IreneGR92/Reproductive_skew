@@ -89,9 +89,10 @@ add_library(googletest ALIAS gtest)
 
 # Define the source files for the Test executable
 set(TEST_FILES
+        src/main/util/Config.h
+        src/main/util/Config.cpp
         src/test/model/unit_tests.cpp
         src/test/model/test_group.cpp
-        src/test/model/container/test_container.cpp
         src/test/model/stats/test_statistical_formulas.cpp
 )
 
