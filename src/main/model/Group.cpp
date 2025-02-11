@@ -473,6 +473,7 @@ int Group::calcFecundity(double mk) {
     } else {
         fecundityGroup = 0;
     }
+    return fecundityGroup;
 }
 
 
