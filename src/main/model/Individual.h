@@ -54,7 +54,7 @@ public:
 
     void calcDispersal();
 
-    void calcColonization();
+    void calcJoinEmptyTerritory();
 
     void calcHelp();
 
@@ -72,6 +72,8 @@ public:
     double getDrift() const;
 
     double getDispersal() const;
+
+    bool getJoinEmptyTerritory() const;
 
     double getHelp() const;
 

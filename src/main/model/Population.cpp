@@ -108,6 +108,39 @@ void Population::reassignNoRelatedHelpers() {
 /*  IMMIGRATION */
 
 void Population::immigrate() {
+
+    // Shuffle the floaters vector
+    std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
+
+    // MOVE TO EMPTY TERRITORY
+    // Find empty groups and store their indices
+    std::vector<int> emptyGroupIndices;
+    for (int i = 0; i < groups.size(); ++i) {
+        if (!groups[i].isBreederAlive() && groups[i].getHelpers().empty() &&
+            groups[i].getSubordinateBreeders().empty()) {
+            emptyGroupIndices.push_back(i);
+        }
+    }
+
+    // Shuffle the indices of the empty groups
+    std::shuffle(emptyGroupIndices.begin(), emptyGroupIndices.end(), *parameters->getGenerator());
+
+    // Loop through the floaters and assign them to the empty groups
+    for (auto floaterIt = floaters.begin();
+         floaterIt != floaters.end() && !emptyGroupIndices.empty() && !emptyGroupIndices.empty();) {
+        floaterIt->calcJoinEmptyTerritory();
+        if (floaterIt->getJoinEmptyTerritory()) {
+            int emptyGroupIndex = emptyGroupIndices.back();
+            emptyGroupIndices.pop_back();
+            groups[emptyGroupIndex].addHelper(*floaterIt);
+            floaterIt = floaters.erase(floaterIt);
+        } else {
+            ++floaterIt;
+        }
+    }
+
+
+    // MOVE TO A GROUP
     // Shuffle the group indices. This is done to ensure that the immigration process does not favor any particular group due to their position in the groups vector.
     std::vector<int> indices(groups.size());
     std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers

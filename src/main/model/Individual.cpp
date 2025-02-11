@@ -70,7 +70,7 @@ void Individual::calcDispersal() {
     }
 }
 
-void Individual::calcColonization() {
+void Individual::calcJoinEmptyTerritory() {
     if (parameters->uniform(*parameters->getGenerator()) < this->beta) {
         this->joinEmptyTerritory = true; //join empty territory
     } else {
@@ -178,6 +178,7 @@ void Individual::mutate(int generation) // mutate genome of offspring
     // Beta
     if (parameters->uniform(rng) < parameters->getMutationBeta()) {
         beta += NormalB(rng);
+       if (beta < 0) { beta = 0; } else if (beta > 1) { beta = 1; } //bound beta so that to facilitate evolution to change strategy
     }
 
     // Gamma
@@ -185,12 +186,10 @@ void Individual::mutate(int generation) // mutate genome of offspring
         gamma += NormalG(rng);
     }
 
-
     //Delta
     if (parameters->uniform(rng) < parameters->getMutationDelta()) {
         delta += NormalD(rng);
     }
-
 
     // Drift
     if (parameters->uniform(rng) < parameters->getMutationDrift()) {
@@ -239,6 +238,10 @@ double Individual::getDrift() const {
 
 double Individual::getDispersal() const {
     return dispersal;
+}
+
+bool Individual::getJoinEmptyTerritory() const {
+    return joinEmptyTerritory;
 }
 
 double Individual::getHelp() const {
