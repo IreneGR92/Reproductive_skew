@@ -298,6 +298,8 @@ double Individual::get(Attribute type) const {
             return this->help;
         case DISPERSAL:
             return this->dispersal;
+        case JOIN_EMPTY_TERRITORY:
+            return this->joinEmptyTerritory;
         case SURVIVAL:
             return this->survival;
         case DRIFT:
