@@ -74,6 +74,8 @@ int Group::countHelpersAgeOne() {
     return count;
 }
 
+/*  REDUCE RELATEDNESS */
+
 int Group::calculateHelpersToReassign() {
     int helpersToReassign;
     if (parameters->isNoRelatedness()) {
@@ -119,6 +121,7 @@ std::vector<Individual> Group::noRelatedHelpersToReassign(int index) {
     }
     return noRelatedHelpers;
 }
+
 
 /*  ACCEPTANCE OF IMMIGRANTS */
 

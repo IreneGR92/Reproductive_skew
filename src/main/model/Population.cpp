@@ -38,6 +38,9 @@ Population::Population(const std::shared_ptr<Parameters> &parameters) : paramete
     }
 }
 
+
+/*  DISPERSAL */
+
 void Population::disperse() {
     for (auto &group: groups) {
         this->floaters.merge(group.disperse());
@@ -47,6 +50,9 @@ void Population::disperse() {
 
     this->reassignNoRelatedHelpers();
 }
+
+
+/*  REDUCE RELATEDNESS */
 
 void Population::reassignNoRelatedHelpers() {
     int groupID = 0;
@@ -99,6 +105,8 @@ void Population::reassignNoRelatedHelpers() {
 }
 
 
+/*  IMMIGRATION */
+
 void Population::immigrate() {
     // Shuffle the group indices. This is done to ensure that the immigration process does not favor any particular group due to their position in the groups vector.
     std::vector<int> indices(groups.size());
@@ -125,12 +133,26 @@ void Population::immigrate() {
 }
 
 
+/*  REASSIGN BREEDER */
+
+void Population::reassignBreeder() {
+    for (Group &group: groups) {
+        group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
+    }
+}
+
+
+/*  HELP */
+
 void Population::help() {
     for (Group &group: groups) {
         //Calculate help & cumulative help for group
         group.calculateCumulativeHelp();
     }
 }
+
+
+/*  SURVIVAL AND MORTALITY */
 
 void Population::survivalGroup() {
     for (Group &group: groups) {
@@ -163,25 +185,6 @@ void Population::mortalityFloaters() {
         } else {
             floaterIt++;
         }
-    }
-}
-
-void Population::reassignBreeder() {
-    for (Group &group: groups) {
-        group.reassignBreeders(newBreederOutsider, newBreederInsider, inheritance);
-    }
-}
-
-void Population::increaseAge() {
-    for (Group &group: groups) {
-        group.increaseAge();
-    }
-    this->increaseAgeFloaters();
-}
-
-void Population::increaseAgeFloaters() {
-    for (Individual &floater: floaters) {
-        floater.increaseAge();
     }
 }
 
@@ -219,12 +222,32 @@ double Population::getOffspringSurvival() {
     return offspringSurvival;
 }
 
+/*  INCREASE AGE */
+
+void Population::increaseAge() {
+    for (Group &group: groups) {
+        group.increaseAge();
+    }
+    this->increaseAgeFloaters();
+}
+
+void Population::increaseAgeFloaters() {
+    for (Individual &floater: floaters) {
+        floater.increaseAge();
+    }
+}
+
+/*  REPRODUCTION */
+
 void Population::reproduce(int generation) {
     this->mk = getOffspringSurvival();
     for (Group &group: groups) {
         group.reproduce(generation, mk);
     }
 }
+
+
+/*  GETTERS */
 
 double Population::getMk() const {
     return mk;
