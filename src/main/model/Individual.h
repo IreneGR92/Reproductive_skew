@@ -26,6 +26,7 @@ private:
     double drift; ///< Genetic parameter drift.
 
     double dispersal; ///< The dispersal rate of the individual.
+    bool joinEmptyTerritory; ///< Flag indicating if the individual prefers to join an empty territory vs a group.
     double help; ///< The help provided by the individual.
     double survival; ///< The survival rate of the individual.
 
@@ -52,6 +53,8 @@ public:
     int getGroupIndex() const;
 
     void calcDispersal();
+
+    void calcColonization();
 
     void calcHelp();
 

@@ -22,6 +22,7 @@ Individual::Individual(Individual &individual, RoleType roleType, int &generatio
     this->drift = individual.getDrift();
 
     this->dispersal = Parameters::NO_VALUE;
+    this->joinEmptyTerritory = true;
     this->help = Parameters::NO_VALUE;
 
     this->initializeIndividual(roleType);
@@ -62,11 +63,18 @@ void Individual::setGroupIndex(int groupIndex) {
 
 void Individual::calcDispersal() {
     if (age == 1) {
-        this->dispersal = beta;
-        if (this->dispersal > 1) { this->dispersal = 1; } else if (this->dispersal < 0.5) { this->dispersal = 0.5; }
+        this->dispersal = 0.5; // new offspring disperse 50% of the time
 
     } else {
         this->dispersal = 0;
+    }
+}
+
+void Individual::calcColonization() {
+    if (parameters->uniform(*parameters->getGenerator()) < this->beta) {
+        this->joinEmptyTerritory = true; //join empty territory
+    } else {
+        this->joinEmptyTerritory = false; //join group
     }
 }
 
