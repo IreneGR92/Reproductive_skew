@@ -128,7 +128,7 @@ void Population::immigrate() {
     // Loop through the floaters and assign them to the empty groups
     for (auto floaterIt = floaters.begin(); floaterIt != floaters.end() && !emptyGroupIndices.empty() && !emptyGroupIndices.empty();) {
         floaterIt->calcJoinEmptyTerritory();
-        if (floaterIt->getJoinEmptyTerritory()) {
+        if (floaterIt->isJoinEmptyTerritory()) {
             int emptyGroupIndex = emptyGroupIndices.back();
             emptyGroupIndices.pop_back();
             groups[emptyGroupIndex].addHelper(*floaterIt);

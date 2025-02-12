@@ -73,7 +73,7 @@ public:
 
     double getDispersal() const;
 
-    bool getJoinEmptyTerritory() const;
+    bool isJoinEmptyTerritory() const;
 
     double getHelp() const;
 
