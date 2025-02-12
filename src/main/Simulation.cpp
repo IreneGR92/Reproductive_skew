@@ -1,5 +1,6 @@
 #include "Simulation.h"
 #include "stats/Statistics.h"
+#include <iostream>
 
 
 std::unique_ptr<ResultCache> Simulation::run() {
@@ -10,9 +11,9 @@ std::unique_ptr<ResultCache> Simulation::run() {
     statistics->printHeadersToConsole();
     statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
     results->writeToCacheMain(
-        statistics->generateMainCacheElement(generation, population.getDeaths(),
-                                             population.getNewBreederOutsider(),
-                                             population.getNewBreederInsider()));
+            statistics->generateMainCacheElement(generation, population.getDeaths(),
+                                                 population.getNewBreederOutsider(),
+                                                 population.getNewBreederInsider()));
 
 
     for (generation = 1; generation <= parameters->getNumGenerations(); generation++) {
@@ -41,9 +42,9 @@ std::unique_ptr<ResultCache> Simulation::run() {
             }
         }
 
-        //        if (replica == 0 && generation == 20000){
-        //            std::cout << "HERE" << std::endl; //TODO: Stopper for debugging
-        //        }
+//        if (parameters->getReplica() == 0 && generation == 30) {
+//            std::cout << "HERE" << std::endl; //TODO: Stopper for debugging
+//        }
 
         population.mortalityGroup();
 
@@ -51,9 +52,9 @@ std::unique_ptr<ResultCache> Simulation::run() {
         if (generation % parameters->getSkip() == 0) {
             statistics->printToConsole(generation, population.getDeaths(), population.getEmigrants());
             results->writeToCacheMain(
-                statistics->generateMainCacheElement(generation, population.getDeaths(),
-                                                     population.getNewBreederOutsider(),
-                                                     population.getNewBreederInsider()));
+                    statistics->generateMainCacheElement(generation, population.getDeaths(),
+                                                         population.getNewBreederOutsider(),
+                                                         population.getNewBreederInsider()));
         }
 
 
