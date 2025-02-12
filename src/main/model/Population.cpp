@@ -126,14 +126,14 @@ void Population::immigrate() {
     std::shuffle(emptyGroupIndices.begin(), emptyGroupIndices.end(), *parameters->getGenerator());
 
     // Loop through the floaters and assign them to the empty groups
-    for (auto floaterIt = floaters.begin();
-         floaterIt != floaters.end() && !emptyGroupIndices.empty() && !emptyGroupIndices.empty();) {
+    for (auto floaterIt = floaters.begin(); floaterIt != floaters.end() && !emptyGroupIndices.empty() && !emptyGroupIndices.empty();) {
         floaterIt->calcJoinEmptyTerritory();
         if (floaterIt->getJoinEmptyTerritory()) {
             int emptyGroupIndex = emptyGroupIndices.back();
             emptyGroupIndices.pop_back();
             groups[emptyGroupIndex].addHelper(*floaterIt);
             floaterIt = floaters.erase(floaterIt);
+            groupColonization++;
         } else {
             ++floaterIt;
         }
