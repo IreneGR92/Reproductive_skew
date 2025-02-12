@@ -146,22 +146,37 @@ void Population::immigrate() {
     std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers
     std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
 
-    // Loop through the groups in a random order
-    if (!floaters.empty()) {
-        // checks if there are any floaters available for immigration.
-        for (int i: indices) {
-            Group &group = groups[i];
+    // Calculate number of sampled floaters to join
+    int numSampledFloaters = parameters->getFloatersSampledImmigration();
+    int lowerSampledFloaters = round(static_cast<double>(floaters.size()) / parameters->getMaxColonies());
 
-            // Check if the group is empty, if so, floaters are recolonizing the territory
-            if (!group.isBreederAlive() && group.getHelpers().empty() && group.getSubordinateBreeders().empty()) {
-                groupColonization++;
-            }
-
-            // Add new helpers to the group
-            auto newHelpers = group.getAcceptedFloaters(floaters);
-            //  gets a list of floaters that are accepted by the current group.
-            group.addHelpers(newHelpers);
+    if (lowerSampledFloaters < numSampledFloaters) {
+        numSampledFloaters = lowerSampledFloaters;
+        if (numSampledFloaters == 0) {
+            numSampledFloaters = 1;
         }
+    }
+
+    // Loop through the groups in a random order
+    for (int i: indices) {
+        if (!floaters.empty()) { // checks if there are any floaters available for immigration.
+            break;
+        }
+        if (numSampledFloaters > floaters.size()) {
+            numSampledFloaters = floaters.size();
+        }
+        Group &group = groups[i];
+
+        // Check if the group is empty, if so, floaters are recolonizing the territory
+        if (!group.isBreederAlive() && group.getHelpers().empty() && group.getSubordinateBreeders().empty()) {
+            groupColonization++;
+        }
+
+        // Add new helpers to the group depending on the acceptance rate
+        auto newHelpers = group.getAcceptedFloaters(floaters, numSampledFloaters);
+        //  gets a list of floaters that are accepted by the current group.
+        group.addHelpers(newHelpers);
+
     }
 }
 

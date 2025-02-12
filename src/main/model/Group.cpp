@@ -156,13 +156,14 @@ void Group::calcAcceptanceRate() {
 }
 
 // Calculates the proportion of floaters that should be considered for immigration into the current group, based on the biasFloatBreeder parameter, the total number of colonies and the acceptance rate of the group.
-std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters) {
+std::vector<Individual> Group::getAcceptedFloaters(IndividualVector &floaters, int numSampledFloaters) {
 
 // Take a sample of floaters based on biasFloatBreeder
-    int numSampledFloaters = parameters->getFloatersSampledImmigration();
-    if (numSampledFloaters > floaters.size()) {
-        numSampledFloaters = round(floaters.size() / parameters->getMaxColonies());
-    }
+//    int numSampledFloaters = parameters->getFloatersSampledImmigration();
+//    if (numSampledFloaters > floaters.size()) {
+//        numSampledFloaters = round(floaters.size() / parameters->getMaxColonies());
+//    }
+
     std::vector<Individual> sampleFloaters(floaters.begin(), floaters.begin() + numSampledFloaters);
 
     this->hasPotentialImmigrants = !sampleFloaters.empty();
