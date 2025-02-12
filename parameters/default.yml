@@ -46,19 +46,19 @@ INIT_ALPHA: 0.0             #bigger values higher level of help
 MUTATION_ALPHA: 0.0        # mutation rate in alpha for level of help
 STEP_ALPHA: 0.04            # mutation step size in alpha for level of help
 
-#For dispersal
-INIT_BETA: 0.5              # bigger values higher dispersal
-MUTATION_BETA: 0.0         # mutation rate for the propensity to disperse
-STEP_BETA: 0.04             # mutation step size for the propensity to disperse
+#Join empty/ocupied territories
+INIT_BETA: 0.5              # bigger values higher likelihood of joining an empty territory
+MUTATION_BETA: 0.06         # mutation rate for the propensity to joining an empty territory
+STEP_BETA: 0.04             # mutation step size for the propensity to joining an empty territory
 
 #For expulsion of immigrants
-INIT_GAMMA: 1              # bigger values higher expulsion
-MUTATION_GAMMA: 0.0         # mutation rate for the expulsion effort
+INIT_GAMMA: 0.0              # bigger values higher expulsion
+MUTATION_GAMMA: 0.06         # mutation rate for the expulsion effort
 STEP_GAMMA: 0.04             # mutation step size for the expulsion effort
 
 #For reproductive concessions
 INIT_DELTA: 0.5             # bigger values lower reproductive share
-MUTATION_DELTA: 0.0        # mutation rate in delta for level of reproductive share
+MUTATION_DELTA: 0.06        # mutation rate in delta for level of reproductive share
 STEP_DELTA: 0.04            # mutation step size in delta for level of reproductive share
 
 #For relatedness
