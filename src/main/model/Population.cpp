@@ -147,24 +147,23 @@ void Population::immigrate() {
     std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
 
     // Calculate number of sampled floaters to join
-    int numSampledFloaters = parameters->getFloatersSampledImmigration();
-    int lowerSampledFloaters = round(static_cast<double>(floaters.size()) / parameters->getMaxColonies());
+    int maxSampledFloaters = parameters->getFloatersSampledImmigration();
+    int fairSplitFloaters = std::max(1, static_cast<int>(round(static_cast<double>(floaters.size()) / parameters->getMaxColonies())));
+    int numSampledFloaters = std::min(maxSampledFloaters, fairSplitFloaters);
 
-    if (lowerSampledFloaters < numSampledFloaters) {
-        numSampledFloaters = lowerSampledFloaters;
-        if (numSampledFloaters == 0) {
-            numSampledFloaters = 1;
-        }
-    }
 
     // Loop through the groups in a random order
     for (int i: indices) {
-        if (!floaters.empty()) { // checks if there are any floaters available for immigration.
+        // checks if there are any floaters available for immigration.
+        if (floaters.empty()) {
             break;
         }
+        // ensure that the number of sampled floaters does not exceed the number of floaters available.
         if (numSampledFloaters > floaters.size()) {
             numSampledFloaters = floaters.size();
         }
+
+        // Get the current group
         Group &group = groups[i];
 
         // Check if the group is empty, if so, floaters are recolonizing the territory
@@ -174,7 +173,6 @@ void Population::immigrate() {
 
         // Add new helpers to the group depending on the acceptance rate
         auto newHelpers = group.getAcceptedFloaters(floaters, numSampledFloaters);
-        //  gets a list of floaters that are accepted by the current group.
         group.addHelpers(newHelpers);
 
     }
