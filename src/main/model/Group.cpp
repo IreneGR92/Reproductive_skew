@@ -38,6 +38,14 @@ void Group::calculateGroupSize() {
     }
 }
 
+bool Group::isGroupEmpty() {
+    if (!isBreederAlive() && subordinateBreeders.empty() && helpers.empty() ){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /*  DISPERSAL (STAY VS DISPERSE) */
 
 vector<Individual> Group::disperse() {
