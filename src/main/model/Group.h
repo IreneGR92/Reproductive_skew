@@ -118,6 +118,7 @@ public:
     std::vector<double> get(Attribute attribute, bool includeBreeder) const;
 
 
+    bool isGroupEmpty();
 };
 
 

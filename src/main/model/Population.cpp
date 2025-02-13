@@ -116,8 +116,7 @@ void Population::immigrate() {
     // Find empty groups and store their indices
     std::vector<int> emptyGroupIndices;
     for (int i = 0; i < groups.size(); ++i) {
-        if (!groups[i].isBreederAlive() && groups[i].getHelpers().empty() &&
-            groups[i].getSubordinateBreeders().empty()) {
+        if (groups[i].isGroupEmpty()) {
             emptyGroupIndices.push_back(i);
         }
     }
@@ -126,9 +125,9 @@ void Population::immigrate() {
     std::shuffle(emptyGroupIndices.begin(), emptyGroupIndices.end(), *parameters->getGenerator());
 
     // Loop through the floaters and assign them to the empty groups
-    for (auto floaterIt = floaters.begin(); floaterIt != floaters.end() && !emptyGroupIndices.empty() && !emptyGroupIndices.empty();) {
+    for (auto floaterIt = floaters.begin(); floaterIt != floaters.end() && !emptyGroupIndices.empty();) {
         floaterIt->calcJoinEmptyTerritory();
-        if (floaterIt->getJoinEmptyTerritory()) {
+        if (floaterIt->isJoinEmptyTerritory()) {
             int emptyGroupIndex = emptyGroupIndices.back();
             emptyGroupIndices.pop_back();
             groups[emptyGroupIndex].addHelper(*floaterIt);
@@ -166,10 +165,10 @@ void Population::immigrate() {
         // Get the current group
         Group &group = groups[i];
 
-        // Check if the group is empty, if so, floaters are recolonizing the territory
-        if (!group.isBreederAlive() && group.getHelpers().empty() && group.getSubordinateBreeders().empty()) {
-            groupColonization++;
-        }
+            // Check if the group is empty, if so, floaters are recolonizing the territory
+            if (groups[i].isGroupEmpty()) {
+                groupColonization++;
+            }
 
         // Add new helpers to the group depending on the acceptance rate
         auto newHelpers = group.getAcceptedFloaters(floaters, numSampledFloaters);

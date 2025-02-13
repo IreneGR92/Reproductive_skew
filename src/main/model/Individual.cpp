@@ -240,7 +240,7 @@ double Individual::getDispersal() const {
     return dispersal;
 }
 
-bool Individual::getJoinEmptyTerritory() const {
+bool Individual::isJoinEmptyTerritory() const {
     return joinEmptyTerritory;
 }
 
