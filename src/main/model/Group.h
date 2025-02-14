@@ -44,7 +44,7 @@ private:
 
     int calculateHelpersToReassign();
 
-    void calcAcceptanceRate();
+    double getAcceptanceRate();
 
     void calcReproductiveShareRate();
 
