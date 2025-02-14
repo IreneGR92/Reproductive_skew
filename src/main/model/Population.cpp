@@ -147,7 +147,8 @@ void Population::immigrate() {
 
     // Calculate number of sampled floaters to join
     int maxSampledFloaters = parameters->getFloatersSampledImmigration();
-    int fairSplitFloaters = std::max(1, static_cast<int>(round(static_cast<double>(floaters.size()) / parameters->getMaxColonies())));
+    int fairSplitFloaters = std::max(1, static_cast<int>(round(
+            static_cast<double>(floaters.size()) / parameters->getMaxColonies())));
     int numSampledFloaters = std::min(maxSampledFloaters, fairSplitFloaters);
 
 
@@ -165,14 +166,24 @@ void Population::immigrate() {
         // Get the current group
         Group &group = groups[i];
 
-            // Check if the group is empty, if so, floaters are recolonizing the territory
-            if (groups[i].isGroupEmpty()) {
-                groupColonization++;
-            }
+        // Check if the group is empty, if so, floaters are recolonizing the territory
+        if (groups[i].isGroupEmpty()) {
+            groupColonization++;
+        }
+
+        int acceptedFloatersSize = group.getAcceptedFloatersSize(numSampledFloaters);
+
+        // Take a subsample of floaters based on the acceptance rate of the group
+        std::vector<Individual> acceptedFloaters(floaters.begin(), floaters.begin() + acceptedFloatersSize);
 
         // Add new helpers to the group depending on the acceptance rate
-        auto newHelpers = group.getAcceptedFloaters(floaters, numSampledFloaters);
-        group.addHelpers(newHelpers);
+        group.addHelpers(acceptedFloaters);
+
+        // Remove the selected floaters from the original floaters vector
+        floaters.erase(floaters.begin(), floaters.begin() + acceptedFloatersSize);
+
+
+
 
     }
 }
