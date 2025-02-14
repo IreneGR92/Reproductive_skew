@@ -171,20 +171,14 @@ void Population::immigrate() {
             groupColonization++;
         }
 
+        // Calculate the number of floaters that should be accepted by the group
         int acceptedFloatersSize = group.getAcceptedFloatersSize(numSampledFloaters);
 
-        // Take a subsample of floaters based on the acceptance rate of the group
-        std::vector<Individual> acceptedFloaters(floaters.begin(), floaters.begin() + acceptedFloatersSize);
-
-        // Add new helpers to the group depending on the acceptance rate
-        group.addHelpers(acceptedFloaters);
-
-        // Remove the selected floaters from the original floaters vector
-        floaters.erase(floaters.begin(), floaters.begin() + acceptedFloatersSize);
-
-
-
-
+        // Add the floaters to the group
+        for (int j = 0; j < acceptedFloatersSize; j++) {
+            group.addHelper(floaters.back());
+            floaters.pop_back();
+        }
     }
 }
 
