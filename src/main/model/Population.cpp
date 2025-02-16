@@ -79,7 +79,7 @@ void Population::reassignNoRelatedHelpers() {
         int timeout = 0;
         while (!allNoRelatedHelpers.empty()) {
             int selectGroupIndex = 0;
-            if (noRelatednessGroupsID.size() > 1) {
+            if (!noRelatednessGroupsID.empty()) {
                 std::uniform_int_distribution<int> uniformIntDistribution(0, noRelatednessGroupsID.size() - 1);
                 selectGroupIndex = uniformIntDistribution(
                         *parameters->getGenerator()); // selects a random index the noRelatednessGroupsID vector
