@@ -39,7 +39,7 @@ void Group::calculateGroupSize() {
 }
 
 bool Group::isGroupEmpty() {
-    if (!isBreederAlive() && subordinateBreeders.empty() && helpers.empty() ){
+    if (!isBreederAlive() && subordinateBreeders.empty() && helpers.empty()) {
         return true;
     } else {
         return false;
@@ -168,7 +168,7 @@ int Group::getAcceptedFloatersSize(int numSampledFloaters) {
 
     // Calculate the number of floaters that should be accepted by the group
     this->calcAcceptanceRate();
-    acceptedFloatersSize = round(numSampledFloaters * acceptanceRate);
+    acceptedFloatersSize = static_cast<int>(round(numSampledFloaters * acceptanceRate));
 
     return acceptedFloatersSize;
 }
@@ -291,7 +291,7 @@ void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, in
 
         //select subordinate breeders
         this->calcReproductiveShareRate();
-        int reproductiveShare = round(reproductiveShareRate * helpers.size());
+        int reproductiveShare = static_cast<int>(round(reproductiveShareRate * helpers.size()));
 
         for (int i = 0; i < reproductiveShare; i++) {
 
@@ -443,15 +443,17 @@ int Group::calcFecundity(double mk) {
     if (getBreedersSize() > 0) {
         //Calculate fecundity
         if (mk > 1 && parameters->isBetHedgingHelp()) { //TODO: Benign environment counted as 1 instead of mOff, change?
-            initFecundity = mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
+            initFecundity = mk * (parameters->getK0() - (parameters->getKh() * cumHelp / (1 + cumHelp)) +
+                                  (parameters->getKnb() * subordinateBreeders.size() /
+                                   (1 + subordinateBreeders.size())));
         } else if (parameters->isHelpObligatory()) {
-            initFecundity = mk * parameters->getK0() + mk * (parameters->getKh() * cumHelp / (1 + cumHelp)) *
-                                                       (1 + (parameters->getKnb() * subordinateBreeders.size() /
-                                                             (1 + subordinateBreeders.size())));
+            initFecundity = mk * (parameters->getK0() + (parameters->getKh() * cumHelp / (1 + cumHelp)) *
+                                                        (1 + (parameters->getKnb() * subordinateBreeders.size() /
+                                                              (1 + subordinateBreeders.size()))));
         } else {
-            initFecundity = mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
+            initFecundity = mk * (parameters->getK0() + (parameters->getKh() * cumHelp / (1 + cumHelp)) +
+                                  (parameters->getKnb() * subordinateBreeders.size() /
+                                   (1 + subordinateBreeders.size())));
         }
 
         if (initFecundity < 0) {
@@ -483,8 +485,8 @@ void Group::reproduce(int generation, double mk) { // populate offspring generat
         breedersPointers.push_back(&mainBreeder);
     }
 
-    std::uniform_int_distribution<int> distribution(0, breedersPointers.size() - 1);
     if (!breedersPointers.empty()) {
+        std::uniform_int_distribution<int> distribution(0, breedersPointers.size() - 1);
         for (int i = 0; i < fecundityGroup; i++) {
             // Generate a random index
             randomIndex = distribution(*parameters->getGenerator());
@@ -519,11 +521,7 @@ int Group::getGroupSize() const {
 }
 
 int Group::getBreedersSize() const {
-    if (mainBreederAlive) {
-        return subordinateBreeders.size() + 1;
-    } else {
-        return subordinateBreeders.size();
-    }
+    return mainBreederAlive ? subordinateBreeders.size() + 1 : subordinateBreeders.size();
 }
 
 double Group::getCumHelp() const {
