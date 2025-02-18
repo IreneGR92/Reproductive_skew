@@ -60,7 +60,7 @@ public:
 
     std::vector<Individual> noRelatedHelpersToReassign(int index);
 
-    int getAcceptedFloatersSize(int numSampledFloaters);
+    int getAcceptedFloatersSize(IndividualVector &floaters);
 
     void transferBreedersToHelpers();
 

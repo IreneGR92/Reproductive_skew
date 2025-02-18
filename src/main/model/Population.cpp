@@ -145,22 +145,12 @@ void Population::immigrate() {
     std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers
     std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
 
-    // Calculate number of sampled floaters to join
-    int maxSampledFloaters = parameters->getFloatersSampledImmigration();
-    int fairSplitFloaters = std::max(1, static_cast<int>(round(
-            static_cast<double>(floaters.size()) / parameters->getMaxColonies())));
-    int numSampledFloaters = std::min(maxSampledFloaters, fairSplitFloaters);
-
 
     // Loop through the groups in a random order
     for (int i: indices) {
         // checks if there are any floaters available for immigration.
         if (floaters.empty()) {
             break;
-        }
-        // ensure that the number of sampled floaters does not exceed the number of floaters available.
-        if (numSampledFloaters > floaters.size()) {
-            numSampledFloaters = floaters.size();
         }
 
         // Get the current group
@@ -172,7 +162,7 @@ void Population::immigrate() {
         }
 
         // Calculate the number of floaters that should be accepted by the group
-        int acceptedFloatersSize = group.getAcceptedFloatersSize(numSampledFloaters);
+        int acceptedFloatersSize = group.getAcceptedFloatersSize(floaters);
 
         // Add the floaters to the group
         for (int j = 0; j < acceptedFloatersSize; j++) {
