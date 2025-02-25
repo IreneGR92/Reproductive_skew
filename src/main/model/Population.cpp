@@ -106,21 +106,22 @@ void Population::immigrate() {
     std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
 
     // Loop through the groups in a random order
-    if (!floaters.empty()) {
+    for (int i: indices) {
+
         // checks if there are any floaters available for immigration.
-        for (int i: indices) {
-            Group &group = groups[i];
-
-            // Check if the group is empty, if so, floaters are recolonizing the territory
-            if (!group.isBreederAlive() && group.getHelpers().empty() && group.getSubordinateBreeders().empty()) {
-                groupColonization++;
-            }
-
-            // Add new helpers to the group
-            auto newHelpers = group.getAcceptedFloaters(floaters);
-            //  gets a list of floaters that are accepted by the current group.
-            group.addHelpers(newHelpers);
+        if (floaters.empty()) {
+            break;
         }
+
+        Group &group = groups[i];
+
+        // Check if the group is empty, if so, floaters are recolonizing the territory
+        if (!group.isBreederAlive() && group.getHelpers().empty() && group.getSubordinateBreeders().empty()) {
+            groupColonization++;
+        }
+
+        // Add new helpers to the group
+        group.moveAcceptedFloaters(floaters);
     }
 }
 
