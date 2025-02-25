@@ -21,11 +21,11 @@ REDUCED_RELATEDNESS: 2  # proportion of philopatric offspring reallocated to red
 
 # Modifiers in overall survival
 m: 0.1    # environmental mortality
-X0: 0.3     # base survival (between 0 and 1)
+X0: 0.2     # base survival (between 0 and 1)
 Xh: 1    # cost of help in survival
 Xn: 3    # benefit of group size in survival
-Xe: 0    # cost of expulsion of immigrants in survival
-Xrs: 0    # cost of reproductive suppression in survival
+Xe: 0.1    # cost of expulsion of immigrants in survival
+Xrs: 0.1    # cost of reproductive suppression in survival
 Xf: 0     # additional survival for floaters (S=x0+y)
 
 # Modifiers in offspring mortality
