@@ -105,12 +105,18 @@ void Population::immigrate() {
     std::iota(indices.begin(), indices.end(), 0); // Fill it with consecutive numbers
     std::shuffle(indices.begin(), indices.end(), *parameters->getGenerator());
 
-    if (!floaters.empty()) {
-        // Loop through the groups in a random order
-        for (int i: indices) {
+    // Shuffle the floaters vector
+    std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
 
-            Group &group = groups[i];
+    // Loop through the groups in a random order
+    for (int i: indices) {
 
+        Group &group = groups[i];
+
+        // Transfer all breeders to the helpers vector
+        group.transferBreedersToHelpers();
+
+        if (!floaters.empty()) {
             // Check if the group is empty, if so, floaters are recolonizing the territory
             if (!group.isBreederAlive() && group.getHelpers().empty() && group.getSubordinateBreeders().empty()) {
                 groupColonization++;

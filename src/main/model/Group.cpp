@@ -124,8 +124,6 @@ std::vector<Individual> Group::noRelatedHelpersToReassign(int index) {
 
 void Group::calcAcceptanceRate() {
 
-    this->transferBreedersToHelpers();
-
     double expulsionEffort = 0;
     double gamma;
     double counter = 0;
@@ -155,9 +153,6 @@ void Group::calcAcceptanceRate() {
 // Calculates the proportion of floaters that should be considered for immigration into the current group, based on the biasFloatBreeder parameter, the total number of colonies and the acceptance rate of the group.
 void Group::moveAcceptedFloaters(IndividualVector &floaters) {
 
-// Shuffle the floaters vector
-    std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
-
 // Calculate sample of floaters based on biasFloatBreeder
     int numSampledFloaters = parameters->getFloatersSampledImmigration();
     if (numSampledFloaters > floaters.size()) {
@@ -171,7 +166,7 @@ void Group::moveAcceptedFloaters(IndividualVector &floaters) {
 
 
 // Calculate the number of floaters that should be accepted by the group
-    int acceptedFloatersSize = round(numSampledFloaters * acceptanceRate);
+    acceptedFloatersSize = round(numSampledFloaters * acceptanceRate);
 
 
 // Add the floaters to the group
