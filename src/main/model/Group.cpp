@@ -38,6 +38,14 @@ void Group::calculateGroupSize() {
     }
 }
 
+bool Group::isGroupEmpty() {
+    if (!isBreederAlive() && subordinateBreeders.empty() && helpers.empty()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /*  DISPERSAL (STAY VS DISPERSE) */
 
 vector<Individual> Group::disperse() {
@@ -73,6 +81,8 @@ int Group::countHelpersAgeOne() {
     }
     return count;
 }
+
+/*  REDUCE RELATEDNESS */
 
 int Group::calculateHelpersToReassign() {
     int helpersToReassign;
@@ -120,6 +130,7 @@ std::vector<Individual> Group::noRelatedHelpersToReassign(int index) {
     return noRelatedHelpers;
 }
 
+
 /*  ACCEPTANCE OF IMMIGRANTS */
 
 void Group::calcAcceptanceRate() {
@@ -128,7 +139,7 @@ void Group::calcAcceptanceRate() {
     double gamma;
     double counter = 0;
 
-    if (helpers.empty()) {
+    if (isGroupEmpty()) {
         acceptanceRate = 1; //if no group members alive, all immigrants are free to colonise the territory
     } else {
         for (auto &helper: helpers) {
@@ -163,11 +174,7 @@ void Group::moveAcceptedFloaters(IndividualVector &floaters) {
 
 // Calculate the number of floaters that should be accepted by the group
     this->calcAcceptanceRate();
-
-
-// Calculate the number of floaters that should be accepted by the group
-    acceptedFloatersSize = round(numSampledFloaters * acceptanceRate);
-
+    acceptedFloatersSize = static_cast<int>(round(numSampledFloaters * acceptanceRate));
 
 // Add the floaters to the group
     for (int j = 0; j < acceptedFloatersSize; j++) {
