@@ -132,6 +132,8 @@ void Population::immigrate() {
 
             // Add new helpers to the group
             group.moveAcceptedFloaters(floaters);
+        } else {
+            group.hasPotentialImmigrants = false;
         }
     }
 }
