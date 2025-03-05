@@ -123,8 +123,7 @@ void Individual::calcSurvival(const int &groupSize, double delta, const bool &ha
         this->survival = X0;
 
         if (roleType == FLOATER) {
-            this->survival = X0 + (X1 / 2) +
-                             parameters->getXf(); // effect of environment (X1) + exp(0) + additional survival/mortality defined by Xf
+            this->survival = X0 + (X1 / 2) + parameters->getXf(); // effect of environment (X1) + exp(0) + additional survival/mortality defined by Xf
         }
     } else {
         this->survival = X0 + ((Xn * X1 / (1 + exp(-thisGroupSize))) + (Xh * X1 / (1 + exp(this->help))) +
