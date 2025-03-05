@@ -1,5 +1,6 @@
 #include "Simulation.h"
 #include "stats/Statistics.h"
+#include <iostream>
 
 
 std::unique_ptr<ResultCache> Simulation::run() {
