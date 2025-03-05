@@ -59,7 +59,7 @@ public:
 
     std::vector<Individual> noRelatedHelpersToReassign(int index);
 
-   void moveAcceptedFloaters(IndividualVector &floaters);
+   void moveAcceptedFloaters(IndividualVector &floaters, int numSampledFloaters);
 
     void transferBreedersToHelpers();
 

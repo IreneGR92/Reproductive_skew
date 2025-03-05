@@ -116,6 +116,12 @@ void Population::immigrate() {
     // Shuffle the floaters vector
     std::shuffle(floaters.begin(), floaters.end(), *parameters->getGenerator());
 
+    // Calculate number of sampled floaters to join per group depending on availability
+    int maxSampledFloaters = parameters->getFloatersSampledImmigration();
+    int fairSplitFloaters = std::max(1, static_cast<int>(round(
+            static_cast<double>(floaters.size()) / parameters->getMaxColonies())));
+    int numSampledFloaters = std::min(maxSampledFloaters, fairSplitFloaters);
+
     // Loop through the groups in a random order
     for (int i: indices) {
 
@@ -130,8 +136,13 @@ void Population::immigrate() {
                 groupColonization++;
             }
 
+            // ensure that the number of sampled floaters does not exceed the number of floaters available.
+            if (numSampledFloaters > floaters.size()) {
+                numSampledFloaters = floaters.size();
+            }
+
             // Add new helpers to the group
-            group.moveAcceptedFloaters(floaters);
+            group.moveAcceptedFloaters(floaters, numSampledFloaters);
         } else {
             group.hasPotentialImmigrants = false;
         }
