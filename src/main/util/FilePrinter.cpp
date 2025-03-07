@@ -3,17 +3,20 @@
 #include <sstream>
 #include <iomanip>
 #include "Config.h"
+#include "spdlog/spdlog.h"
+#include "GitHash.h"
 
 
 using namespace std;
 
 
 void FilePrinter::writeMainFile(std::vector<std::unique_ptr<ResultCache> > &results) {
+
     //print header
     this->printHeader(*this->mainWriter);
     // column headings in output file main
     *this->mainWriter << "Replica" << "\t" << "Generation" << "\t" << "Population" << "\t"
-            << "Deaths"   "\t" << "Floaters" << "\t" << "GroupExtinction" << "\t" << "GroupColonization" << "\t"
+            << "Deaths" "\t" << "Floaters" << "\t" << "GroupExtinction" << "\t" << "GroupColonization" << "\t"
             << "Group_size" << "\t" << "Sub_Breeders" << "\t"
             << "Age_H" << "\t" << "Age_F" << "\t" << "Age_DomB" << "\t" << "Age_SubB" << "\t"
             << "Age_New_Breeder" << "\t"
@@ -119,8 +122,9 @@ void FilePrinter::writeLastGenerationFile(std::vector<std::unique_ptr<ResultCach
 }
 
 void FilePrinter::printHeader(std::ofstream &writer) {
-    writer << "PARAMETER VALUES" << endl
 
+    writer  << "GIT HASH:" << "\t" << GIT_HASH << endl
+            << "PARAMETER VALUES" << endl
             << "Bet-hedging_help?:" << "\t" << parameters->isBetHedgingHelp() << endl
             << "Help_obligatory?:" << "\t" << parameters->isHelpObligatory() << endl
             << "Predictable_environment?:" << "\t" << parameters->isPredictableEnvironment() << endl
@@ -128,7 +132,8 @@ void FilePrinter::printHeader(std::ofstream &writer) {
             << "No_group_augmentation?:" << "\t" << parameters->isNoGroupAugmentation() << endl
             << "No_effect_relatedness?:" << "\t" << parameters->isNoRelatedness() << endl
             << "No_effect_age_inheritance?:" << "\t" << parameters->isAgeNoInfluenceInheritance() << endl
-            << "Initial_population:" << "\t" << parameters->getMaxColonies() * (parameters->getInitNumHelpers() + 1) << endl
+            << "Initial_population:" << "\t" << parameters->getMaxColonies() * (parameters->getInitNumHelpers() + 1) <<
+            endl
             << "Number_of_colonies:" << "\t" << parameters->getMaxColonies() << endl
             << "Number_generations:" << "\t" << parameters->getNumGenerations() << endl
             << "Number_replicates:" << "\t" << parameters->getMaxNumReplicates() << endl
