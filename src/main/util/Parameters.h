@@ -50,8 +50,8 @@ private:
     const int SEED = 1; ///< The seed for the random number generator.
     bool BET_HEDGING_HELP;    ///< Apply reaction norm to age for dispersal?
     bool HELP_OBLIGATORY;      ///< Help obligatory for reproduction?
-    bool PREDICTABLE_ENVIRONMENT;         ///< Is the environment (change in mOff) predictable?
-    bool EVOLUTION_HELP_AFTER_DISPERSAL; ///< Help evolves only after the evolution of dispersal?
+    bool PREDICTABLE_ENVIRONMENT;   ///< Is the environment (change in mOff) predictable?
+    bool DOMINANT_BREEDER_REPLACEMENT; ///< Does the main dominant breeder get potentially replaced in each cycle? if not, only when dead.
     bool NO_GROUP_AUGMENTATION; ///< No group augmentation in the simulation?
     bool NO_RELATEDNESS;       ///< Apply implementation to remove the effect of relatedness?
     bool AGE_NO_INFLUENCE_INHERITANCE; ///< Age has no influence on who inherits territory, randomly sampled from candidate (helpers + sample floaters)
@@ -144,7 +144,7 @@ public:
 
     bool isPredictableEnvironment() const;
 
-    bool isEvolutionHelpAfterDispersal() const;
+    bool isDominantBreederReplacement() const;
 
     bool isNoGroupAugmentation() const;
 
