@@ -203,15 +203,13 @@ void Group::transferBreedersToHelpers() {
     subordinateBreeders.clear();
 
     // Move the main breeder also to the helper vector
-    if(parameters->isDominantBreederReplacement()){
-        if (mainBreederAlive) {
+    if(parameters->isDominantBreederReplacement() && mainBreederAlive){
             // Change the fish type of the mainBreeder to helper
             mainBreeder.setRoleType(HELPER);
             // Add the mainBreeder to the helpers vector
             helpers.emplace_back(mainBreeder);
             // Set mainBreederAlive to false as mainBreeder is no longer a breeder
             mainBreederAlive = false;
-        }
     }
 }
 
