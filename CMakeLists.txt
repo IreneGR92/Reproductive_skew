@@ -1,5 +1,5 @@
 # Minimum CMake version and project details
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.10...3.24)
 project(reproductive_skew C CXX)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -29,6 +29,8 @@ if (NOT yaml-cpp_POPULATED)
     add_subdirectory(${yaml-cpp_SOURCE_DIR} ${yaml-cpp_BINARY_DIR})
 endif ()
 
+# Define the output directory for the Version.h file
+set(VERSION_HEADER_DIR ${CMAKE_BINARY_DIR}/generated)
 
 # Define the source files for the App executable
 set(SOURCE_FILES
@@ -70,13 +72,32 @@ set(SOURCE_FILES
 
 )
 
+# Define the script path
+set(UPDATE_VERSION_SCRIPT ${CMAKE_SOURCE_DIR}/update_git_hash.sh)
+
+# Add a custom command to run the script git hash script
+add_custom_command(
+        OUTPUT ${VERSION_HEADER_DIR}/Version.h
+        COMMAND ${UPDATE_VERSION_SCRIPT} ${VERSION_HEADER_DIR}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Updating version header with current git hash"
+        VERBATIM
+)
+
+# Add a custom target that depends on the generated header file
+add_custom_target(update_version ALL
+        DEPENDS ${VERSION_HEADER_DIR}/Version.h
+)
+
 # Define the App executable and link the yaml-cpp library
-add_executable(App src/main/main.cpp ${SOURCE_FILES})
+add_executable(App src/main/main.cpp ${SOURCE_FILES} ${VERSION_HEADER_DIR}/Version.h)
 target_link_libraries(App PUBLIC yaml-cpp spdlog::spdlog)
+add_dependencies(App update_version)
+
+
 
 
 # Testing
-
 
 # Declare Google Test
 FetchContent_Declare(
