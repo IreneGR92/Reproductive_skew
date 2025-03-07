@@ -2,9 +2,8 @@
 
 # Get the current git hash
 GIT_HASH=$(git rev-parse HEAD)
-
 # Define the header file in the build directory
-HEADER_FILE="$1/Version.h"
+HEADER_FILE="$1/GitHash.h"
 
 # Check if the file exists and contains the current git hash
 if [ -f "$HEADER_FILE" ]; then
@@ -16,9 +15,9 @@ if [ -f "$HEADER_FILE" ]; then
 fi
 
 # Write the git hash to the header file
-echo "#ifndef VERSION_H" > $HEADER_FILE
-echo "#define VERSION_H" >> $HEADER_FILE
+echo "#ifndef GITHASH_H" > $HEADER_FILE
+echo "#define GITHASH_H" >> $HEADER_FILE
 echo "" >> $HEADER_FILE
 echo "const char* const GIT_HASH = \"$GIT_HASH\";" >> $HEADER_FILE
 echo "" >> $HEADER_FILE
-echo "#endif // VERSION_H" >> $HEADER_FILE
+echo "#endif // GITHASH_H" >> $HEADER_FILE
