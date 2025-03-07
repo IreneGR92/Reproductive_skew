@@ -124,7 +124,7 @@ void FilePrinter::printHeader(std::ofstream &writer) {
             << "Bet-hedging_help?:" << "\t" << parameters->isBetHedgingHelp() << endl
             << "Help_obligatory?:" << "\t" << parameters->isHelpObligatory() << endl
             << "Predictable_environment?:" << "\t" << parameters->isPredictableEnvironment() << endl
-            << "Evolution_help_after_dispersal?:" << "\t" << parameters->isEvolutionHelpAfterDispersal() << endl
+            << "Dominant_breeder_replacement?:" << "\t" << parameters->isDominantBreederReplacement() << endl
             << "No_group_augmentation?:" << "\t" << parameters->isNoGroupAugmentation() << endl
             << "No_effect_relatedness?:" << "\t" << parameters->isNoRelatedness() << endl
             << "No_effect_age_inheritance?:" << "\t" << parameters->isAgeNoInfluenceInheritance() << endl

@@ -29,7 +29,7 @@ Parameters::Parameters(const string &filename, const int replica) : replica(repl
     this->BET_HEDGING_HELP = config["BET_HEDGING_HELP"].as<bool>();
     this->HELP_OBLIGATORY = config["HELP_OBLIGATORY"].as<bool>();
     this->PREDICTABLE_ENVIRONMENT = config["PREDICTABLE_ENVIRONMENT"].as<bool>();
-    this->EVOLUTION_HELP_AFTER_DISPERSAL = config["EVOLUTION_HELP_AFTER_DISPERSAL"].as<bool>();
+    this->DOMINANT_BREEDER_REPLACEMENT = config["DOMINANT_BREEDER_REPLACEMENT"].as<bool>();
     this->NO_GROUP_AUGMENTATION = config["NO_GROUP_AUGMENTATION"].as<bool>();
     this->NO_RELATEDNESS = config["NO_RELATEDNESS"].as<bool>();
     this->AGE_NO_INFLUENCE_INHERITANCE = config["AGE_NO_INFLUENCE_INHERITANCE"].as<bool>();
@@ -98,8 +98,8 @@ bool Parameters::isPredictableEnvironment() const {
     return PREDICTABLE_ENVIRONMENT;
 }
 
-bool Parameters::isEvolutionHelpAfterDispersal() const {
-    return EVOLUTION_HELP_AFTER_DISPERSAL;
+bool Parameters::isDominantBreederReplacement() const {
+    return DOMINANT_BREEDER_REPLACEMENT;
 }
 
 bool Parameters::isNoGroupAugmentation() const {

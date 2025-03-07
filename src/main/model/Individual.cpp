@@ -154,15 +154,7 @@ void Individual::mutate(int generation) // mutate genome of offspring
     std::normal_distribution<double> NormalDrift(0, parameters->getStepDrift());
 
     // Alpha
-    double mutationAlpha;
-
-    if (parameters->isEvolutionHelpAfterDispersal() && generation < 25000) {
-        mutationAlpha = 0;
-    } else {
-        mutationAlpha = parameters->getMutationAlpha();
-    }
-
-    if (parameters->uniform(rng) < mutationAlpha) {
+    if (parameters->uniform(rng) < parameters->getMutationAlpha()) {
         alpha += NormalA(rng);
     }
 

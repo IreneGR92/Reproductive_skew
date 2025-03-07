@@ -1,6 +1,6 @@
 #Run parameters
 BET_HEDGING_HELP: false                 # Does help have a negative influence on fecundity when the environment is benign?
-EVOLUTION_HELP_AFTER_DISPERSAL: false   # Help evolves only after the evolution of dispersal?
+DOMINANT_BREEDER_REPLACEMENT: true   # Does the main dominant breeder get potentially replaced in each cycle? if not, only when dead.
 NO_GROUP_AUGMENTATION: false
 NO_RELATEDNESS: false                   # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
