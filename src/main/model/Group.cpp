@@ -154,6 +154,19 @@ void Group::calcAcceptanceRate() {
             counter++;
         }
 
+        // Add the expulsion effort of the main breeder if not added to the helper vector
+        if (mainBreederAlive && !parameters->isDominantBreederReplacement()) {
+            if (mainBreeder.getGamma() < 0) {
+                gamma = 0;
+            } else if (mainBreeder.getGamma() > 1) {
+                gamma = 1;
+            } else {
+                gamma = mainBreeder.getGamma();
+            }
+            expulsionEffort += gamma;
+            counter++;
+        }
+
         double meanExpulsionEffort = expulsionEffort / counter;
 
         acceptanceRate = 1 - meanExpulsionEffort;
@@ -176,7 +189,6 @@ void Group::moveAcceptedFloaters(IndividualVector &floaters, int numSampledFloat
         addHelper(floaters.back());
         floaters.pop_back();
     }
-
 }
 
 void Group::transferBreedersToHelpers() {
@@ -191,13 +203,15 @@ void Group::transferBreedersToHelpers() {
     subordinateBreeders.clear();
 
     // Move the main breeder also to the helper vector
-    if (mainBreederAlive) { //TODO: This assumes that the main breeder is chosen again every round, change?
-        // Change the fish type of the mainBreeder to helper
-        mainBreeder.setRoleType(HELPER);
-        // Add the mainBreeder to the helpers vector
-        helpers.emplace_back(mainBreeder);
-        // Set mainBreederAlive to false as mainBreeder is no longer a breeder
-        mainBreederAlive = false;
+    if(parameters->isDominantBreederReplacement()){
+        if (mainBreederAlive) {
+            // Change the fish type of the mainBreeder to helper
+            mainBreeder.setRoleType(HELPER);
+            // Add the mainBreeder to the helpers vector
+            helpers.emplace_back(mainBreeder);
+            // Set mainBreederAlive to false as mainBreeder is no longer a breeder
+            mainBreederAlive = false;
+        }
     }
 }
 
@@ -282,18 +296,20 @@ void Group::mortalityGroupVector(int &deaths, IndividualVector &individuals) {
 
 void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, int &inheritance) {
 
+
     if (!helpers.empty()) {
 
         //select main breeder
-        auto selectedBreeder = selectBreeder(newBreederOutsider, newBreederInsider, inheritance);
+        if (!mainBreederAlive || parameters->isDominantBreederReplacement()) {
+            auto selectedBreeder = selectBreeder(newBreederOutsider, newBreederInsider, inheritance);
 
-        if (selectedBreeder != nullptr) {
-            mainBreeder = *selectedBreeder;
-            mainBreederAlive = true;
-        } else {
-            mainBreederAlive = false;
+            if (selectedBreeder != nullptr) {
+                mainBreeder = *selectedBreeder;
+                mainBreederAlive = true;
+            } else {
+                mainBreederAlive = false;
+            }
         }
-
 
         //select subordinate breeders
         this->calcReproductiveShareRate();
@@ -301,7 +317,7 @@ void Group::reassignBreeders(int &newBreederOutsider, int &newBreederInsider, in
 
         for (int i = 0; i < reproductiveShare; i++) {
 
-            selectedBreeder = selectBreeder(newBreederOutsider, newBreederInsider, inheritance);
+            auto selectedBreeder = selectBreeder(newBreederOutsider, newBreederInsider, inheritance);
             if (selectedBreeder != nullptr) {
                 subordinateBreeders.emplace_back(*selectedBreeder);
             }
