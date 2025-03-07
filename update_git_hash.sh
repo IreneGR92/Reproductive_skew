@@ -1,9 +1,12 @@
 #!/bin/bash
-
+echo "running scriptsdfadsfsdxcv"
 # Get the current git hash
 GIT_HASH=$(git rev-parse HEAD)
 # Define the header file in the build directory
 HEADER_FILE="$1/GitHash.h"
+
+mkdir -p $(dirname ${HEADER_FILE})
+touch ${HEADER_FILE}
 
 # Check if the file exists and contains the current git hash
 if [ -f "$HEADER_FILE" ]; then
