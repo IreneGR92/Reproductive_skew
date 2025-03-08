@@ -1,5 +1,5 @@
 #!/bin/bash
- echo "running update_git_hash.sh"
+echo "running update_git_hash.sh"
 # Get the current git hash
 GIT_HASH=$(git rev-parse HEAD)
 # Define the header file in the build directory
