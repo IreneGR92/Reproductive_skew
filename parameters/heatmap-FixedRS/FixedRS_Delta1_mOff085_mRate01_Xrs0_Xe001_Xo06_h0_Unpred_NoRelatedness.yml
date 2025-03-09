@@ -1,0 +1,67 @@
+#Run parameters
+DOMINANT_BREEDER_REPLACEMENT: true   # Does the main dominant breeder get potentially replaced in each cycle? if not, only when dead.
+NO_GROUP_AUGMENTATION: false
+NO_RELATEDNESS: true                  # Apply implementation to remove the effect of relatedness?
+AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
+BET_HEDGING_HELP: false                 # Does help have a negative influence on fecundity when the environment is benign?
+HELP_OBLIGATORY: false                  # Is help obligatory for successful reproduction?
+PREDICTABLE_ENVIRONMENT: false          # Is the environment (change in mOff) predictable?
+
+MAX_COLONIES: 500     # max number of groups or colonies
+NUM_GENERATIONS: 100000
+MAX_NUM_REPLICATES: 50
+SKIP: 1000   # interval between print-outs
+
+#Fix values
+INIT_NUM_HELPERS: 10     # initial number of helpers per group
+FLOATERS_SAMPLED_IMMIGRATION: 3  # floaters sampled to try to join a group
+MIN_AGE_BECOME_BREEDER: 1 # minimum age for individuals to be able to become breeders, 1 is no restriction
+FIXED_GROUP_SIZE: 3		# in implementation "no group augmentation", virtual group size used on survival formula
+REDUCED_RELATEDNESS: 2  # proportion of philopatric offspring reallocated to reduce within group relatedness in an asexual population (ONLY VALUES 2 OR 3)
+
+# Modifiers in overall survival
+m: 0.1    # environmental mortality
+X0: 0.6     # base survival (between 0 and 1)
+Xh: 0    # cost of help in survival
+Xn: 3    # benefit of group size in survival
+Xe: 0.01    # cost of expulsion of immigrants in survival
+Xrs: 0    # cost of reproductive suppression in survival
+Xf: 0     # additional survival for floaters (S=x0+y)
+
+# Modifiers in offspring mortality
+mOff: 0.85    # average survival of offspring
+mFreq: 0.1   # rate of change in survival of offspring
+mMagnit: 4   # step size in survival of offspring
+
+#Modifiers in fecundity
+K0: 1    # baseline fecundity when no other factors influence it
+Kh: 2    # benefit of cumHelp in the fecundity
+Knb: 2   # benefit of number of breeders in the group fecundity
+
+
+#Genetic values
+
+#For help
+INIT_ALPHA: 0.0             #bigger values higher level of help
+MUTATION_ALPHA: 0.0        # mutation rate in alpha for level of help
+STEP_ALPHA: 0.04            # mutation step size in alpha for level of help
+
+#For dispersal
+INIT_BETA: 1.0              # bigger values higher dispersal
+MUTATION_BETA: 0.06         # mutation rate for the propensity to disperse
+STEP_BETA: 0.04             # mutation step size for the propensity to disperse
+
+#For expulsion of immigrants
+INIT_GAMMA: 0.0              # bigger values higher expulsion
+MUTATION_GAMMA: 0.06         # mutation rate for the expulsion effort
+STEP_GAMMA: 0.04             # mutation step size for the expulsion effort
+
+#For reproductive concessions
+INIT_DELTA: 1.0             # bigger values lower reproductive share
+MUTATION_DELTA: 0.0        # mutation rate in delta for level of reproductive share
+STEP_DELTA: 0.04            # mutation step size in delta for level of reproductive share
+
+#For relatedness
+MUTATION_DRIFT: 0.06        # mutation rate in the neutral selected value to track level of relatedness
+STEP_DRIFT: 0.04            # mutation step size in the neutral genetic value to track level of relatedness
+
