@@ -1,5 +1,5 @@
 #Run parameters
-DOMINANT_BREEDER_REPLACEMENT: true  # Does the main dominant breeder get potentially replaced in each cycle? if not, only when dead.
+DOMINANT_BREEDER_REPLACEMENT: false  # Does the main dominant breeder get potentially replaced in each cycle? if not, only when dead.
 NO_GROUP_AUGMENTATION: false
 NO_RELATEDNESS: false                  # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
