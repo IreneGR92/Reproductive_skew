@@ -120,7 +120,7 @@ void Population::immigrate() {
     int maxSampledFloaters = parameters->getFloatersSampledImmigration();
     int fairSplitFloaters = std::max(1, static_cast<int>(round(
             static_cast<double>(floaters.size()) / parameters->getMaxColonies())));
-    int numSampledFloaters = std::min(maxSampledFloaters, fairSplitFloaters);
+    int numSampledFloaters = maxSampledFloaters;
 
     // Loop through the groups in a random order
     for (int i: indices) {
