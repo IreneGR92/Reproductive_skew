@@ -88,7 +88,7 @@ void Individual::calcHelp() {
 void Individual::calcSurvival(const int &groupSize, double delta, const bool &hasPotentialImmigrants) {
 
     double thisGroupSize;
-    double Xn, Xe, Xh, Xrs, X0, X1;
+    double Xn, Xe, Xh, Xrs, Xf, X0, m;
 
     if (parameters->isNoGroupAugmentation()) {
         thisGroupSize = parameters->getFixedGroupSize();
@@ -96,46 +96,36 @@ void Individual::calcSurvival(const int &groupSize, double delta, const bool &ha
         thisGroupSize = groupSize;
     }
 
-    X0 = parameters->getX0();           // min survival
-    X1 = 1 - X0 - parameters->getM(); //  X0 + X1 max survival
-    if (X1 < 0) { X1 = 0; }
-
     if (roleType == FLOATER) {
-        Xn = 0;     // effect of group size
-        Xe = 0;     // effect of expulsion
-        Xh = 0;     // effect of help
-        Xrs = 0;    // effect of reproductive suppression
+        Xn = 0;     // benefit of group size
+        Xe = 0;     // cost of expulsion of immigrants
+        Xh = 0;     // cost of help
+        Xrs = 0;    // cost of reproductive suppression
+        Xf = parameters->getXf(); //additional survival for floaters
     } else if (roleType == BREEDER) {
         Xn = parameters->getXn();
         Xe = parameters->getXe();
         Xh = 0;
         Xrs = parameters->getXrs();
+        Xf = 0;
     } else { //HELPER
         Xn = parameters->getXn();
         Xe = parameters->getXe();
         Xh = parameters->getXh();
         Xrs = 0;
+        Xf = 0;
     }
 
+    X0 = parameters->getX0(); // base survival without the effect of help or group size
+    m = parameters->getM(); // base mortality
     const double gamma = hasPotentialImmigrants ? this->gamma : 0; // no cost of expulsion if no potential immigrants
 
-    if (Xn + Xe + Xh + Xrs == 0) { //prevent to divide by 0
-        this->survival = X0;
 
-        if (roleType == FLOATER) {
-            this->survival = X0 + (X1 / 2) + parameters->getXf(); // effect of environment (X1) + exp(0) + additional survival/mortality defined by Xf
-        }
-    } else {
-        this->survival = X0 + ((Xn * X1 / (1 + exp(-thisGroupSize))) + (Xh * X1 / (1 + exp(this->help))) +
-                               (Xe * X1 / (1 + exp(gamma))) + (Xrs * X1 / (1 + exp(delta)))) /
-                              (Xn + Xe + Xh + Xrs);
-    }
+    this->survival = (1 - m) / (1 + exp(-X0 - Xn * thisGroupSize + Xe * gamma + Xrs * delta + Xh * this->help - Xf));
 
     if (survival < 0 && survival > 1) {
         spdlog::error("Survival rate is not between 0 and 1");
     }
-
-
     assert(survival >= 0 && survival <= 1);
     if (this->survival > 0.95) { this->survival = 0.95; }
     else if (this->survival < 0) { this->survival = 0; } //prevent survival to be close to 1 or negative
