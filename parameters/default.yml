@@ -1,14 +1,14 @@
 #Run parameters
 BET_HEDGING_HELP: false                 # Does help have a negative influence on fecundity when the environment is benign?
 HELP_OBLIGATORY: false                  # Is help obligatory for successful reproduction?
-DOMINANT_BREEDER_REPLACEMENT: false      # Does the main dominant breeder get potentially replaced in each cycle? if not, only when dead.
+DOMINANT_BREEDER_REPLACEMENT: true      # Does the main dominant breeder get potentially replaced in each cycle? if not, only when dead.
 NO_GROUP_AUGMENTATION: false
 NO_RELATEDNESS: true                   # Apply implementation to remove the effect of relatedness?
 AGE_NO_INFLUENCE_INHERITANCE: false     # Age no influence of who inherits territory? scramble context
-PREDICTABLE_ENVIRONMENT: false          # Is the environment (change in mOff) predictable?
+PREDICTABLE_ENVIRONMENT: true          # Is the environment (change in mOff) predictable?
 
 MAX_COLONIES: 500     # max number of groups or colonies
-NUM_GENERATIONS: 50000
+NUM_GENERATIONS: 100000
 MAX_NUM_REPLICATES: 50
 SKIP: 10000   # interval between print-outs
 
@@ -21,22 +21,22 @@ REDUCED_RELATEDNESS: 2  # proportion of philopatric offspring reallocated to red
 
 # Modifiers in overall survival
 m: 0.1   # environmental mortality
-X0: 0.6  # base survival (between 0 and 1)
-Xh: 1    # cost of help in survival
-Xn: 3    # benefit of group size in survival
+X0: 1.2  # base survival
+Xh: 0    # cost of help in survival
+Xn: 1    # benefit of group size in survival
 Xe: 0    # cost of expulsion of immigrants in survival
 Xrs: 0   # cost of reproductive suppression in survival
-Xf: 0     # additional survival for floaters (S=x0+y)
+Xf: 0    # additional survival for floaters
 
 # Modifiers in offspring mortality
-mOff: 0.25    # average survival of offspring
+mOff: 1    # average survival of offspring
 mFreq: 0.2   # frequency of change in survival of offspring
 mMagnit: 4   # SD of the variation in survival of offspring
 
 #Modifiers in fecundity
 K0: 1    # baseline fecundity when no other factors influence it
 Kh: 2    # benefit of cumHelp in the fecundity
-Knb: 2   # benefit of number of breeders in the group fecundity
+Knb: 3   # benefit of number of breeders in the group fecundity
 
 
 #Genetic values
