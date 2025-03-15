@@ -55,7 +55,7 @@ public:
 
     void calcHelp();
 
-    void calcSurvival(const int &groupSize, double delta, const bool &hasPotentialImmigrants);
+    void calcSurvival(const int &groupSize, double phenotypicDelta, const bool &hasPotentialImmigrants);
 
     // Getters and setters
     double getAlpha() const;

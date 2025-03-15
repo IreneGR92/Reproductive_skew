@@ -85,7 +85,7 @@ void Individual::calcHelp() {
 
 /*SURVIVAL*/
 
-void Individual::calcSurvival(const int &groupSize, double delta, const bool &hasPotentialImmigrants) {
+void Individual::calcSurvival(const int &groupSize, double phenotypicDelta, const bool &hasPotentialImmigrants) {
 
     double thisGroupSize;
     double Xn, Xe, Xh, Xrs, Xf, X0, m;
@@ -118,10 +118,10 @@ void Individual::calcSurvival(const int &groupSize, double delta, const bool &ha
 
     X0 = parameters->getX0(); // base survival without the effect of help or group size
     m = parameters->getM(); // base mortality
-    const double gamma = hasPotentialImmigrants ? this->gamma : 0; // no cost of expulsion if no potential immigrants
+    const double phenotypicGamma = hasPotentialImmigrants ? this->gamma : 0; // no cost of expulsion if no potential immigrants
 
 
-    this->survival = (1 - m) / (1 + exp(-X0 - Xn * thisGroupSize + Xe * gamma + Xrs * delta + Xh * this->help - Xf));
+    this->survival = (1 - m) / (1 + exp(-X0 - Xn * thisGroupSize + Xe * phenotypicGamma + Xrs * phenotypicDelta + Xh * this->help - Xf));
 
     if (survival < 0 && survival > 1) {
         spdlog::error("Survival rate is not between 0 and 1");
