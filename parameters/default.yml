@@ -29,7 +29,7 @@ Xrs: 0   # cost of reproductive suppression in survival
 Xf: 0    # additional survival for floaters
 
 # Modifiers in offspring mortality
-mOff: 1    # average survival of offspring
+mOff: 0.25    # average survival of offspring
 mFreq: 0.2   # frequency of change in survival of offspring
 mMagnit: 4   # SD of the variation in survival of offspring
 
