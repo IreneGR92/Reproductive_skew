@@ -460,18 +460,22 @@ void Group::calcFecundity(double mk) {
     assert (cumHelp >= 0);
     double initFecundity; //TODO: we store the actual fecundity of the group, no the calculated one, issue for debugging?
 
+    double k0 = parameters->getK0();
+    double kh = parameters->getKh();
+    double knb = parameters->getKnb();
+    double numSubBreeders = subordinateBreeders.size();
+
+
     if (getBreedersSize() > 0) {
         //Calculate fecundity
-        if (mk > 1 && parameters->isBetHedgingHelp()) { //TODO: Benign environment counted as 1 instead of mOff, change?
-            initFecundity = mk * (parameters->getK0() - parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
+        if (mk > 1 && parameters->isBetHedgingHelp()) {
+            initFecundity = mk * (k0 - kh * cumHelp / (1 + cumHelp) + knb * numSubBreeders / (1 + numSubBreeders));
+
         } else if (parameters->isHelpObligatory()) {
-            initFecundity = mk * parameters->getK0() + mk * (parameters->getKh() * cumHelp / (1 + cumHelp)) *
-                                                       (1 + (parameters->getKnb() * subordinateBreeders.size() /
-                                                             (1 + subordinateBreeders.size())));
+            initFecundity = mk * (kh * cumHelp / (1 + cumHelp)) * (1 + knb * numSubBreeders / (1 + numSubBreeders));
+
         } else {
-            initFecundity = mk * (parameters->getK0() + parameters->getKh() * cumHelp / (1 + cumHelp) +
-                                  parameters->getKnb() * subordinateBreeders.size() / (1 + subordinateBreeders.size()));
+            initFecundity = mk * (k0 + kh * cumHelp / (1 + cumHelp) + knb * numSubBreeders / (1 + numSubBreeders));
         }
 
         if (initFecundity < 0) {
