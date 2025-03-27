@@ -36,7 +36,7 @@ mMagnit: 4   # step size in survival of offspring
 #Modifiers in fecundity
 K0: 0    # baseline fecundity when no other factors influence it
 Kh: 1    # benefit of cumHelp in the fecundity
-Knb: 4   # benefit of number of breeders in the group fecundity
+Knb: 2   # benefit of number of breeders in the group fecundity
 
 
 #Genetic values
