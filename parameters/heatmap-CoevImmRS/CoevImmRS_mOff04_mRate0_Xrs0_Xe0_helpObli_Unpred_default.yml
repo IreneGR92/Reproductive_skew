@@ -36,7 +36,7 @@ mMagnit: 4   # step size in survival of offspring
 #Modifiers in fecundity
 K0: 0    # baseline fecundity when no other factors influence it
 Kh: 1    # benefit of cumHelp in the fecundity
-Knb: 3   # benefit of number of breeders in the group fecundity
+Knb: 4   # benefit of number of breeders in the group fecundity
 
 
 #Genetic values
@@ -47,7 +47,7 @@ MUTATION_ALPHA: 0.06        # mutation rate in alpha for level of help
 STEP_ALPHA: 0.04            # mutation step size in alpha for level of help
 
 #For dispersal
-INIT_BETA: 1.0              # bigger values higher dispersal
+INIT_BETA: 0.5              # bigger values higher dispersal
 MUTATION_BETA: 0.06         # mutation rate for the propensity to disperse
 STEP_BETA: 0.04             # mutation step size for the propensity to disperse
 
