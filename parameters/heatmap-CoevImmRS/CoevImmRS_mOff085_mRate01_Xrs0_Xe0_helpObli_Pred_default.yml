@@ -21,7 +21,7 @@ REDUCED_RELATEDNESS: 2  # proportion of philopatric offspring reallocated to red
 
 # Modifiers in overall survival
 m: 0.1   # environmental mortality
-X0: 1.2  # base survival
+X0: 3  # base survival
 Xh: 1    # cost of help in survival
 Xn: 1    # benefit of group size in survival
 Xe: 0    # cost of expulsion of immigrants in survival
@@ -36,7 +36,7 @@ mMagnit: 4   # step size in survival of offspring
 #Modifiers in fecundity
 K0: 0    # baseline fecundity when no other factors influence it
 Kh: 1    # benefit of cumHelp in the fecundity
-Knb: 2   # benefit of number of breeders in the group fecundity
+Knb: 3   # benefit of number of breeders in the group fecundity
 
 
 #Genetic values
